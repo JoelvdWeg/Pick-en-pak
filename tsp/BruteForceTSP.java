@@ -3,11 +3,11 @@ package tsp;
 import java.util.*;
 
 class BruteForceTSP{
+    private static final int AANTAL_VAKKEN = 30;
     private static ArrayList<Integer> bestRoute;
     private static double bestRouteDist;
-    public static final int AANTAL_VAKKEN = 30;
     
-    public static Product[] products = new Product[AANTAL_VAKKEN+1];
+    private Product[] products = new Product[AANTAL_VAKKEN+1];
     
     public BruteForceTSP(){
         bestRouteDist = -1;
@@ -32,13 +32,13 @@ class BruteForceTSP{
     
     
     
-    private static boolean isBestRoute(ArrayList<Integer> r) {
+    private boolean isBestRoute(ArrayList<Integer> r) {
 
         return distance(r) < bestRouteDist || bestRouteDist == -1;
 
     }
 
-    private static double distance(ArrayList<Integer> r) {
+    private double distance(ArrayList<Integer> r) {
         double dist = 0;
 
         for (int i = 0; i < r.size() - 1; i++) {
@@ -48,7 +48,7 @@ class BruteForceTSP{
     } 
 
     public void findBestRoute(ArrayList<Integer> r, ArrayList<Integer> citiesNotInRoute) {
-        if(citiesNotInRoute.size() <= 10){
+        if(citiesNotInRoute.size() <= 15){
         if (!citiesNotInRoute.isEmpty()) { //wanneer er nog steden niet bezocht zijn
             for (int i = 0; i < citiesNotInRoute.size(); i++) { //voor elke nog niet bezochte stad
                 int removed = (int) citiesNotInRoute.remove(0); //haal een stad weg uit de lijst met niet bezochte steden

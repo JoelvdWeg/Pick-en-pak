@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class TSP {
-    public static final int AANTAL_VAKKEN = 30;
-    public static final int AANTAL_LOCATIES = 5;
+    private static final int AANTAL_VAKKEN = 30;
+    private static final int AANTAL_LOCATIES = 5;
 
-    public static ArrayList<Integer> generateLocations(int n) {
+    private static ArrayList<Integer> generateLocations(int n) {
         ArrayList<Integer> locations = new ArrayList<>();  //generate random locations to travel to
         Random random = new Random();
         int r;
@@ -23,89 +23,49 @@ public class TSP {
         return locations;
     }
     
-    public static double runTest(int iterations){
-        double sum = 0;
+    private static double[] runTest(int iterations){
+        double[] sum = new double[3];
         
         for(int i = 0; i < iterations; i++){
             ArrayList<Integer> randomLocations = generateLocations(AANTAL_LOCATIES);
             
             BruteForceTSP bf = new BruteForceTSP();
-            bf.findBestRoute(new ArrayList<Integer>(), randomLocations);
-            
+            bf.findBestRoute(new ArrayList<>(), randomLocations);
+                       
             NearestNeighbourTSP nn = new NearestNeighbourTSP();
-            nn.findBestRoute(new ArrayList<Integer>(), randomLocations);
-            
+            nn.findBestRoute(new ArrayList<>(), randomLocations);       
+                      
             TwoOptTSP twoOpt = new TwoOptTSP(nn.getBestRoute());
             twoOpt.findBestRoute(nn.getBestRoute());
             
-            double improvement = (twoOpt.getBestRouteDist()-bf.getBestRouteDist())/bf.getBestRouteDist();
-            //System.out.println("BF: "+bf.getBestRouteDist());
-            //System.out.println("2-OPT: "+twoOpt.getBestRouteDist());
-            //System.out.println("verbetering: "+improvement);
-            sum += improvement;
+            double improvementBFtoNN = (nn.getBestRouteDist()-bf.getBestRouteDist())/nn.getBestRouteDist();
+            double improvementBFto2opt = (twoOpt.getBestRouteDist()-bf.getBestRouteDist())/twoOpt.getBestRouteDist();
+            double improvement2opttoNN = (nn.getBestRouteDist()-twoOpt.getBestRouteDist())/nn.getBestRouteDist();
+            
+            sum[0] += improvementBFtoNN;
+            sum[1] += improvementBFto2opt;
+            sum[2] += improvement2opttoNN;
+            
             //System.out.println("__________________");
         }
         
-        return sum/iterations;
+        sum[0] /= iterations;
+        sum[1] /= iterations;
+        sum[2] /= iterations;
+        return sum;
     }
 
     public static void main(String[] args) {
-        int n = 1000000;
+        int n = 10000;
         for(int i = 2; i < 11; i++){
-            System.out.println("Gemiddelde verbetering van brute force t.o.v. 2-opt ("+n+" iteraties, "+i+" locaties): " + runTest(n));
+            System.out.println("Algoritmes uitvoeren...");
+            double[] result = runTest(n);
+            
+            System.out.println("Gemiddelde verbetering van brute force t.o.v. nn ("+n+" iteraties, "+i+" locaties): " + result[0]);
+            System.out.println("Gemiddelde verbetering van brute force t.o.v. 2-opt ("+n+" iteraties, "+i+" locaties): " + result[1]);
+            System.out.println("Gemiddelde verbetering van 2-opt t.o.v. nn ("+n+" iteraties, "+i+" locaties): " + result[2]);
+            System.out.println("___________________________________________________________________________________________________________");
         }
-        
-        
-        
-        
-        
-        
-        
-//        System.out.println("______________________________________");
-//        System.out.println("BRUTE FORCE ALGORITME");
-//        
-//        BruteForceTSP bf = new BruteForceTSP();
-//        bf.findBestRoute(new ArrayList<Integer>(), randomLocations);
-//        
-//        System.out.println("______________________________________");
-//        System.out.println("NEAREST NEIGHBOUR ALGORITME");
-//        
-//        NearestNeighbourTSP nn = new NearestNeighbourTSP();
-//        nn.findBestRoute(new ArrayList<Integer>(), randomLocations);
-//        
-//        ArrayList<Integer> nnBest = nn.getBestRoute();
-//        
-//        System.out.println("______________________________________");
-//        System.out.println("2-OPT ALGORITME");
-//        
-//        TwoOptTSP twoOpt = new TwoOptTSP(nnBest);
-//        twoOpt.findBestRoute(nnBest);
-//        
-//        System.out.println("______________________________________");
-//        System.out.println("BRUTE FORCE RESULTAAT");
-//        
-//        System.out.println("Beste route (BF): ");
-//        System.out.println(bf.getBestRoute());
-//        System.out.println("Afstand: " + bf.getBestRouteDist());
-//        
-//        System.out.println("______________________________________");
-//        System.out.println("NEAREST NEIGHBOUR RESULTAAT");
-//        
-//        
-//    
-//        System.out.println("Beste route (NN): ");
-//        System.out.println(nnBest);
-//        System.out.println("Afstand: " + nn.getBestRouteDist());
-//        
-//        
-//        
-//        System.out.println("______________________________________");
-//        System.out.println("2-OPT RESULTAAT");
-//        System.out.println("Verbeterde route: ");
-//        System.out.println(twoOpt.getBestRoute());
-//        System.out.println("Afstand: "+ twoOpt.getBestRouteDist());
-//        
-
-          
+  
     }
 }

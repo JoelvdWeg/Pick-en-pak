@@ -3,11 +3,11 @@ package tsp;
 import java.util.ArrayList;
 
 public class NearestNeighbourTSP {
-    private static ArrayList<Integer> bestRoute;
-    private static double bestRouteDist;
-    public static final int AANTAL_VAKKEN = 30;
+    private final int AANTAL_VAKKEN = 30;
+    private ArrayList<Integer> bestRoute;
+    private double bestRouteDist;
     
-    public static Product[] products = new Product[AANTAL_VAKKEN+1];
+    private Product[] products = new Product[AANTAL_VAKKEN+1];
     
     public NearestNeighbourTSP(){
         bestRouteDist = -1;
@@ -22,15 +22,15 @@ public class NearestNeighbourTSP {
         products[AANTAL_VAKKEN] = new Product(new Coordinate(8, 5), "lospunt");
     }
 
-    public static ArrayList<Integer> getBestRoute() {
+    public ArrayList<Integer> getBestRoute() {
         return bestRoute;
     }
 
-    public static double getBestRouteDist() {
+    public double getBestRouteDist() {
         return bestRouteDist;
     }
 
-    private static double distance(ArrayList<Integer> r) {
+    private double distance(ArrayList<Integer> r) {
         double dist = 0;
 
         for (int i = 0; i < r.size() - 1; i++) {
@@ -39,7 +39,7 @@ public class NearestNeighbourTSP {
         return dist;
     } 
 
-    public static void findBestRoute(ArrayList<Integer> r, ArrayList<Integer> citiesNotInRoute) {
+    public void findBestRoute(ArrayList<Integer> r, ArrayList<Integer> citiesNotInRoute) {
         if (r.isEmpty()) {
             r.add(AANTAL_VAKKEN);
         }

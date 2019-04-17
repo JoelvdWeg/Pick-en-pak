@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class TwoOptTSP {
-    public static final int AANTAL_VAKKEN = 30;
+    private final int AANTAL_VAKKEN = 30;
     private static ArrayList<Integer> bestRoute;
     private static double bestRouteDist;
 
-    private static Product[] products = new Product[AANTAL_VAKKEN+1];
+    private Product[] products = new Product[AANTAL_VAKKEN+1];
 
     public TwoOptTSP(ArrayList<Integer> r) {
         int k = 0;
@@ -24,21 +24,21 @@ public class TwoOptTSP {
         bestRouteDist = distance(bestRoute);
     }
 
-    public static ArrayList<Integer> getBestRoute() {
+    public ArrayList<Integer> getBestRoute() {
         return bestRoute;
     }
 
-    public static double getBestRouteDist() {
+    public double getBestRouteDist() {
         return bestRouteDist;
     }
 
-    private static boolean isBestRoute(ArrayList<Integer> r) {
+    private boolean isBestRoute(ArrayList<Integer> r) {
 
         return distance(r) < bestRouteDist || bestRouteDist == -1;
 
     }
 
-    private static double distance(ArrayList<Integer> r) {
+    private double distance(ArrayList<Integer> r) {
         double dist = 0;
 
         for (int i = 0; i < r.size() - 1; i++) {
@@ -47,7 +47,7 @@ public class TwoOptTSP {
         return dist;
     }
 
-    public static void findBestRoute(ArrayList<Integer> r) {
+    public void findBestRoute(ArrayList<Integer> r) {
         ArrayList<Integer> swappedRoute;
         for (int i = 1; i < r.size() - 2; i++) {
             for (int k = i + 1; k < r.size() - 1; k++) {
@@ -63,7 +63,7 @@ public class TwoOptTSP {
         }
     }
     
-    public static ArrayList<Integer> swap(ArrayList<Integer> route, int i, int k){
+    private ArrayList<Integer> swap(ArrayList<Integer> route, int i, int k){
         ArrayList<Integer> subList = new ArrayList<Integer>();
         for(int j = i; j <= k; j++){
             subList.add(route.get(j));
