@@ -10,7 +10,7 @@ public class TSP {
     private ArrayList<Integer> bestRoute;
     private double bestRouteDist;
     
-    public TSP(){
+    public TSP(ArrayList<Integer> locaties){
         bestRouteDist = -1;
         
         int k = 0;
@@ -21,6 +21,8 @@ public class TSP {
             }
         }
         products[AANTAL_VAKKEN] = new Product(new Coordinate(8, 4), "lospunt");
+        nearestNeighbour(locaties, new ArrayList<Integer>());
+        optimize(bestRoute);
     }
 
     private void nearestNeighbour(ArrayList<Integer> r, ArrayList<Integer> citiesNotInRoute) {

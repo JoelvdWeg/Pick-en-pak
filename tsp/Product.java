@@ -35,10 +35,6 @@ public class Product {
         return coord;
     }
 
-    public void setCoord(Coordinate coord) {
-        this.coord = coord;
-    }
-
     public String getName() {
         return name;
     }
