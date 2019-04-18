@@ -1,71 +1,110 @@
 package tsp;
 
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Collections;
 
 public class TSP {
-    private static final int AANTAL_VAKKEN = 30;
-    private static final int AANTAL_LOCATIES = 5;
-
-    private static ArrayList<Integer> generateLocations(int n) {
-        ArrayList<Integer> locations = new ArrayList<>();  //generate random locations to travel to
-        Random random = new Random();
-        int r;
-       // System.out.println("Locaties te bezoeken: ");
-        for (int i = 0; i < n; i++) {
-            do {
-                r = random.nextInt(AANTAL_VAKKEN);
-            } while (locations.contains(r));
-            locations.add(r);
-           // System.out.print(r + " ");
+    static final int AANTAL_VAKKEN = 25;
+    private final Product[] products = new Product[AANTAL_VAKKEN+1];
+    
+    private ArrayList<Integer> bestRoute;
+    private double bestRouteDist;
+    
+    public TSP(){
+        bestRouteDist = -1;
+        
+        int k = 0;
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                products[k] = new Product(new Coordinate(i, j));
+                k++;
+            }
         }
-       // System.out.println("");
-        return locations;
+        products[AANTAL_VAKKEN] = new Product(new Coordinate(8, 4), "lospunt");
+    }
+
+    private void nearestNeighbour(ArrayList<Integer> r, ArrayList<Integer> citiesNotInRoute) {
+        if (r.isEmpty()) {
+            r.add(AANTAL_VAKKEN);
+        }
+        if (citiesNotInRoute.size() != 1) {
+
+            double closestDist = products[citiesNotInRoute.get(0)].getCoord().dist(products[r.get(r.size() - 1)].getCoord());
+            int closest = 0;
+
+            for (int i = 1; i < citiesNotInRoute.size(); i++) {
+                if (products[citiesNotInRoute.get(i)].getCoord().dist(products[r.get(r.size() - 1)].getCoord()) < closestDist) {
+                    closestDist = products[citiesNotInRoute.get(i)].getCoord().dist(products[r.get(r.size() - 1)].getCoord());
+                    closest = i;
+                }
+            }
+           
+            r.add(citiesNotInRoute.get(closest));
+            citiesNotInRoute.remove(closest);
+            nearestNeighbour(r, citiesNotInRoute);
+
+        } else {
+            r.add(citiesNotInRoute.get(0));
+            r.add(AANTAL_VAKKEN);
+            bestRoute = r;
+            bestRouteDist = distance(r);
+        }
     }
     
-    private static double[] runTest(int iterations){
-        double[] sum = new double[3];
-        
-        for(int i = 0; i < iterations; i++){
-            ArrayList<Integer> randomLocations = generateLocations(AANTAL_LOCATIES);
-            
-            BruteForceTSP bf = new BruteForceTSP();
-            bf.findBestRoute(new ArrayList<>(), randomLocations);
-                       
-            NearestNeighbourTSP nn = new NearestNeighbourTSP();
-            nn.findBestRoute(new ArrayList<>(), randomLocations);       
-                      
-            TwoOptTSP twoOpt = new TwoOptTSP(nn.getBestRoute());
-            twoOpt.findBestRoute(nn.getBestRoute());
-            
-            double improvementBFtoNN = (nn.getBestRouteDist()-bf.getBestRouteDist())/nn.getBestRouteDist();
-            double improvementBFto2opt = (twoOpt.getBestRouteDist()-bf.getBestRouteDist())/twoOpt.getBestRouteDist();
-            double improvement2opttoNN = (nn.getBestRouteDist()-twoOpt.getBestRouteDist())/nn.getBestRouteDist();
-            
-            sum[0] += improvementBFtoNN;
-            sum[1] += improvementBFto2opt;
-            sum[2] += improvement2opttoNN;
-            
-            //System.out.println("__________________");
+    private void optimize(ArrayList<Integer> r) {
+        ArrayList<Integer> swappedRoute;
+        for (int i = 1; i < r.size() - 2; i++) {
+            for (int k = i + 1; k < r.size() - 1; k++) {
+                ArrayList<Integer> clone = (ArrayList<Integer>) r.clone();
+                swappedRoute = swap(clone,i,k);
+                if(isBestRoute(swappedRoute)){
+                    bestRoute = swappedRoute;
+                    bestRouteDist = distance(swappedRoute);
+                }
+            }
+        }
+    }
+    
+    private ArrayList<Integer> swap(ArrayList<Integer> route, int i, int k){
+        ArrayList<Integer> subList = new ArrayList<Integer>();
+        for(int j = i; j <= k; j++){
+            subList.add(route.get(j));
         }
         
-        sum[0] /= iterations;
-        sum[1] /= iterations;
-        sum[2] /= iterations;
-        return sum;
+        for(int j = 0; j < subList.size()/2; j++){
+            Collections.swap(subList,j,subList.size()-j-1);
+        }
+        
+        route.subList(i,k+1).clear();
+        
+        for(int j = 0; j < subList.size(); j++){
+            route.add(i+j,subList.get(j));
+        }
+        return route;
+    }
+    
+    private double distance(ArrayList<Integer> r) {
+        double dist = 0;
+
+        for (int i = 0; i < r.size() - 1; i++) {
+            dist += products[r.get(i)].getCoord().dist(products[r.get(i + 1)].getCoord());
+        }
+        return dist;
+    } 
+    
+    private boolean isBestRoute(ArrayList<Integer> r) {
+        return distance(r) < bestRouteDist || bestRouteDist == -1;
+    }
+    
+    public void findRoute(ArrayList<Integer> r) {
+        nearestNeighbour(new ArrayList<Integer>(), r);
+        optimize(bestRoute);
+    }
+    public ArrayList<Integer> getBestRoute(){
+        return bestRoute;
     }
 
-    public static void main(String[] args) {
-        int n = 10000;
-        for(int i = 2; i < 11; i++){
-            System.out.println("Algoritmes uitvoeren...");
-            double[] result = runTest(n);
-            
-            System.out.println("Gemiddelde verbetering van brute force t.o.v. nn ("+n+" iteraties, "+i+" locaties): " + result[0]);
-            System.out.println("Gemiddelde verbetering van brute force t.o.v. 2-opt ("+n+" iteraties, "+i+" locaties): " + result[1]);
-            System.out.println("Gemiddelde verbetering van 2-opt t.o.v. nn ("+n+" iteraties, "+i+" locaties): " + result[2]);
-            System.out.println("___________________________________________________________________________________________________________");
-        }
-  
+    public double getBestRouteDist() {
+        return bestRouteDist;
     }
 }

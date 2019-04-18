@@ -3,23 +3,22 @@ package tsp;
 import java.util.*;
 
 class BruteForceTSP{
-    private static final int AANTAL_VAKKEN = 30;
     private static ArrayList<Integer> bestRoute;
     private static double bestRouteDist;
     
-    private Product[] products = new Product[AANTAL_VAKKEN+1];
+    private Product[] products = new Product[TSP.AANTAL_VAKKEN+1];
     
     public BruteForceTSP(){
         bestRouteDist = -1;
         
         int k = 0;
         for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 6; j++) {
+            for (int j = 0; j < 5; j++) {
                 products[k] = new Product(new Coordinate(i, j));
                 k++;
             }
         }
-        products[AANTAL_VAKKEN] = new Product(new Coordinate(8, 5), "lospunt");
+        products[TSP.AANTAL_VAKKEN] = new Product(new Coordinate(8, 4), "lospunt");
     }
 
     public static ArrayList<Integer> getBestRoute() {
@@ -62,15 +61,15 @@ class BruteForceTSP{
             }
         } else { //alle steden zijn bezocht
             ArrayList<Integer> temp = (ArrayList<Integer>) r.clone();
-            temp.add(0, AANTAL_VAKKEN);
-            temp.add(AANTAL_VAKKEN);
+            temp.add(0, TSP.AANTAL_VAKKEN);
+            temp.add(TSP.AANTAL_VAKKEN);
             //route begint en eindigt bij het lospunt
 
             if (isBestRoute(temp)) { //check of deze route de snelste is
                 bestRoute = temp;
                 bestRouteDist = distance(temp);
-                //System.out.println("Nieuwe beste route: " + temp.toString());
-                //System.out.println("Nieuwe beste afstand: " + bestRouteDist);
+                //System.out.println("BF Nieuwe beste route: " + temp.toString());
+                //System.out.println("BF Nieuwe beste afstand: " + bestRouteDist);
             }
         }
         } else {
