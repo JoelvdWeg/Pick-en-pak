@@ -12,6 +12,8 @@ public class PickPak {
         addItem("Peer", 9, new Coordinate(3, 4));
         addItem("Citroen", 2, new Coordinate(3, 4));
         addItem("Appel", 7, new Coordinate(3, 4));
+        addItem("Druif", 4, new Coordinate(3, 4));
+        addItem("Kers", 7, new Coordinate(3, 4));
 
         // TSP
 
