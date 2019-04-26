@@ -15,6 +15,12 @@ public class Item {
         this.grootte = -1;
     }
     
+    public Item(Locatie locatie, int grootte){
+        this.locatie = locatie;
+        this.naam = "NONAME";
+        this.grootte = grootte;
+    }
+    
     public Locatie getLocatie(){
         return locatie;
     }

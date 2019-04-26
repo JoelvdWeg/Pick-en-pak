@@ -11,7 +11,6 @@ public class BPP {
         volgorde = new ArrayList<>();
         this.items = items;
         
-        System.out.println(items.size());
 
         try {
             // Algortiem kiezen
@@ -113,13 +112,13 @@ public class BPP {
     }
 
     public void printVolgorde() {
-        System.out.println("\nPak volgorde:");
+        System.out.println("\nDoos volgorde:");
 
         for (Doos doos : volgorde) {
             System.out.print(doos.getDoosID() + " ");
         }
 
-        System.out.println();
+        System.out.println("\n");
     }
 
     public ArrayList<Doos> getVolgorde() {
