@@ -1,20 +1,34 @@
 public class Item {
     private String naam;
     private int grootte;
-    private Coordinate coordinate;
+    private Locatie locatie;
 
-    public Item(String naam, int grootte, Coordinate coordinate) {
+    public Item(String naam, int grootte, Locatie locatie) {
         this.naam = naam;
         this.grootte = grootte;
-        this.coordinate = coordinate;
+        this.locatie = locatie;
+    }
+    
+    public Item(Locatie locatie){
+        this.locatie = locatie;
+        this.naam = "NONAME";
+        this.grootte = -1;
+    }
+    
+    public Locatie getLocatie(){
+        return locatie;
     }
 
     public int getGrootte() {
         return grootte;
     }
+    
+    public Coordinate getCoord(){
+        return locatie.getCoord();
+    }
 
     @Override
     public String toString() {
-        return naam + " (" + grootte + ")";
+        return "Locatie: " + locatie.toString();
     }
 }
