@@ -40,7 +40,7 @@ public class PickPak {
         
         //System.out.println("Beste route: "+tsp.getBestRoute()+"  Afstand: "+tsp.getBestRouteDist());
         
-        BPP bpp = new BPP(items);
+        BPP bpp = new BPP(pakbon);
         volgorde = bpp.getVolgorde();
     }
 

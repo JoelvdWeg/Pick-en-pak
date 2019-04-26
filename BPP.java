@@ -66,7 +66,7 @@ public class BPP {
     }
 
     public void bepaalVolgordeFirstfit() {
-        //System.out.println("FIRSTFIT --------------------\n");
+        System.out.println("FIRSTFIT --------------------\n");
 
         for (int i = 0; i < items.size(); i++) {
             Doos geselecteerd = null;
@@ -97,7 +97,7 @@ public class BPP {
     }
 
     public void printRonde(int i, Doos geselecteerd) {
-        //System.out.println("Grootte van object: " + items.get(i).getGrootte());
+        System.out.println("Grootte van object: " + items.get(i).getGrootte());
 
         for (int x = 0; x < dozen.size(); x++) {
             System.out.print(dozen.get(x));
