@@ -8,7 +8,7 @@ public class Item {
         this.grootte = grootte;
         this.locatie = locatie;
     }
-    
+        
     public Item(Locatie locatie){
         this.locatie = locatie;
         this.naam = "NONAME";
@@ -17,6 +17,10 @@ public class Item {
     
     public Locatie getLocatie(){
         return locatie;
+    }
+    
+    public void setGrootte(int grootte){
+        this.grootte = grootte;
     }
 
     public int getGrootte() {

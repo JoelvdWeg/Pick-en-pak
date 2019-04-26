@@ -18,6 +18,15 @@ public class PickPak {
 
         pakbon = new ArrayList<>();
         
+        items.get(2).setGrootte(2);
+        items.get(8).setGrootte(4);
+        items.get(14).setGrootte(10);
+        items.get(17).setGrootte(7);
+        items.get(23).setGrootte(1);
+        items.get(12).setGrootte(11);
+        items.get(15).setGrootte(2);
+        items.get(10).setGrootte(6);
+        
         pakbon.add(items.get(2));
         pakbon.add(items.get(8));
         pakbon.add(items.get(14));
@@ -27,12 +36,12 @@ public class PickPak {
         pakbon.add(items.get(15));
         pakbon.add(items.get(10));
         
-        TSP tsp = new TSP(pakbon);
+        //TSP tsp = new TSP(pakbon);
         
-        System.out.println("Beste route: "+tsp.getBestRoute()+"  Afstand: "+tsp.getBestRouteDist());
+        //System.out.println("Beste route: "+tsp.getBestRoute()+"  Afstand: "+tsp.getBestRouteDist());
         
-        // BPP bpp = new BPP(items);
-        // volgorde = bpp.getVolgorde();
+        BPP bpp = new BPP(items);
+        volgorde = bpp.getVolgorde();
     }
 
     

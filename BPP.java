@@ -7,9 +7,11 @@ public class BPP {
 
     public BPP(ArrayList<Item> items) {
         dozen = new ArrayList<>();
-        dozen.add(new Doos());
+        dozen.add(new Doos(12));
         volgorde = new ArrayList<>();
         this.items = items;
+        
+        System.out.println(items.size());
 
         try {
             // Algortiem kiezen
@@ -36,7 +38,7 @@ public class BPP {
             }
 
             if (mogelijkeDozen.size() == 0) { // Als het opject in geen enkele doos past
-                geselecteerd = new Doos(items.get(i));
+                geselecteerd = new Doos(items.get(i),12);
                 dozen.add(geselecteerd);
             }
             else { // Als het object wel in één of meerdere dozen past.
@@ -64,7 +66,7 @@ public class BPP {
     }
 
     public void bepaalVolgordeFirstfit() {
-        System.out.println("FIRSTFIT --------------------\n");
+        //System.out.println("FIRSTFIT --------------------\n");
 
         for (int i = 0; i < items.size(); i++) {
             Doos geselecteerd = null;
@@ -80,7 +82,7 @@ public class BPP {
 
             // Nieuwe doos maken als er nog geen een geselecteerd is.
             if (geselecteerd == null) {
-                geselecteerd = new Doos(items.get(i));
+                geselecteerd = new Doos(items.get(i),12);
                 dozen.add(geselecteerd);
             }
 
@@ -95,7 +97,7 @@ public class BPP {
     }
 
     public void printRonde(int i, Doos geselecteerd) {
-        System.out.println("Grootte van object: " + items.get(i));
+        //System.out.println("Grootte van object: " + items.get(i).getGrootte());
 
         for (int x = 0; x < dozen.size(); x++) {
             System.out.print(dozen.get(x));
