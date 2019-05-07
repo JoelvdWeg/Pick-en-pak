@@ -23,7 +23,7 @@ public class BPP {
     }
 
     private void bepaalVolgordeBestfit() {
-        System.out.println("BESTFIT --------------------\n");
+        //System.out.println("BESTFIT --------------------\n");
 
         for (int i = 0; i < items.size(); i++) {
             Doos geselecteerd;
@@ -58,14 +58,14 @@ public class BPP {
             volgorde.add(geselecteerd);
 
             // Huidige ronde printen
-            printRonde(i, geselecteerd);
+            //printRonde(i, geselecteerd);
         }
 
-        printVolgorde();
+        //printVolgorde();
     }
 
     public void bepaalVolgordeFirstfit() {
-        System.out.println("FIRSTFIT --------------------\n");
+        //System.out.println("FIRSTFIT --------------------\n");
 
         for (int i = 0; i < items.size(); i++) {
             Doos geselecteerd = null;
@@ -89,10 +89,10 @@ public class BPP {
             volgorde.add(geselecteerd);
 
             // Alle dozen printen
-            printRonde(i, geselecteerd);
+            //printRonde(i, geselecteerd);
         }
 
-        printVolgorde();
+        //printVolgorde();
     }
 
     public void printRonde(int i, Doos geselecteerd) {
@@ -121,7 +121,11 @@ public class BPP {
         System.out.println("\n");
     }
 
-    public ArrayList<Doos> getVolgorde() {
+    public ArrayList<Integer> getVolgorde() {
+        ArrayList<Integer> volgorde = new ArrayList<>();
+        for(Doos doos: this.volgorde){
+            volgorde.add(doos.getDoosID());
+        }
         return volgorde;
     }
 }

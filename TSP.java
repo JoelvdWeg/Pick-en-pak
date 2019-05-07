@@ -9,7 +9,7 @@ public class TSP {
     private ArrayList<Integer> pickItems;
     
     public TSP(ArrayList<Item> bestelling){
-        items = PickPak.items;
+        items = run.items;
         pickItems = new ArrayList<>();
         
         for(Item item: bestelling){

@@ -2,23 +2,27 @@ public class Item {
     private String naam;
     private int grootte;
     private Locatie locatie;
+    private int id;
 
-    public Item(String naam, int grootte, Locatie locatie) {
+    public Item(Locatie locatie, int grootte, int id, String naam) {
         this.naam = naam;
         this.grootte = grootte;
         this.locatie = locatie;
+        this.id = id;
     }
         
-    public Item(Locatie locatie){
+    public Item(Locatie locatie, int id){
         this.locatie = locatie;
         this.naam = "NONAME";
         this.grootte = -1;
+        this.id = id;
     }
     
-    public Item(Locatie locatie, int grootte){
+    public Item(Locatie locatie, int grootte, int id){
         this.locatie = locatie;
         this.naam = "NONAME";
         this.grootte = grootte;
+        this.id = id;
     }
     
     public Locatie getLocatie(){
@@ -36,9 +40,13 @@ public class Item {
     public Coordinate getCoord(){
         return locatie.getCoord();
     }
+    
+    public int getID(){
+        return id;
+    }
 
     @Override
     public String toString() {
-        return "Locatie: " + locatie.toString();
+        return id + ": " + naam + " (grootte: "+grootte+")"; 
     }
 }
