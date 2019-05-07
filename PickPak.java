@@ -20,7 +20,7 @@ public class PickPak {
         }
         items.add(new Item(new Locatie(k, new Coordinate(4, 0))));
 
-        pakbon = new ArrayList<>();
+        pakbon = new ArrayList<Item>();
 
         for(int i = 0; i < r.nextInt(25)+1; i++){
             pakbon.add(items.get(r.nextInt(26)));

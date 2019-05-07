@@ -19,6 +19,8 @@ public class TSP {
         nearestNeighbour(new ArrayList<>(), pickItems);   
         optimize(bestRoute);
     }
+
+    
     
     private double distance(ArrayList<Integer> r) {
         double dist = 0;
