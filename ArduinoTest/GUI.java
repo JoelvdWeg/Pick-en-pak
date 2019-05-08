@@ -18,8 +18,6 @@ public class GUI extends javax.swing.JFrame {
     protected boolean arduino1Active;
     protected boolean arduino2Active;
     
-    private String testVar = "test";
-    
     /**
      * Creates new form GUI
      */
@@ -31,12 +29,6 @@ public class GUI extends javax.swing.JFrame {
         //refresh COM port list on start
         portList1.refreshMenu();
         portList2.refreshMenu();
-        
-        jbON1.setEnabled(false);
-        jbOFF1.setEnabled(false);
-        jbON2.setEnabled(false);
-        jbOFF2.setEnabled(false);
-        
     }
     
 //    public void setValue1(String value) {
@@ -59,10 +51,6 @@ public class GUI extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jbRefresh2 = new javax.swing.JButton();
         jbConnect2 = new javax.swing.JButton();
-        jbON1 = new javax.swing.JButton();
-        jbOFF1 = new javax.swing.JButton();
-        jbON2 = new javax.swing.JButton();
-        jbOFF2 = new javax.swing.JButton();
         portList1 = new arduino.PortDropdownMenu();
         portList2 = new arduino.PortDropdownMenu();
 
@@ -84,7 +72,7 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Pack Arduino:");
+        jLabel2.setText("Pak Arduino:");
 
         jbRefresh2.setText("Refresh");
         jbRefresh2.addActionListener(new java.awt.event.ActionListener() {
@@ -100,68 +88,30 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        jbON1.setText("ON");
-        jbON1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbON1ActionPerformed(evt);
-            }
-        });
-
-        jbOFF1.setText("OFF");
-        jbOFF1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbOFF1ActionPerformed(evt);
-            }
-        });
-
-        jbON2.setText("ON");
-        jbON2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbON2ActionPerformed(evt);
-            }
-        });
-
-        jbOFF2.setText("OFF");
-        jbOFF2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbOFF2ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(portList1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jbON1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jbRefresh1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jbConnect1, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE))
-                    .addComponent(jbOFF1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(portList2, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jbON2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(portList2, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jbRefresh2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jbConnect2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jbOFF2, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(portList1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbRefresh1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbConnect1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(456, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,20 +119,16 @@ public class GUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
+                    .addComponent(portList1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbRefresh1)
+                    .addComponent(jbConnect1))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jbRefresh2)
                     .addComponent(jbConnect2)
-                    .addComponent(jbConnect1)
-                    .addComponent(portList1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(portList2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbON1)
-                    .addComponent(jbOFF1)
-                    .addComponent(jbON2)
-                    .addComponent(jbOFF2))
-                .addContainerGap(331, Short.MAX_VALUE))
+                .addContainerGap(339, Short.MAX_VALUE))
         );
 
         pack();
@@ -200,8 +146,6 @@ public class GUI extends javax.swing.JFrame {
                     if (arduino1.openConnection()) {
                         jbConnect1.setText("Disconnect");
                         portList1.setEnabled(false);
-                        jbON1.setEnabled(true);
-                        jbOFF1.setEnabled(true);
                         jbRefresh1.setEnabled(false);
                         
                         Thread t1 = new Thread(new ProgressBar());
@@ -211,9 +155,7 @@ public class GUI extends javax.swing.JFrame {
                     arduino1.closeConnection();
                     jbConnect1.setText("Connect");;
                     portList1.setEnabled(true);
-                    jbON1.setEnabled(false);
                     jbRefresh1.setEnabled(true);
-                    jbOFF1.setEnabled(false);   
                 }
     }//GEN-LAST:event_jbConnect1ActionPerformed
 
@@ -229,39 +171,15 @@ public class GUI extends javax.swing.JFrame {
                     if (arduino2.openConnection()) {
                         jbConnect2.setText("Disconnect");
                         portList2.setEnabled(false);
-                        jbON2.setEnabled(true);
-                        jbOFF2.setEnabled(true);
                         jbRefresh2.setEnabled(false);
                     }
                 } else {
                     arduino2.closeConnection();
                     jbConnect2.setText("Connect");
                     portList2.setEnabled(true);
-                    jbON2.setEnabled(false);
                     jbRefresh2.setEnabled(true);
-                    jbOFF2.setEnabled(false);
                 }
     }//GEN-LAST:event_jbConnect2ActionPerformed
-
-    private void jbON1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbON1ActionPerformed
-        // TODO add your handling code here:
-        arduino1.serialWrite('1');
-    }//GEN-LAST:event_jbON1ActionPerformed
-
-    private void jbOFF1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbOFF1ActionPerformed
-        // TODO add your handling code here:
-        arduino1.serialWrite('0');
-    }//GEN-LAST:event_jbOFF1ActionPerformed
-
-    private void jbOFF2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbOFF2ActionPerformed
-        // TODO add your handling code here:
-        arduino2.serialWrite('0');
-    }//GEN-LAST:event_jbOFF2ActionPerformed
-
-    private void jbON2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbON2ActionPerformed
-        // TODO add your handling code here:
-        arduino2.serialWrite('1');
-    }//GEN-LAST:event_jbON2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -307,10 +225,6 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     protected javax.swing.JButton jbConnect1;
     private javax.swing.JButton jbConnect2;
-    private javax.swing.JButton jbOFF1;
-    private javax.swing.JButton jbOFF2;
-    private javax.swing.JButton jbON1;
-    private javax.swing.JButton jbON2;
     private javax.swing.JButton jbRefresh1;
     private javax.swing.JButton jbRefresh2;
     private arduino.PortDropdownMenu portList1;
