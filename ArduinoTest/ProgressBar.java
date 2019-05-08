@@ -26,7 +26,6 @@ public class ProgressBar extends GUI implements Runnable {
             
             String[] result = value.split("\n", 2);
             System.out.println(result[0].trim());
-            updateText(result[0].trim());
 
             try {
                 Thread.sleep(1000);

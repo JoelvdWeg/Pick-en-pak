@@ -62,13 +62,6 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="249" max="-2" attributes="0"/>
-              <Component id="jbTest" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jlTest" min="-2" pref="67" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
-          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -92,12 +85,7 @@
                   <Component id="jbON2" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jbOFF2" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="141" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jbTest" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jlTest" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace pref="169" max="32767" attributes="0"/>
+              <EmptySpace pref="331" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -183,19 +171,6 @@
     <Component class="arduino.PortDropdownMenu" name="portList1">
     </Component>
     <Component class="arduino.PortDropdownMenu" name="portList2">
-    </Component>
-    <Component class="javax.swing.JButton" name="jbTest">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Change text"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbTestActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jlTest">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Tekst 1"/>
-      </Properties>
     </Component>
   </SubComponents>
 </Form>

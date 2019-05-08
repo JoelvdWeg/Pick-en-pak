@@ -65,8 +65,6 @@ public class GUI extends javax.swing.JFrame {
         jbOFF2 = new javax.swing.JButton();
         portList1 = new arduino.PortDropdownMenu();
         portList2 = new arduino.PortDropdownMenu();
-        jbTest = new javax.swing.JButton();
-        jlTest = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -130,15 +128,6 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        jbTest.setText("Change text");
-        jbTest.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbTestActionPerformed(evt);
-            }
-        });
-
-        jlTest.setText("Tekst 1");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -173,12 +162,6 @@ public class GUI extends javax.swing.JFrame {
                         .addComponent(jbConnect2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jbOFF2, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(249, 249, 249)
-                .addComponent(jbTest)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jlTest, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -199,11 +182,7 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(jbOFF1)
                     .addComponent(jbON2)
                     .addComponent(jbOFF2))
-                .addGap(141, 141, 141)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbTest)
-                    .addComponent(jlTest))
-                .addContainerGap(169, Short.MAX_VALUE))
+                .addContainerGap(331, Short.MAX_VALUE))
         );
 
         pack();
@@ -284,11 +263,6 @@ public class GUI extends javax.swing.JFrame {
         arduino2.serialWrite('1');
     }//GEN-LAST:event_jbON2ActionPerformed
 
-    private void jbTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbTestActionPerformed
-        // TODO add your handling code here:
-        updateText("test");
-    }//GEN-LAST:event_jbTestActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -327,10 +301,6 @@ public class GUI extends javax.swing.JFrame {
         
     }
     
-    public void updateText(String text) {
-        System.out.println("Changing text to: " + text);
-        jlTest.setText("Test");
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -343,8 +313,6 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton jbON2;
     private javax.swing.JButton jbRefresh1;
     private javax.swing.JButton jbRefresh2;
-    private javax.swing.JButton jbTest;
-    private javax.swing.JLabel jlTest;
     private arduino.PortDropdownMenu portList1;
     private arduino.PortDropdownMenu portList2;
     // End of variables declaration//GEN-END:variables
