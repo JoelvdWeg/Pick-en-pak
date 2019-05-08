@@ -1,9 +1,11 @@
 #define LED_PIN (int8_t)13 //pin number LED is connected to
+int potPin = A0;
 
 char data; //variable to store incoming data from JAVA 
 
 void setup() {
   pinMode(LED_PIN, OUTPUT);
+  pinMode(potPin, INPUT);
   Serial.begin(9600);
   Serial.setTimeout(50);
 }
@@ -19,4 +21,8 @@ void loop() {
     else 
       digitalWrite(LED_PIN,HIGH);
   }
+
+int value = map(analogRead(potPin), 0, 1023, 0, 100);
+  Serial.println(value);
+  delay(100);
 }
