@@ -16,9 +16,7 @@ import arduino.*;
 public class LEDExampleWithGUI {
 
     static Arduino arduino;
-    static JFrame frame = new JFrame("An Led Controller");
-    static JButton btnOn = new JButton("ON");
-    static JButton btnOff = new JButton("OFF");
+    static JFrame frame = new JFrame("GUI");
     static JButton btnRefresh;
 
     public static void main(String[] args) {
@@ -26,20 +24,20 @@ public class LEDExampleWithGUI {
 
         frame.setResizable(false);
 
-        btnOn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                arduino.serialWrite('1');
-
-            }
-        });
-
-        btnOff.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                arduino.serialWrite('0');
-            }
-        });
+//        btnOn.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                arduino.serialWrite('1');
+//
+//            }
+//        });
+//
+//        btnOff.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                arduino.serialWrite('0');
+//            }
+//        });
 
     }
 
@@ -74,8 +72,8 @@ public class LEDExampleWithGUI {
                     if (arduino.openConnection()) {
                         connectButton.setText("Disconnect");
                         portList.setEnabled(false);
-                        btnOn.setEnabled(true);
-                        btnOff.setEnabled(true);
+//                        btnOn.setEnabled(true);
+//                        btnOff.setEnabled(true);
                         btnRefresh.setEnabled(false);
                         frame.pack();
                     }
@@ -83,32 +81,32 @@ public class LEDExampleWithGUI {
                     arduino.closeConnection();
                     connectButton.setText("Connect");;
                     portList.setEnabled(true);
-                    btnOn.setEnabled(false);
-                    btnRefresh.setEnabled(true);
-                    btnOff.setEnabled(false);
+//                    btnOn.setEnabled(false);
+//                    btnRefresh.setEnabled(true);
+//                    btnOff.setEnabled(false);
                 }
             }
-
+            
         });
         //topPanel.setBackground(Color.BLUE);
         frame.add(topPanel, BorderLayout.NORTH);
     }
 
     public static void setUpGUI() {
-        frame.setSize(600, 600);
+        frame.setSize(2000, 2000);
         frame.setBackground(Color.black);
         frame.setForeground(Color.black);
         //frame.setPreferredSize(new Dimension(600,600));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-        btnOn.setForeground(Color.GREEN);
-        btnOn.setEnabled(false);
-        btnOff.setForeground(Color.RED);
-        btnOff.setEnabled(false);
+//        btnOn.setForeground(Color.GREEN);
+//        btnOn.setEnabled(false);
+//        btnOff.setForeground(Color.RED);
+//        btnOff.setEnabled(false);
         JPanel pane = new JPanel();
         //pane.setBackground(Color.blue);
-        pane.add(btnOn);
-        pane.add(btnOff);
+//        pane.add(btnOn);
+//        pane.add(btnOff);
         frame.add(pane, BorderLayout.CENTER);
         populateMenu();
         frame.pack();
