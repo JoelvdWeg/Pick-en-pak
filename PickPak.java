@@ -1,28 +1,22 @@
+
 import java.util.ArrayList;
+import java.util.Random;
 
 public class PickPak {
+
     private ArrayList<Doos> volgorde;
-    private ArrayList<Item> items;
-    private static final int AANTAL_VAKKEN = 30;
+    //public static ArrayList<Item> items;
+    //public ArrayList<Item> pakbon;
 
-    public PickPak() {
-        items = new ArrayList<>();
+    public PickPak(ArrayList<Item> pakbon) {
+        //pakbon = new ArrayList<Item>();
 
-        addItem("Banaan", 3, new Coordinate(3, 4));
-        addItem("Peer", 9, new Coordinate(3, 4));
-        addItem("Citroen", 2, new Coordinate(3, 4));
-        addItem("Appel", 7, new Coordinate(3, 4));
-        addItem("Druif", 4, new Coordinate(3, 4));
-        addItem("Kers", 7, new Coordinate(3, 4));
+        //for(int i = 0; i < r.nextInt(25)+1; i++){
+        //    pakbon.add(items.get(r.nextInt(26)));
+        //}
 
-        // TSP
-
-        BPP bpp = new BPP(items);
-        volgorde = bpp.getVolgorde();
+        
     }
 
-    public void addItem(String naam, int grootte, Coordinate coordinate) {
-        Item i = new Item(naam, grootte, coordinate);
-        items.add(i);
-    }
+    
 }

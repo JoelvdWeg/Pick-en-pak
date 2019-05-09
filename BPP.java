@@ -7,9 +7,10 @@ public class BPP {
 
     public BPP(ArrayList<Item> items) {
         dozen = new ArrayList<>();
-        dozen.add(new Doos());
+        dozen.add(new Doos(12));
         volgorde = new ArrayList<>();
         this.items = items;
+        
 
         try {
             // Algortiem kiezen
@@ -22,7 +23,7 @@ public class BPP {
     }
 
     private void bepaalVolgordeBestfit() {
-        System.out.println("BESTFIT --------------------\n");
+        //System.out.println("BESTFIT --------------------\n");
 
         for (int i = 0; i < items.size(); i++) {
             Doos geselecteerd;
@@ -36,7 +37,7 @@ public class BPP {
             }
 
             if (mogelijkeDozen.size() == 0) { // Als het opject in geen enkele doos past
-                geselecteerd = new Doos(items.get(i));
+                geselecteerd = new Doos(items.get(i),12);
                 dozen.add(geselecteerd);
             }
             else { // Als het object wel in één of meerdere dozen past.
@@ -57,14 +58,14 @@ public class BPP {
             volgorde.add(geselecteerd);
 
             // Huidige ronde printen
-            printRonde(i, geselecteerd);
+            //printRonde(i, geselecteerd);
         }
 
-        printVolgorde();
+        //printVolgorde();
     }
 
     public void bepaalVolgordeFirstfit() {
-        System.out.println("FIRSTFIT --------------------\n");
+        //System.out.println("FIRSTFIT --------------------\n");
 
         for (int i = 0; i < items.size(); i++) {
             Doos geselecteerd = null;
@@ -80,7 +81,7 @@ public class BPP {
 
             // Nieuwe doos maken als er nog geen een geselecteerd is.
             if (geselecteerd == null) {
-                geselecteerd = new Doos(items.get(i));
+                geselecteerd = new Doos(items.get(i),12);
                 dozen.add(geselecteerd);
             }
 
@@ -88,14 +89,14 @@ public class BPP {
             volgorde.add(geselecteerd);
 
             // Alle dozen printen
-            printRonde(i, geselecteerd);
+            //printRonde(i, geselecteerd);
         }
 
-        printVolgorde();
+        //printVolgorde();
     }
 
     public void printRonde(int i, Doos geselecteerd) {
-        System.out.println("Grootte van object: " + items.get(i));
+        System.out.println("Grootte van object: " + items.get(i).getGrootte());
 
         for (int x = 0; x < dozen.size(); x++) {
             System.out.print(dozen.get(x));
@@ -111,16 +112,20 @@ public class BPP {
     }
 
     public void printVolgorde() {
-        System.out.println("\nPak volgorde:");
+        System.out.println("\nDoos volgorde:");
 
         for (Doos doos : volgorde) {
             System.out.print(doos.getDoosID() + " ");
         }
 
-        System.out.println();
+        System.out.println("\n");
     }
 
-    public ArrayList<Doos> getVolgorde() {
+    public ArrayList<Integer> getVolgorde() {
+        ArrayList<Integer> volgorde = new ArrayList<>();
+        for(Doos doos: this.volgorde){
+            volgorde.add(doos.getDoosID());
+        }
         return volgorde;
     }
 }
