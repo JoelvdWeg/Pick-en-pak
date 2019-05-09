@@ -1,26 +1,39 @@
 import java.util.ArrayList;
 
 public class Doos {
-    private static int aantal = 1;
+    private static int aantalDozen = 1;
     private int doosID;
-    private static final int CAPACITEIT = 12;
+    //private static final int CAPACITEIT = 12;
+    private int capaciteit;
     private ArrayList<Item> inhoud;
 
     public Doos() {
         inhoud = new ArrayList<>();
 
-        doosID = aantal;
-        aantal++;
+        doosID = aantalDozen;
+        aantalDozen++;
     }
-
-    public Doos(Item item) {
+    
+    public Doos(int capaciteit){
+        this();
+        
+        //doosID = aantalDozen;
+        //aantalDozen++;
+        
+        this.capaciteit = capaciteit;
+        
+    }
+    
+    public Doos(Item item, int capaciteit) {
         this();
 
+        this.capaciteit = capaciteit;
+        
         inhoud.add(item);
     }
-
+    
     public int getRuimte() {
-        return CAPACITEIT - getInhoud();
+        return capaciteit - getInhoud();
     }
 
     public int getInhoud() {
@@ -43,6 +56,6 @@ public class Doos {
 
     @Override
     public String toString() {
-        return "Doos " + doosID + ": " + getInhoud() + "/" + CAPACITEIT;
+        return "Doos " + doosID + ": " + getInhoud() + "/" + capaciteit;
     }
 }

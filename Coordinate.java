@@ -23,9 +23,13 @@ public class Coordinate {
         this.y = y;
     }
 
-    public double afstand(Coordinate coordinate) {
-        // Afstand tussen this en coordinate berekenen.
-
-        return 0;
+    public double dist(Coordinate other) {
+        
+        return Math.sqrt( Math.pow(this.x-other.getX(),2) + Math.pow(this.y-other.getY(),2));
+        
+    }
+    
+    public String toString(){
+        return "x:   "+x+"   y:   "+y;   
     }
 }
