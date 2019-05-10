@@ -5,7 +5,10 @@
  */
 package libraryTest;
 import java.sql.*;  
-class DatabaseConn{  
+
+class DatabaseConn{ 
+    public static ResultSet rs;
+    
 public static void main(String args[]){  
 try{  
 Class.forName("com.mysql.jdbc.Driver");  
@@ -13,14 +16,20 @@ Connection con=DriverManager.getConnection(
 "jdbc:mysql://localhost:3306/wideworldimporters","root","");  
 //here wideworldimporters is database name, root is username and password  
 Statement stmt=con.createStatement();  
-ResultSet rs=stmt.executeQuery("select * from stockitems");  
-while(rs.next())  
-System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getInt(3));  
+rs=stmt.executeQuery("select * from stockitems where StockItemID <= 11a");
 
+/*
+while(rs.next()){  
+System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getInt(3)); 
+}*/
+
+Scherm scherm = new Scherm();
 System.out.println("gelukt!");
 con.close();  
 }catch(Exception e){ System.out.println(e); System.out.println("mislukt!");}  
-}  
+} 
+
+
 }  
 
 
