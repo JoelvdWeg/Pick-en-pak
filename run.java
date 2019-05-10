@@ -1,8 +1,9 @@
 
+import arduino.Arduino;
 import java.util.Scanner;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Random;
+import java.sql.*;
 
 public class run {
 
@@ -10,36 +11,115 @@ public class run {
     private static ArrayList<Item> picks;
     private static ArrayList<Integer> volgorde;
     private static ArrayList<Integer> route;
+    private static Connection connection;
     private static Pakbon pakbon;
 
     public static void main(String[] args) {
         maakItems();
 
-        maakPakbon();
-
-        BPP bpp = new BPP(picks);
-        volgorde = bpp.getVolgorde();
-        System.out.println("Doos volgorde bepaald:");
-        System.out.println(volgorde+"\n...");
+        if (maakDatabaseConnectie()) {
+            maakPakbon("Lukas van Elten", "Molenmakerslaan 58", "3781DD Voorthuizen", "NEDERLAND");
+            try {
+                connection.close();
+                System.out.println("Databaseconnectie succesvol gesloten\n...");
+            } catch (Exception e) {
+                System.out.println("Databaseconnectie kon niet worden gesloten\n...");
+            }
+        }
 
         TSP tsp = new TSP(picks);
         route = tsp.getBestRoute();
         System.out.println("Route bepaald:");
-        System.out.println(route+"\n...");
+        System.out.println(route + "\n...");
+
+        BPP bpp = new BPP(picks);
+        volgorde = bpp.getVolgorde();
+        System.out.println("Doos volgorde bepaald:");
+        System.out.println(volgorde + "\n...");
 
         System.out.println("\n\n" + pakbon + "\n\n");
 
-        System.out.println("Done!");
+        draaiSchijf(volgorde);
     }
 
-    private static void maakPakbon() {
-        picks = new ArrayList<>();
-        pakbon = new Pakbon();
+    private static boolean maakDatabaseConnectie() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            String url = "jdbc:mysql://localhost/demo";
+            connection = DriverManager.getConnection(url, "root", "");
+            System.out.println("Databaseconnectie succesvol\n...");
+            return true;
+        } catch (Exception e) {
+            System.out.println("Databaseconnectie niet succesvol\n...");
+            System.out.println(e);
+            return false;
+        }
+    }
 
-        pakbon.setNaam("Lukas van Elten");
-        pakbon.setAdres1("Molenmakerslaan 58");
-        pakbon.setAdres2("3781DD Voorthuizen");
-        pakbon.setLand("NEDERLAND");
+    private static void draaiSchijf(ArrayList<Integer> volgorde) {
+        try {
+            Arduino arduino = new Arduino("COM3", 9600); //enter the port name here, and ensure that Arduino is connected, otherwise exception will be thrown.
+            arduino.openConnection();
+
+            System.out.println("Druk op de knop om de schijf te kalibreren\n...");
+
+            while (arduino.serialRead().equals("")) {
+                //wait for incoming message  
+            }
+
+            System.out.println("Schijf gekalibreerd\n...");
+
+            int laatsteDoos = 1;
+            char c;
+            
+            volgorde.add(1);
+            for (int i : volgorde) {
+                if (i < 7) {
+                    System.out.println("Draai naar doos " + i + "\n...");
+                    c = (char) (i + 48);
+                    arduino.serialWrite(c, 2000);
+                    laatsteDoos = i;
+                } else {
+                    System.out.println("Kan niet draaien naar doos " + i + "\n...");
+                }
+            }
+            
+            arduino.closeConnection();
+            System.out.println("Done");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    private static void maakPakbon(String naam, String adres1, String adres2, String land) {
+        picks = new ArrayList<>();
+
+        try {
+            Statement pakbonIDstatement = connection.createStatement();
+            ResultSet pakbonIDresult = pakbonIDstatement.executeQuery("SELECT MAX(id) FROM bestelling");
+            pakbonIDresult.next();
+            int newPakbonID = pakbonIDresult.getInt(1) + 1;
+            pakbonIDresult.close();
+
+            PreparedStatement newPakbon = connection.prepareStatement("INSERT INTO bestelling VALUES(?,?,?,?,?,?)");
+            newPakbon.setInt(1, newPakbonID);
+            newPakbon.setString(2, naam);
+            newPakbon.setString(3, adres1);
+            newPakbon.setString(4, adres2);
+            newPakbon.setString(5, land);
+            newPakbon.setInt(6, newPakbonID);
+            newPakbon.executeUpdate();
+
+            System.out.println("Bestelling toegevoegd aan database\n...");
+
+            pakbon = new Pakbon(newPakbonID);
+            pakbon.setNaam(naam);
+            pakbon.setAdres1(adres1);
+            pakbon.setAdres2(adres2);
+            pakbon.setLand(land);
+        } catch (Exception e) {
+            System.out.println("Kon geen bestelling toevoegen aan de database\n...");
+        }
 
         try {
             FileReader file = new FileReader("newfile.txt");
@@ -52,7 +132,7 @@ public class run {
                 k++;
             }
         } catch (FileNotFoundException fe) {
-            System.out.println(fe);
+            System.out.println("Kon geen pakbon printen\n...");
         }
     }
 
@@ -67,7 +147,6 @@ public class run {
                 break;
             }
         }
-
     }
 
     private static void maakItems() {
@@ -80,7 +159,7 @@ public class run {
             for (int i = 0; i < 5; i++) {
                 for (int j = 0; j < 5; j++) {
                     String nextLine = parser.nextLine();
-                    items.add(new Item(new Locatie(k, new Coordinate(i, j)), Integer.parseInt(nextLine.split(" ")[2]), Integer.parseInt(nextLine.split(" ")[0]),nextLine.split(" ")[1]));
+                    items.add(new Item(new Locatie(k, new Coordinate(i, j)), Integer.parseInt(nextLine.split(" ")[2]), Integer.parseInt(nextLine.split(" ")[0]), nextLine.split(" ")[1]));
                     k++;
                 }
             }

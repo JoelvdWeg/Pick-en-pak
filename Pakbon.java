@@ -2,15 +2,17 @@
 import java.util.ArrayList;
 
 public class Pakbon {
-
+    
+    private int id;
     private String naam;
     private String adres1;
     private String adres2;
     private String land;
     private ArrayList<Item> items;
 
-    public Pakbon() {
+    public Pakbon(int id) {
         items = new ArrayList<>();
+        this.id = id;
     }
 
     public String getNaam() {
@@ -67,6 +69,9 @@ public class Pakbon {
         for (Item item : items) {
             s += item + "\n";
         }
+        
+        s += "----------------------------\n\n";
+        
         return s;
     }
 }
