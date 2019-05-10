@@ -18,9 +18,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-public class PickFrame extends JFrame {
+public class PickFrame extends JFrame implements ActionListener {
+private Pick pick;
 private JTextField  jtfx, jtfy;
-private JLabel      jlx, jly; 
+private JLabel      jlx, jly, jlcontrolpanel, jlbestelling, jlstelling, jldozen; 
 private JButton     jbbevestig;
 
 
@@ -30,22 +31,21 @@ private JButton     jbbevestig;
         setSize(1920, 1080);
         setLayout(new FlowLayout());
         
-        
+       this.pick = pick;
         jlx = new JLabel("x-as");
         add(jlx);
         
         jtfx = new JTextField(4);
-//        jtfx.addActionListener(this);
         add(jtfx);
         
         jly  = new JLabel ("y-as");
         add(jly);
         
         jtfy = new JTextField(4);
-//        jtfx.addActionListener(this);
         add(jtfy);
         
-        jbbevestig = new JButton ("bevestig");
+        jbbevestig = new JButton ("Bevestig");
+        jbbevestig.addActionListener(this);
         add(jbbevestig);
         
         setVisible(true);
@@ -55,4 +55,24 @@ private JButton     jbbevestig;
         
     }
 
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == jbbevestig) {
+            try {
+                Pick c = new Pick(Integer.parseInt(jtfx.getText()), Integer.parseInt(jtfy.getText()));
+                Pick.naarVakje(c); 
+            }                
+            catch (NumberFormatException nfe) {
+                    System.out.println("onjuiste invoer!");
+                }
+        repaint();
+        
+        }
+    }
 }
+
+
+
+
+
