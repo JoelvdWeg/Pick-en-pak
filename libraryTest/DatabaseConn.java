@@ -16,7 +16,7 @@ Connection con=DriverManager.getConnection(
 "jdbc:mysql://localhost:3306/wideworldimporters","root","");  
 //here wideworldimporters is database name, root is username and password  
 Statement stmt=con.createStatement();  
-rs=stmt.executeQuery("select * from stockitems where StockItemID <= 11a");
+rs=stmt.executeQuery("select * from stockitems where StockItemID <= 11");
 
 /*
 while(rs.next()){  
