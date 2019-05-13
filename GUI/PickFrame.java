@@ -25,17 +25,20 @@ public class PickFrame extends JFrame implements ActionListener {
 	private JTextField jtfx, jtfy;
 	private JLabel jlx, jly;
 	private JButton jbbevestig;
-
+        private JLabel jlStockItemID;
+        private JLabel jlStockItemName;
 	private Arduino arduino;
 
 	private PortDropdownMenu pdmCOM;
 	private JButton jbRefresh;
 	private JButton jbConnect;
 
-	public PickFrame() {
+	public PickFrame(Pick pick) {
 		setTitle("GUI");
-		setSize(1920, 1080);
+		setSize(1000, 1000);
 		setLayout(new FlowLayout());
+                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 
 		this.pick = pick;
 
@@ -73,21 +76,34 @@ public class PickFrame extends JFrame implements ActionListener {
 		add(jbbevestig);
 
 		setVisible(true);
-		PickPanel panel = new PickPanel();
+		PickPanel panel = new PickPanel(pick);
 		add(panel);
-
+               
+                try{
+                while(DatabaseConn.rs.next()){
+                System.out.println();
+                jlStockItemID = new JLabel(Integer.toString(DatabaseConn.rs.getInt(1)));
+                add(jlStockItemID);
+                jlStockItemName = new JLabel(DatabaseConn.rs.getString(2));
+                add(jlStockItemName);
+                }
+        }
+                catch(Exception e){
+            
+        }
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+            repaint();
 		if (e.getSource() == jbbevestig) {
 			try {
-				Coordinaten b = new Coordinaten (Integer.parseInt(jtfx.getText()), Integer.parseInt(jtfy.getText()));
+				Vakjes b = new Vakjes (Integer.parseInt(jtfx.getText()), Integer.parseInt(jtfy.getText()));
                                 pick.naarVakje(b);
 			} catch (NumberFormatException nfe) {
 				System.out.println("onjuiste invoer!");
 			}
-			repaint();
+			//repaint();
 			
 			arduino.serialWrite(jtfx.getText() + jtfy.getText());
 			

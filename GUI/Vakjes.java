@@ -2,7 +2,7 @@ package GUI;
 
 import java.awt.*;
 
-public abstract class Vakjes {
+public class Vakjes {
 
     private int x;
     private int y;
@@ -24,7 +24,10 @@ public abstract class Vakjes {
         return " (" + x + ", " + y + ")";
     }
 
-    public abstract void tekenMij(Graphics g);
+    public void tekenMij(Graphics g){
+        g.setColor(Color.BLUE);
+        g.fillRect(203 + 100*getX(), 853 - 100*getY(), 95, 95);
+    }
     
 }
     

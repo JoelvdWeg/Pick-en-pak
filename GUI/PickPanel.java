@@ -9,7 +9,6 @@ package GUI;
  *
  * @author hylke
  */
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -18,12 +17,14 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 public class PickPanel extends JPanel {
+    
+    Pick pick;
 
-
-    public PickPanel() {
+    public PickPanel(Pick pick) {
         setPreferredSize(new Dimension(1920, 1080));
-   
+        this.pick = pick;
     }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -33,67 +34,67 @@ public class PickPanel extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(5));
 
-        
-        
 //        grote vierkant
-          g.drawRect(10, 10, 1900, 990);
-          g.drawLine(950, 10, 950, 1000);
+        g.drawRect(10, 10, 1900, 990);
+        g.drawLine(950, 10, 950, 1000);
 //          lijn op de horizontale helft
-          g.drawLine(10, 400, 1920, 400);           
-          g.drawRect(200, 450, 500, 500);
-            int x = 300;
-            for (int i = 0; i < 4; i++) {
-            
+        g.drawLine(10, 400, 1920, 400);
+        g.drawRect(200, 450, 500, 500);
+        
+//        GRID 
+        int x = 300;
+        for (int i = 0; i < 4; i++) {
+
             g.drawLine(x, 450, x, 950);
             x = x + 100;
-            } 
-            
-            int y = 550;
-            for (int i = 0; i < 4; i++) {
-            
+        }
+
+        int y = 550;
+        for (int i = 0; i < 4; i++) {
+
             g.drawLine(200, y, 700, y);
             y = y + 100;
-            }
-            g2.setStroke(new BasicStroke(2));
-            g.drawRect(1100, 500, 50, 400);
-            g.drawRect(1200, 500, 50, 400);
-            g.drawRect(1300, 500, 50, 400);
-            g.drawRect(1400, 500, 50, 400);
-            g.drawRect(1500, 500, 50, 400);
-            g.drawRect(1600, 500, 50, 400);
-            
-            
-            g.setColor(Color.GRAY);
-            g.fillRect(1100, 500, 50, 400);
-            g.fillRect(1200, 500, 50, 400);
-            g.fillRect(1300, 500, 50, 400);
-            g.fillRect(1400, 500, 50, 400);
-            g.fillRect(1500, 500, 50, 400);
-            g.fillRect(1600, 500, 50, 400);
-            
-           
-            g.setColor(Color.BLACK);
-            g2.setStroke(new BasicStroke(4));
-            g.drawRect(1100, 75, 700, 300);
-            
-            int x1 = 1250;
-            for (int i = 0; i < 4; i++) {
-            
+        }
+
+//            DOZEN 
+        g2.setStroke(new BasicStroke(2));
+        g.drawRect(1100, 500, 50, 400);
+        g.drawRect(1200, 500, 50, 400);
+        g.drawRect(1300, 500, 50, 400);
+        g.drawRect(1400, 500, 50, 400);
+        g.drawRect(1500, 500, 50, 400);
+        g.drawRect(1600, 500, 50, 400);
+
+        g.setColor(Color.GRAY);
+        g.fillRect(1100, 500, 50, 400);
+        g.fillRect(1200, 500, 50, 400);
+        g.fillRect(1300, 500, 50, 400);
+        g.fillRect(1400, 500, 50, 400);
+        g.fillRect(1500, 500, 50, 400);
+        g.fillRect(1600, 500, 50, 400);
+
+        
+        
+        g.setColor(Color.BLACK);
+        g2.setStroke(new BasicStroke(4));
+        g.drawRect(1100, 75, 700, 300);
+
+        int x1 = 1250;
+        for (int i = 0; i < 4; i++) {
+
             g.drawLine(x1, 75, x1, 375);
             x1 = x1 + 140;
-            }
-            
-            int y1 = 140;
-            for (int i = 0; i < 4; i++) {
-            
+        }
+
+        int y1 = 140;
+        for (int i = 0; i < 4; i++) {
+
             g.drawLine(1100, y1, 1800, y1);
             y1 = y1 + 60;
-            
 
-            }
-            
+        }
 
-            
-    
+        pick.tekenGrid(g);
+        
     }
 }
