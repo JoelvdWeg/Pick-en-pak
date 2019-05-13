@@ -1,6 +1,5 @@
 package libraryTest;
 
-
 import arduino.*;
 import java.awt.FlowLayout;
 import javax.swing.JFrame;
@@ -18,8 +17,11 @@ public class BasicLEDExample extends JFrame{
     
 	public static void main(String[] args) {
 	
-		Arduino arduino = new Arduino("cu.usbmodem1411", 9600); //enter the port name here, and ensure that Arduino is connected, otherwise exception will be thrown.
+		Arduino arduino = new Arduino("COM3", 9600); //enter the port name here, and ensure that Arduino is connected, otherwise exception will be thrown.
 		arduino.openConnection();
+                
+                arduino.serialWrite("");
+                
 		arduino.closeConnection();
 		
 

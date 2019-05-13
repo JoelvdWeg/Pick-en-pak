@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package GUI;
+package PickPak;
 
+import PickPak.*;
 /**
  *
  * @author hylke
@@ -17,12 +18,12 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 public class PickPanel extends JPanel {
-    
-    Pick pick;
 
-    public PickPanel(Pick pick) {
+    PickPak pickpak;
+
+    public PickPanel(PickPak pickpak) {
         setPreferredSize(new Dimension(1920, 1080));
-        this.pick = pick;
+        this.pickpak = pickpak;
     }
 
     @Override
@@ -40,7 +41,7 @@ public class PickPanel extends JPanel {
 //          lijn op de horizontale helft
         g.drawLine(10, 400, 1920, 400);
         g.drawRect(200, 450, 500, 500);
-        
+
 //        GRID 
         int x = 300;
         for (int i = 0; i < 4; i++) {
@@ -73,8 +74,6 @@ public class PickPanel extends JPanel {
         g.fillRect(1500, 500, 50, 400);
         g.fillRect(1600, 500, 50, 400);
 
-        
-        
         g.setColor(Color.BLACK);
         g2.setStroke(new BasicStroke(4));
         g.drawRect(1100, 75, 700, 300);
@@ -94,7 +93,7 @@ public class PickPanel extends JPanel {
 
         }
 
-        pick.tekenGrid(g);
-        
+        pickpak.tekenTSP(g);
+
     }
 }

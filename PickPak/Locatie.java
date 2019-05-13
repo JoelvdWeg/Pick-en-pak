@@ -1,3 +1,5 @@
+package PickPak;
+
 public class Locatie {
     private Coordinate coordinate;
     private int voorraad;
