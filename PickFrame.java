@@ -17,7 +17,7 @@ public class PickFrame extends JFrame implements ActionListener{
         JTextField jtfY = new JTextField(5);
         JButton jbOk = new JButton("OK");
         
-        PickPanel panel = new PickPanel(1200, 600);
+        PickPanel panel = new PickPanel(600, 600);
         
         add(jlX);
         add(jtfX);
@@ -28,7 +28,6 @@ public class PickFrame extends JFrame implements ActionListener{
         
         setVisible(true);
         
-        repaint();
     }
     
     public void actionPerformed(ActionEvent ae){
