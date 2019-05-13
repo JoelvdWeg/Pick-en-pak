@@ -54,16 +54,11 @@ public class run {
             Coordinate c1,c2;
             c1 = items.get(route.get(i)).getLocatie().getCoord();
             c2 = items.get(route.get(i+1)).getLocatie().getCoord();
-            
-                    
+                 
             lijnen.add(new Lijn(c1,c2));
         }
     }
     
-    public static void voegLijnToe(Lijn lijn){
-        lijnen.add(lijn);
-    }
-
     private static boolean maakDatabaseConnectie() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
