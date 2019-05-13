@@ -12,36 +12,56 @@ public class run {
     private static ArrayList<Integer> route;
     private static Connection connection;
     private static Pakbon pakbon;
+    public static ArrayList<Lijn> lijnen = new ArrayList<>();
 
     public static void main(String[] args) {
-        PickFrame frame = new PickFrame(1200,800);
+       PickFrame pf = new PickFrame(1200, 800);
         
-//        if (maakDatabaseConnectie()) {
-//            haalItemsOp();
-//
-//            maakBestellingAan("Lukas van Elten", "Molenmakerslaan 58", "3781DD Voorthuizen", "NEDERLAND", "newfile.txt");
-//
-//            try {
-//                connection.close();
-//                System.out.println("Databaseconnectie succesvol gesloten\n...");
-//            } catch (Exception e) {
-//                System.out.println("Databaseconnectie kon niet worden gesloten\n...");
-//            }
-//
-//            TSP tsp = new TSP(picks);
-//            route = tsp.getBestRoute();
-//            System.out.println("Route bepaald:");
-//            System.out.println(route + "\n...");
-//
-//            BPP bpp = new BPP(picks);
-//            volgorde = bpp.getVolgorde();
-//            System.out.println("Doos volgorde bepaald:");
-//            System.out.println(volgorde + "\n...");
-//
-//            System.out.println("\n\n" + pakbon + "\n\n");
-//
-//            draaiSchijf(volgorde);
-//        }
+        if (maakDatabaseConnectie()) {
+            haalItemsOp();
+
+            maakBestellingAan("Lukas van Elten", "Molenmakerslaan 58", "3781DD Voorthuizen", "NEDERLAND", "newfile.txt");
+
+            try {
+                connection.close();
+                System.out.println("Databaseconnectie succesvol gesloten\n...");
+            } catch (Exception e) {
+                System.out.println("Databaseconnectie kon niet worden gesloten\n...");
+            }
+
+            TSP tsp = new TSP(picks);
+            route = tsp.getBestRoute();
+            System.out.println("Route bepaald:");
+            System.out.println(route + "\n...");
+            
+            maakRoute();
+
+            BPP bpp = new BPP(picks);
+            volgorde = bpp.getVolgorde();
+            System.out.println("Doos volgorde bepaald:");
+            System.out.println(volgorde + "\n...");
+
+            System.out.println("\n\n" + pakbon + "\n\n");
+
+            draaiSchijf(volgorde);
+        }
+    }
+    
+    public static void maakRoute(){
+        for(int i = 0; i < route.size()-1; i++){
+            //new Lijn(new Coordinate(Integer.parseInt(jtfX.getText()),Integer.parseInt(jtfY.getText())),new Coordinate(Integer.parseInt(jtfX2.getText()),Integer.parseInt(jtfY2.getText())))
+            
+            Coordinate c1,c2;
+            c1 = items.get(route.get(i)).getLocatie().getCoord();
+            c2 = items.get(route.get(i+1)).getLocatie().getCoord();
+            
+                    
+            lijnen.add(new Lijn(c1,c2));
+        }
+    }
+    
+    public static void voegLijnToe(Lijn lijn){
+        lijnen.add(lijn);
     }
 
     private static boolean maakDatabaseConnectie() {
