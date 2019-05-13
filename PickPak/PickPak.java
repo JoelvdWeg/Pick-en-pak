@@ -53,12 +53,15 @@ public class PickPak {
         g.setColor(Color.BLUE);
 
         if (route != null) {
+            
             int k = 0;
             for (int r = 0; r < route.size() - 1; r++) {
-                int startx = items.get(r).getLocatie().getCoord().getX();
-                int starty = items.get(r).getLocatie().getCoord().getY();
-                int eindx = items.get(r + 1).getLocatie().getCoord().getX();
-                int eindy = items.get(r + 1).getLocatie().getCoord().getY();
+                int startx = items.get(route.get(r)).getLocatie().getCoord().getX();
+                int starty = items.get(route.get(r)).getLocatie().getCoord().getY();
+                int eindx = items.get(route.get(r + 1)).getLocatie().getCoord().getX();
+                int eindy = items.get(route.get(r + 1)).getLocatie().getCoord().getY();
+                
+                System.out.println(startx+"..."+starty+"..."+eindx+"..."+eindy);
 
                 g.drawLine(250 + startx * 100, 900 - 100 * starty, 250 + eindx * 100, 900 - eindy * 100);
 
