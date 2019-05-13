@@ -1,13 +1,20 @@
 char str[5];
+const int ledPin = 2;
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
+  pinMode(ledPin, OUTPUT);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  itoa(analogRead(A0), str, 10);
-  Serial.write(str, 5);
-  delay(10);
+  if (Serial.available()) {
+    int data = Serial.parseInt();
+    if (data == 1) {
+      digitalWrite(ledPin, HIGH);
+    } else if (data == 0) {
+      digitalWrite(ledPin, LOW);
+    }
+  }
 }

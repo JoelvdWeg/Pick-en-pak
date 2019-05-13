@@ -17,8 +17,12 @@ void setup() {
 }
 
 void loop() { // run over and over
-  if (mySerial.available()) {
-    mySerial.readBytes(str, 5);
-    Serial.println(str);
+  if (Serial.available()) {
+    String command = Serial.readString();
+    if (command.equals("on")) {
+      mySerial.println("1");
+    } else if (command.equals("off")) {
+      mySerial.println("0");
+    }
   }
 }
