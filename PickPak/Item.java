@@ -1,3 +1,5 @@
+package PickPak;
+
 public class Item {
     private String naam;
     private double grootte;
@@ -47,6 +49,6 @@ public class Item {
 
     @Override
     public String toString() {
-        return id + ": " + naam + " (grootte: "+grootte+")"; 
+        return id + ": " + naam + " (grootte: "+grootte+")" + "coordinaten:  "+locatie.getCoord().getX()+"      "+locatie.getCoord().getY(); 
     }
 }

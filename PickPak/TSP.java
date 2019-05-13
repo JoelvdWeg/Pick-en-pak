@@ -1,3 +1,5 @@
+package PickPak;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -9,7 +11,7 @@ public class TSP {
     private ArrayList<Integer> pickItems;
     
     public TSP(ArrayList<Item> bestelling){
-        items = run.items;
+        items = PickPak.items;
         pickItems = new ArrayList<>();
         
         for(Item item: bestelling){
