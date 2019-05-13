@@ -7,7 +7,7 @@ public class BPP {
 
     public BPP(ArrayList<Item> items) {
         dozen = new ArrayList<>();
-        dozen.add(new Doos(12));
+        dozen.add(new Doos(0.5));
         volgorde = new ArrayList<>();
         this.items = items;
         
@@ -37,7 +37,7 @@ public class BPP {
             }
 
             if (mogelijkeDozen.size() == 0) { // Als het opject in geen enkele doos past
-                geselecteerd = new Doos(items.get(i),12);
+                geselecteerd = new Doos(items.get(i),0.5);
                 dozen.add(geselecteerd);
             }
             else { // Als het object wel in één of meerdere dozen past.
@@ -81,7 +81,7 @@ public class BPP {
 
             // Nieuwe doos maken als er nog geen een geselecteerd is.
             if (geselecteerd == null) {
-                geselecteerd = new Doos(items.get(i),12);
+                geselecteerd = new Doos(items.get(i),0.5);
                 dozen.add(geselecteerd);
             }
 

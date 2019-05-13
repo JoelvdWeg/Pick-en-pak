@@ -15,8 +15,8 @@ public class TSP {
         for(Item item: bestelling){
             pickItems.add(item.getLocatie().getID());
         }
-   
-        nearestNeighbour(new ArrayList<>(), pickItems);   
+        
+        nearestNeighbour(new ArrayList<>(), pickItems); 
         optimize(bestRoute);
     }
 
@@ -33,7 +33,6 @@ public class TSP {
     
    
     public void nearestNeighbour(ArrayList<Integer> r, ArrayList<Integer> citiesNotInRoute) {
-        //System.out.println(citiesNotInRoute);
         if (r.isEmpty()) {
             r.add(AANTAL_VAKKEN);
         }

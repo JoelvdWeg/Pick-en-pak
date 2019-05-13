@@ -18,7 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-public class PickFrame extends JFrame {
+public class PickFrame extends JFrame implements ActionListener{
 private JTextField  jtfx, jtfy;
 private JLabel      jlx, jly; 
 private JButton     jbbevestig;
@@ -27,7 +27,7 @@ private JButton     jbbevestig;
 
     public PickFrame() {
         setTitle("GUI");
-        setSize(1920, 1080);
+        setSize(1200, 800);
         setLayout(new FlowLayout());
         
         
@@ -52,6 +52,10 @@ private JButton     jbbevestig;
         PickPanel panel = new PickPanel();
         add(panel);
         
+        
+    }
+    
+    public void actionPerformed(ActionEvent ae){
         
     }
 

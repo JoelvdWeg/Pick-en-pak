@@ -1,10 +1,10 @@
 public class Item {
     private String naam;
-    private int grootte;
+    private double grootte;
     private Locatie locatie;
     private int id;
 
-    public Item(Locatie locatie, int grootte, int id, String naam) {
+    public Item(Locatie locatie, double grootte, int id, String naam) {
         this.naam = naam;
         this.grootte = grootte;
         this.locatie = locatie;
@@ -18,7 +18,7 @@ public class Item {
         this.id = id;
     }
     
-    public Item(Locatie locatie, int grootte, int id){
+    public Item(Locatie locatie, double grootte, int id){
         this.locatie = locatie;
         this.naam = "NONAME";
         this.grootte = grootte;
@@ -29,11 +29,11 @@ public class Item {
         return locatie;
     }
     
-    public void setGrootte(int grootte){
+    public void setGrootte(double grootte){
         this.grootte = grootte;
     }
 
-    public int getGrootte() {
+    public double getGrootte() {
         return grootte;
     }
     
