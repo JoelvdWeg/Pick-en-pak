@@ -10,14 +10,12 @@ package GUI;
  * @author hylke
  */
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
-public class Opdracht3 {
+public class Test {
 
-    public static void main(String[] args) {
-
-        PickFrame frame = new PickFrame();
-        frame.setDefaultCloseOperation(
-                JFrame.EXIT_ON_CLOSE
-        );
-    }
+    public static void main (String[] args) {
+        Pick pick = new Pick();
+        PickFrame gui = new PickFrame(pick);  
+}
 }

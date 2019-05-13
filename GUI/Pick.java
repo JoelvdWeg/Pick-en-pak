@@ -4,46 +4,36 @@
  * and open the template in the editor.
  */
 package GUI;
+import java.awt.*;
+import java.util.ArrayList;
 
 /**
  *
  * @author hylke
  */
 public class Pick {
-private int vakjex;
-private int vakjey;
+private ArrayList<Vakjes> lijst;
 
-    public Pick(int vakjex, int vakjey) {
-        this.vakjex = vakjex;
-        this.vakjey = vakjey;
-        vakjex = 0;
-        vakjey = 0;
-    }
 
-public void vakjex() {
-    if (vakjex > 5) {
-        vakjex--;
+    public Pick() {
+        lijst = new ArrayList<>();
     }
-    if (vakjex < 1 )
-        vakjex++;
+    
+    public void naarVakje(Vakjes element) {
+        lijst.add(element);
+}
+
+    public void tekenGrid(Graphics g){
+       
+        for (Vakjes element : lijst){
+            element.tekenMij(g);
         }
-public void vakjey(){
-    if (vakjey > 5) {
-        vakjey--;
     }
-    if (vakjey < 1 )
-        vakjey++;
-        }
-
-    public int getVakjex() {
-        return vakjex;
-    }
-
-    public int getVakjey() {
-        return vakjey;
-    }
-
-
-
 
 }
+
+
+
+
+
+
