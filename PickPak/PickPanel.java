@@ -13,6 +13,7 @@ import PickPak.*;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
@@ -26,6 +27,7 @@ public class PickPanel extends JPanel {
         this.pickpak = pickpak;
     }
 
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -36,9 +38,9 @@ public class PickPanel extends JPanel {
         g2.setStroke(new BasicStroke(5));
 
 //        grote vierkant
-        g.drawRect(10, 10, 1900, 990);
-        g.drawLine(950, 10, 950, 1000);
-//          lijn op de horizontale helft
+        g.drawRect(10, 10, 1900, 1000);
+        g.drawLine(950, 400, 950, 1010);
+//          lijn op de verticaal helft
         g.drawLine(10, 400, 1920, 400);
         g.drawRect(200, 450, 500, 500);
 
@@ -59,39 +61,68 @@ public class PickPanel extends JPanel {
 
 //            DOZEN 
         g2.setStroke(new BasicStroke(2));
-        g.drawRect(1100, 500, 50, 400);
-        g.drawRect(1200, 500, 50, 400);
-        g.drawRect(1300, 500, 50, 400);
-        g.drawRect(1400, 500, 50, 400);
-        g.drawRect(1500, 500, 50, 400);
-        g.drawRect(1600, 500, 50, 400);
+//        g.drawRect(1100, 500, 50, 400);
+//        g.drawRect(1250, 500, 50, 400);
+//        g.drawRect(1350, 500, 50, 400);
+//        g.drawRect(1450, 500, 50, 400);
+//        g.drawRect(1550, 500, 50, 400);
+//        g.drawRect(1650, 500, 50, 400);
 
+//        g.fillRect(1100, 500, 50, 400);
+//        g.fillRect(1200, 500, 50, 400);
+//        g.fillRect(1300, 500, 50, 400);
+//        g.fillRect(1400, 500, 50, 400);
+//        g.fillRect(1500, 500, 50, 400);
+//        g.fillRect(1600, 500, 50, 400);
+
+        int x2 = 1030;
+        for (int i = 0; i < 6; i++) {
+
+            g.drawRect(x2, 500, 50, 400);
+            x2 = x2 + 150;
+        }
         g.setColor(Color.GRAY);
-        g.fillRect(1100, 500, 50, 400);
-        g.fillRect(1200, 500, 50, 400);
-        g.fillRect(1300, 500, 50, 400);
-        g.fillRect(1400, 500, 50, 400);
-        g.fillRect(1500, 500, 50, 400);
-        g.fillRect(1600, 500, 50, 400);
+        int x3 = 1030;
+        for (int i = 0; i < 6; i++) {
 
+            g.fillRect(x3, 500, 50, 400);
+            x3 = x3 + 150;
+        }
+
+        
+
+//      Titels
         g.setColor(Color.BLACK);
-        g2.setStroke(new BasicStroke(4));
-        g.drawRect(1100, 75, 700, 300);
+        g.setFont(new Font("default", Font.BOLD, 50));
+        
 
-        int x1 = 1250;
-        for (int i = 0; i < 4; i++) {
+        g.drawString("0", 130, 920);
+        g.drawString("1", 130, 820);
+        g.drawString("2", 130, 720);
+        g.drawString("3", 130, 620);
+        g.drawString("4", 130, 520);
 
-            g.drawLine(x1, 75, x1, 375);
-            x1 = x1 + 140;
-        }
+        g.drawString("0", 230, 1000);
+        g.drawString("1", 330, 1000);
+        g.drawString("2", 430, 1000);
+        g.drawString("3", 530, 1000);
+        g.drawString("4", 630, 1000);
+        
+        g.setFont(new Font("default", Font.BOLD, 30));
+        g.drawString("DOZEN", 1350, 440);
+        
+        g.drawString("1", 1045, 480);
+        g.drawString("2", 1195, 480);
+        g.drawString("3", 1345, 480);
+        g.drawString("4", 1495, 480);
+        g.drawString("5", 1645, 480);
+        g.drawString("6", 1795, 480);
+        
+        
+        
+        
 
-        int y1 = 140;
-        for (int i = 0; i < 4; i++) {
 
-            g.drawLine(1100, y1, 1800, y1);
-            y1 = y1 + 60;
-
-        }
 
         pickpak.tekenTSP(g);
 
