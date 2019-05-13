@@ -20,12 +20,12 @@ public class PickPanel extends JPanel{
         
         //g.drawRect(0,0,599,599);
         
-        for(int i = 0; i < 6; i++){
+        for(int i = 0; i < 5; i++){
             g.drawLine(0,i*100,600,i*100);
         }
-        for(int j = 0; j < 6; j++){
+        for(int j = 0; j < 5; j++){
             g.drawLine(j*100, 0, j*100, 600);
         }
-        repaint();
+        //repaint();
     }
 }

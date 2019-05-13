@@ -13,6 +13,10 @@ public class PickFrame extends JFrame implements ActionListener{
         
         JLabel jlX = new JLabel("X: ");
         JLabel jlY = new JLabel("Y: ");
+        JLabel jlX2 = new JLabel("X2: ");
+        JLabel jlY2 = new JLabel("Y2: ");
+        JTextField jtfX2 = new JTextField(5);
+        JTextField jtfY2 = new JTextField(5);
         JTextField jtfX = new JTextField(5);
         JTextField jtfY = new JTextField(5);
         JButton jbOk = new JButton("OK");
@@ -23,6 +27,10 @@ public class PickFrame extends JFrame implements ActionListener{
         add(jtfX);
         add(jlY);
         add(jtfY);
+        add(jlX2);
+        add(jtfX2);
+        add(jlY2);
+        add(jtfY2);
         add(jbOk);
         add(panel);
         
