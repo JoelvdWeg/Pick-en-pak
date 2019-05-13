@@ -2,8 +2,8 @@ package GUI;
 
 import java.awt.*;
 
-public abstract class Vakjes extends Pick {
-    private String naam;
+public abstract class Vakjes {
+
     private int x;
     private int y;
 
@@ -21,11 +21,10 @@ public abstract class Vakjes extends Pick {
     }
 
     public String toString() {
-        return naam + " (" + x + ", " + y + ")";
+        return " (" + x + ", " + y + ")";
     }
 
-    public void tekenMij(Graphics g){
-        g.fillRect(getVakjex() * 40, getVakjey() * 40, 40, 40);  
-    }
+    public abstract void tekenMij(Graphics g);
     
 }
+    

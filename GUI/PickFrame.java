@@ -23,7 +23,7 @@ public class PickFrame extends JFrame implements ActionListener {
 
 	private Pick pick;
 	private JTextField jtfx, jtfy;
-	private JLabel jlx, jly, jlcontrolpanel, jlbestelling, jlstelling, jldozen;
+	private JLabel jlx, jly;
 	private JButton jbbevestig;
 
 	private Arduino arduino;
@@ -82,8 +82,8 @@ public class PickFrame extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == jbbevestig) {
 			try {
-				Pick c = new Pick(Integer.parseInt(jtfx.getText()), Integer.parseInt(jtfy.getText()));
-//                Pick.naarVakje(c); 
+				Coordinaten b = new Coordinaten (Integer.parseInt(jtfx.getText()), Integer.parseInt(jtfy.getText()));
+                                pick.naarVakje(b);
 			} catch (NumberFormatException nfe) {
 				System.out.println("onjuiste invoer!");
 			}

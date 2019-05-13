@@ -71,6 +71,7 @@ public class PickPanel extends JPanel {
             g.fillRect(1500, 500, 50, 400);
             g.fillRect(1600, 500, 50, 400);
             
+           
             g.setColor(Color.BLACK);
             g2.setStroke(new BasicStroke(4));
             g.drawRect(1100, 75, 700, 300);
@@ -91,9 +92,7 @@ public class PickPanel extends JPanel {
 
             }
             
-            
-            g.setColor(Color.BLUE);
-            g.fillRect(203, 453, 95, 95); 
+
             
     
     }
