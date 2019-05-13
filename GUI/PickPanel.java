@@ -18,8 +18,8 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 public class PickPanel extends JPanel {
-    int breedte = 1200; 
-    int hoogte = 800;
+    int breedte = 1100; 
+    int hoogte = 700;
 
     public PickPanel() {
         setPreferredSize(new Dimension(breedte, hoogte));   

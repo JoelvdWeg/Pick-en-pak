@@ -39,11 +39,11 @@ private JButton     jbbevestig;
         add(jtfx);
         
         jly  = new JLabel ("y-as");
-        add(jly);
+        //add(jly);
         
         jtfy = new JTextField(4);
 //        jtfx.addActionListener(this);
-        add(jtfy);
+        //add(jtfy);
         
         jbbevestig = new JButton ("bevestig");
         add(jbbevestig);

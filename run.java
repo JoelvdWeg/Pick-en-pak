@@ -14,32 +14,34 @@ public class run {
     private static Pakbon pakbon;
 
     public static void main(String[] args) {
-        if (maakDatabaseConnectie()) {
-            haalItemsOp();
-
-            maakBestellingAan("Lukas van Elten", "Molenmakerslaan 58", "3781DD Voorthuizen", "NEDERLAND", "newfile.txt");
-
-            try {
-                connection.close();
-                System.out.println("Databaseconnectie succesvol gesloten\n...");
-            } catch (Exception e) {
-                System.out.println("Databaseconnectie kon niet worden gesloten\n...");
-            }
-
-            TSP tsp = new TSP(picks);
-            route = tsp.getBestRoute();
-            System.out.println("Route bepaald:");
-            System.out.println(route + "\n...");
-
-            BPP bpp = new BPP(picks);
-            volgorde = bpp.getVolgorde();
-            System.out.println("Doos volgorde bepaald:");
-            System.out.println(volgorde + "\n...");
-
-            System.out.println("\n\n" + pakbon + "\n\n");
-
-            draaiSchijf(volgorde);
-        }
+        PickFrame frame = new PickFrame(1200,800);
+        
+//        if (maakDatabaseConnectie()) {
+//            haalItemsOp();
+//
+//            maakBestellingAan("Lukas van Elten", "Molenmakerslaan 58", "3781DD Voorthuizen", "NEDERLAND", "newfile.txt");
+//
+//            try {
+//                connection.close();
+//                System.out.println("Databaseconnectie succesvol gesloten\n...");
+//            } catch (Exception e) {
+//                System.out.println("Databaseconnectie kon niet worden gesloten\n...");
+//            }
+//
+//            TSP tsp = new TSP(picks);
+//            route = tsp.getBestRoute();
+//            System.out.println("Route bepaald:");
+//            System.out.println(route + "\n...");
+//
+//            BPP bpp = new BPP(picks);
+//            volgorde = bpp.getVolgorde();
+//            System.out.println("Doos volgorde bepaald:");
+//            System.out.println(volgorde + "\n...");
+//
+//            System.out.println("\n\n" + pakbon + "\n\n");
+//
+//            draaiSchijf(volgorde);
+//        }
     }
 
     private static boolean maakDatabaseConnectie() {
