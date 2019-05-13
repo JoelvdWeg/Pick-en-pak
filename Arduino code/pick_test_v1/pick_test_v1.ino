@@ -1,4 +1,4 @@
-//setup SoftwareSerial
+//configureer SoftwareSerial
 #include <SoftwareSerial.h>
 SoftwareSerial mySerial(10, 11); // RX, TX
 
@@ -37,6 +37,9 @@ char incommingCommandChar = 'n';
 
 void setup() {
   Serial.begin(9600);
+  while (!Serial) {
+    ; //wacht tot de seriële verbinding tot stand is gezet
+  }
   mySerial.begin(9600);
 
   //stel output pins in
@@ -70,11 +73,30 @@ void checkForCommands() {
       Serial.println(incommingCommandChar);
       incommingCommandChar = 'n';
     }
+    else if (incommingCommandChar == 'p') { // handmatig pushen
+      Serial.print("HANDMATIG, invoer: ");
+      Serial.println(incommingCommandChar);
+      push();
+      incommingCommandChar = 'n';
+    }
+    else if (incommingCommandChar == 'c') { // automatisch op basis van coordinaten
+      Serial.print("\nAUTOMATISCH, invoer: ");
+      Serial.println(incommingCommandChar);
+      checkForIncomingCoordinate();
+    }
   }
   
 }
 
-void moveRobot(char chosenDirection) {
+void push() { // Push eenmaal
+  delay(500);
+  Serial.println("PUSH");
+  mySerial.print('p');
+  mySerial.print('q');
+
+}
+
+void moveRobot(char chosenDirection) { //beweeg de robot
   switch (chosenDirection) {
       case 'l': //left
         digitalWrite(directionX, HIGH);
@@ -97,4 +119,13 @@ void moveRobot(char chosenDirection) {
         analogWrite(speedY, 0);
       break;
     }
+}
+
+void checkForIncomingCoordinate() { //lees inkomende coordinaten
+  // lees het int uit de serial buffer
+  int data = Serial.parseInt();
+
+  //splits op in X en Y coordinaten
+  goalX = ((data/10)%10);
+  goalY = (data%10);
 }
