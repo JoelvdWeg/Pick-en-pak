@@ -130,7 +130,7 @@ public class PickFrame extends JFrame implements ActionListener {
                         land = child.getTextContent();
                     } else if (nodeName.equals("item")) {
                         
-                        items.add(Integer.parseInt(child.getTextContent()));
+                        //items.add(Integer.parseInt(child.getTextContent()));
                         
 
 //                        NodeList itemList = child.getChildNodes();
