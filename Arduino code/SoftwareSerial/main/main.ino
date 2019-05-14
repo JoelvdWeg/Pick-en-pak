@@ -1,5 +1,5 @@
 #include <SoftwareSerial.h>
-SoftwareSerial mySerial(10, 11); // RX, TX
+SoftwareSerial mySerial(11, 12); // RX, TX
 
 void setup() {
   // Open serial communications and wait for port to open:
@@ -17,13 +17,10 @@ void setup() {
 
 void loop() { // run over and over
   if (Serial.available()) {
-    String command = Serial.readString();
-    if (command.equals("on")) {
-      Serial.println("on");
-      mySerial.println('1');
-    } else if (command.equals("off")) {
-      Serial.println("off");
-      mySerial.println('0');
-    }
+    
+    char command = Serial.read();
+    Serial.println(command);
+    mySerial.print(command);
+    
   }
 }
