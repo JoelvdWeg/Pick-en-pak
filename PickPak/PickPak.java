@@ -96,6 +96,8 @@ public class PickPak {
             System.out.println("Databaseconnectie kon niet worden gesloten\n...");
         }
     }
+    
+   
 
     private static void draaiSchijf(ArrayList<Integer> volgorde) {
         try {
