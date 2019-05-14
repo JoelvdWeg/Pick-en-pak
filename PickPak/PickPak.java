@@ -61,8 +61,6 @@ public class PickPak {
                 int eindx = items.get(route.get(r + 1)).getLocatie().getCoord().getX();
                 int eindy = items.get(route.get(r + 1)).getLocatie().getCoord().getY();
                 
-                System.out.println(startx+"..."+starty+"..."+eindx+"..."+eindy);
-
                 g.drawLine(250 + startx * 100, 900 - 100 * starty, 250 + eindx * 100, 900 - eindy * 100);
 
                 if (k == 0) {

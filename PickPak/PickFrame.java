@@ -86,6 +86,8 @@ public class PickFrame extends JFrame implements ActionListener {
             try {
                 ArrayList<Item> bestelling = pickpak.maakBestellingAan("Lukas van Elten", "Molenmakerslaan 58", "3781DD Voorthuizen", "NEDERLAND", jtfFile.getText());
                 pickpak.pickBestelling(bestelling);
+                jtfFile.setText("");
+                repaint();
             } catch (Exception ex) {
                 System.out.println("Error!");
                 System.out.println(ex);
@@ -93,9 +95,9 @@ public class PickFrame extends JFrame implements ActionListener {
 
             //arduino.serialWrite(jtfx.getText() + jtfy.getText());
 
-            jtfx.setText("");
-            jtfy.setText("");
-            repaint();
+            //jtfx.setText("");
+            //jtfy.setText("");
+            
         } else if (e.getSource() == jbRefresh) {
             pdmCOM.refreshMenu();
         } else if (e.getSource() == jbConnect) {
