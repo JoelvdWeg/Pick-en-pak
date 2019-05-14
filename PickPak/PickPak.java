@@ -39,9 +39,9 @@ public class PickPak {
         System.out.println("Doos volgorde bepaald:");
         System.out.println(volgorde + "\n...");
 
-        draaiSchijf(volgorde);
+        draaiSchijf(volgorde);      
     }
-
+  
     public void maakLijnen(ArrayList<Integer> route) {
         ArrayList<Lijn> lijnen = new ArrayList<>();
         for (int i = 0; i < route.size() - 1; i++) {

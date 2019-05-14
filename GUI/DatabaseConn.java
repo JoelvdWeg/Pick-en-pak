@@ -35,10 +35,10 @@ while(rs.next()){
 System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getInt(3)); 
 }*/
 
-PickFrame pickframe = new PickFrame();
 System.out.println("gelukt!");
 con.close();  
 }catch(Exception e){ System.out.println(e); System.out.println("mislukt!");}  
+
 } 
 
 

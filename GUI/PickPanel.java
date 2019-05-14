@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package PickPak;
+package GUI;
 
-import PickPak.*;
 /**
  *
  * @author hylke
@@ -16,21 +15,16 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.text.NumberFormat;
-import java.util.ArrayList;
 import javax.swing.JPanel;
-import javax.swing.JTable;
-
 
 public class PickPanel extends JPanel {
-    PickPak pickpak;
 
-    public PickPanel(PickPak pickpak) {
+    Pick pick;
+
+    public PickPanel(Pick pick) {
         setPreferredSize(new Dimension(1920, 1080));
-        this.pickpak = pickpak;
+        this.pick = pick;
     }
-
-    
 
     @Override
     public void paintComponent(Graphics g) {
@@ -95,13 +89,6 @@ public class PickPanel extends JPanel {
 
         
 
-
-
-
-
-
-
-
 //      Titels
         g.setColor(Color.BLACK);
         g.setFont(new Font("default", Font.BOLD, 50));
@@ -129,21 +116,11 @@ public class PickPanel extends JPanel {
         g.drawString("5", 1645, 480);
         g.drawString("6", 1795, 480);
         
-        g.drawString("12/", 1017, 950);
-        g.drawString("12/", 1167, 950);
-        g.drawString("12/", 1317, 950);
-        g.drawString("12/", 1467, 950);
-        g.drawString("12/", 1617, 950);
-        
-        
-        
-   
-        
         
 
 
 
-        pickpak.tekenTSP(g);
+        pick.tekenGrid(g);
 
     }
 }
