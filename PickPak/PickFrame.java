@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 import arduino.*;
 import java.io.File;
 import java.util.ArrayList;
+import javax.swing.SwingUtilities;
 import javax.swing.text.Document;
 import javax.xml.parsers.*;
 import org.w3c.dom.*;
@@ -18,6 +19,7 @@ import org.w3c.dom.*;
 public class PickFrame extends JFrame implements ActionListener {
 
     private int status = 0;
+    private int aantalBestellingen = 0;
     ArrayList<Item> bestelling;
     private PickPak pickpak;
     private JTextField jtfx, jtfy, jtfFile;
@@ -25,15 +27,15 @@ public class PickFrame extends JFrame implements ActionListener {
     private JButton jbbevestig;
     private JLabel jlStockItemID;
     private JLabel jlStockItemName;
-    public Arduino arduino;
-    
-    ArrayList<Integer> route = null;
+    public Arduino arduino, arduino2;
 
+    //ArrayList<Integer> route = null;
     private boolean aanHetKalibreren = false;
 
     private PortDropdownMenu pdmCOM;
     private JButton jbRefresh;
     private JButton jbConnect, jbKalibreer, jbTekenTSP;
+    private PickPanel panel;
 
     public PickFrame(PickPak pickpak) {
         setTitle("GUI");
@@ -92,40 +94,44 @@ public class PickFrame extends JFrame implements ActionListener {
         add(jbTekenTSP);
 
         setVisible(true);
-        PickPanel panel = new PickPanel(pickpak);
+        panel = new PickPanel(pickpak);
         add(panel);
 
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {    
+    public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbbevestig) {
-            
-            //if (status == 0) {
 
-                //pickpak.maakRouteVoorGUI(bestelling);
-                //repaint();
-                pickpak.voerTSPuit(arduino);
-                //pickpak.voerBPPuit(route, arduino);
-                //status = 1;
-                jtfFile.setText("");
+            //if (status == 0) {
+            //pickpak.maakRouteVoorGUI(bestelling);
+            //repaint();
+            jtfFile.setText("");
+            voerTSPuit();
+            
+            arduino.closeConnection();
+            arduino2.closeConnection();
+            
+            //pickpak.voerBPPuit(route, arduino);
+            //status = 1;
+            
 
             //} else if (status == 1) {
-
-                //pickpak.voerBPPuit(bestelling, arduino);
-                //
+            //pickpak.voerBPPuit(bestelling, arduino);
+            //
             //}
         } else if (e.getSource() == jbRefresh) {
             pdmCOM.refreshMenu();
         } else if (e.getSource() == jbConnect) {
             if (jbConnect.getText().equals("Connect")) {
                 arduino = new Arduino("COM5", 9600);
-                if (arduino.openConnection()) {
+                arduino2 = new Arduino("COM3", 9600);
+                if (arduino.openConnection() && arduino2.openConnection()) {
                     jbConnect.setText("Disconnect");
                     pdmCOM.setEnabled(false);
                     jbRefresh.setEnabled(false);
                     jbKalibreer.setEnabled(true);
-                    jbbevestig.setEnabled(true);
+                    
 
                     //jlx.setEnabled(true);
                     //jtfx.setEnabled(true);
@@ -135,6 +141,7 @@ public class PickFrame extends JFrame implements ActionListener {
                 }
             } else {
                 arduino.closeConnection();
+                arduino2.closeConnection();
                 jbConnect.setText("Connect");;
                 pdmCOM.setEnabled(true);
                 jbRefresh.setEnabled(true);
@@ -147,15 +154,61 @@ public class PickFrame extends JFrame implements ActionListener {
                 jbKalibreer.setEnabled(false);
             }
         } else if (e.getSource() == jbKalibreer) {
-            pickpak.kalibreerSchijf();
+            pickpak.kalibreerSchijf(arduino2);
         } else if (e.getSource() == jbTekenTSP) {
+            aantalBestellingen++;
+            if(aantalBestellingen > 1){
+                reconnect();
+            }
+            bestelling = null;
             bestelling = pickpak.leesBestelling(jtfFile.getText());
             pickpak.maakRouteVoorGUI(bestelling);
             pickpak.voerBPPuit(bestelling);
+            
+            jbbevestig.setEnabled(true);
+            jbTekenTSP.setEnabled(false);
             //System.out.println(pickpak.maakRouteVoorGUI(bestelling));
         }
         repaint();
     }
-
     
+    private void reconnect(){
+        arduino.openConnection();
+        arduino2.openConnection();
+    }
+
+    public void voerTSPuit() {
+        System.out.println("route: " + pickpak.route);
+
+        for (int it = 1; it < pickpak.route.size() - 1; it++) {
+
+            pickpak.draaiSchijf(it, arduino2);
+            
+            panel.paintImmediately(0, 0, 1920, 1080);
+            
+            pickpak.beweegKraan(it, arduino);
+
+            panel.paintImmediately(0, 0, 1920, 1080);
+            
+            arduino.serialWrite('p');
+            
+            while(arduino.serialRead().equals("") || arduino2.serialRead() == null){
+                //wacht tot klaar met pushen
+            }
+            
+            while (arduino2.serialRead().equals("") || arduino2.serialRead() == null) {
+                //wacht op knop
+            }
+        }
+        
+        pickpak.resetRobots(arduino, arduino2);
+        
+        //arduino2.serialWrite((char) 49);
+        //arduino.serialWrite('h');
+        
+        //arduino.closeConnection();
+        //arduino2.closeConnection();
+        panel.paintImmediately(0,0,1920, 1080);
+    }
+
 }

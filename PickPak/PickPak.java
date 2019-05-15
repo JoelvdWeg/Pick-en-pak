@@ -16,14 +16,16 @@ import org.w3c.dom.NodeList;
 
 public class PickPak {
 
-    public Arduino arduino2;
+    //public Arduino arduino2;
+    private int doosPositie = 1;
     private boolean aanHetKalibreren = false;
     public static ArrayList<Item> items;
     //public static ArrayList<Item> picks;
     //private static ArrayList<Integer> volgorde;
-    private static ArrayList<Integer> route, volgorde;
+    public static ArrayList<Integer> route, volgorde;
     private static Connection connection;
     public static TSP tsp;
+    private int kraanPositie = 0;
     //private static Pakbon pakbon;
     //public static ArrayList<Lijn> lijnen = new ArrayList<>();
 
@@ -97,89 +99,89 @@ public class PickPak {
 
     public void maakRouteVoorGUI(ArrayList<Item> picks) {
         route = null;
-        TSP tsp = new TSP(picks);
+        TSP tsp = null;
+        tsp = new TSP(picks);
         route = tsp.getBestRoute();
         System.out.println("Route bepaald:");
         System.out.println(route + "\n...");
     }
 
-    public void voerTSPuit(Arduino arduino) {
-        try {
-            arduino2 = new Arduino("COM3", 9600);
-            arduino2.openConnection();
-            Thread.sleep(500);
-
-        } catch (Exception e) {
-            System.out.println("er ging iets mis");
-            System.out.println(e);
-        }
-
-        try {
-            arduino.openConnection();
-            Thread.sleep(500);
-        } catch (Exception e) {
-            System.out.println("Er ging iets mis\n...");
-            System.out.println(e);
-        }
-        //for (int it : route) {
-        //    System.out.println(it);
-        //}
-
-        System.out.println("route: " + route);
-
-        arduino.serialWrite('h');
-        try {
-            Thread.sleep(2000);
-        } catch (Exception e) {
-        }
-
-        //int k = 0;
-        for (int it = 1; it < route.size() - 1; it++) {
-
-            //if (it != 1) {
-            //}
-            char c = (char) (volgorde.get(it - 1) + 48);
-            System.out.println(volgorde.get(it - 1));
-            //k++;
-            arduino2.serialWrite(c);
-
-            while (arduino2.serialRead().equals("") || arduino.serialRead() == null) {
-                //wait for incoming message
-            }
-//            try {
-//                Thread.sleep(1000);
-//            } catch (Exception e) {
+//    public void voerTSPuit(Arduino arduino) {
+//        try {
+//            arduino2 = new Arduino("COM3", 9600);
+//            arduino2.openConnection();
+//            Thread.sleep(500);
 //
+//        } catch (Exception e) {
+//            System.out.println("er ging iets mis");
+//            System.out.println(e);
+//        }
+//
+//        try {
+//            arduino.openConnection();
+//            Thread.sleep(500);
+//        } catch (Exception e) {
+//            System.out.println("Er ging iets mis\n...");
+//            System.out.println(e);
+//        }
+//        //for (int it : route) {
+//        //    System.out.println(it);
+//        //}
+//
+//        System.out.println("route: " + route);
+//
+//        arduino.serialWrite('h');
+//        try {
+//            Thread.sleep(2000);
+//        } catch (Exception e) {
+//        }
+//
+//        //int k = 0;
+//        for (int it = 1; it < route.size() - 1; it++) {
+//
+//            //if (it != 1) {
+//            //}
+//            char c = (char) (volgorde.get(it - 1) + 48);
+//            System.out.println(volgorde.get(it - 1));
+//            //k++;
+//            arduino2.serialWrite(c);
+//
+//            while (arduino2.serialRead().equals("") || arduino.serialRead() == null) {
+//                //wait for incoming message
 //            }
-
-            String message = "";
-            message += "c";
-
-            message += items.get(route.get(it)).getLocatie().getCoord().getX();
-            message += items.get(route.get(it)).getLocatie().getCoord().getY();
-            System.out.println(message);
-            arduino.serialWrite(message);
-            while (arduino.serialRead().equals("") || arduino.serialRead() == null) {
-                //System.out.println(arduino.serialRead());
-            }          
-            
-            while (arduino2.serialRead().equals("") || arduino2.serialRead() == null) {
-                //wait for button
-            }
-
-//            while (!arduino2.serialRead().equals('p')) {
+////            try {
+////                Thread.sleep(1000);
+////            } catch (Exception e) {
+////
+////            }
+//
+//            String message = "";
+//            message += "c";
+//
+//            message += items.get(route.get(it)).getLocatie().getCoord().getX();
+//            message += items.get(route.get(it)).getLocatie().getCoord().getY();
+//            System.out.println(message);
+//            arduino.serialWrite(message);
+//            while (arduino.serialRead().equals("") || arduino.serialRead() == null) {
+//                //System.out.println(arduino.serialRead());
+//            }          
+//            
+//            while (arduino2.serialRead().equals("") || arduino2.serialRead() == null) {
 //                //wait for button
 //            }
-
-            //arduino.serialWrite("c00");
-        }
-        arduino2.serialWrite((char) 49);
-        arduino.serialWrite('h');
-        arduino.closeConnection();
-        arduino2.closeConnection();
-    }
-
-    public void kalibreerSchijf() {
+//
+////            while (!arduino2.serialRead().equals('p')) {
+////                //wait for button
+////            }
+//
+//            //arduino.serialWrite("c00");
+//        }
+//        arduino2.serialWrite((char) 49);
+//        arduino.serialWrite('h');
+//        arduino.closeConnection();
+//        arduino2.closeConnection();
+//    }
+    public void kalibreerSchijf(Arduino arduino2) {
         arduino2 = new Arduino("COM3", 9600);
         arduino2.openConnection();
         if (aanHetKalibreren) {
@@ -206,7 +208,8 @@ public class PickPak {
 
     public void voerBPPuit(ArrayList<Item> picks) {
         volgorde = null;
-        BPP bpp = new BPP(picks);
+        BPP bpp = null;
+        bpp = new BPP(picks);
         volgorde = bpp.getVolgorde();
         System.out.println("Doos volgorde bepaald:");
         System.out.println(volgorde + "\n...");
@@ -268,40 +271,124 @@ public class PickPak {
         }
     }
 
-    private static void draaiSchijf(ArrayList<Integer> volgorde, Arduino arduino) {
-        try {
-            //arduino = new Arduino("COM3", 9600); //enter the port name here, and ensure that Arduino is connected, otherwise exception will be thrown.
-            arduino.openConnection();
-
-            //arduino.serialRead();
-            //System.out.println("Druk op de knop om de schijf te kalibreren\n...");
-            //while (arduino.serialRead().equals("")) {
-            //    //wait for incoming message
-            //}
-            //System.out.println("Schijf gekalibreerd\n...");
-            char c;
-
-            volgorde.add(1);
-            for (int i : volgorde) {
-                if (i < 7) {
-                    System.out.println("Draai naar doos " + i + "\n...");
-                    c = (char) (i + 48);
-                    arduino.serialWrite(c);
-                    while (arduino.serialRead().equals("")) {
-                        //wait for incoming message
-                    }
-                    System.out.println("Schijf is gedraaid\n...");
-                    Thread.sleep(1000);
-                } else {
-                    System.out.println("Kan niet draaien naar doos " + i + "\n...");
-                }
-            }
-
-            arduino.closeConnection();
-            System.out.println("Done");
-        } catch (Exception e) {
-            System.out.println("Connectie met de motor kon niet worden opgezet\n...");
+//    private static void draaiSchijf(ArrayList<Integer> volgorde, Arduino arduino) {
+//        try {
+//            //arduino = new Arduino("COM3", 9600); //enter the port name here, and ensure that Arduino is connected, otherwise exception will be thrown.
+//            arduino.openConnection();
+//
+//            //arduino.serialRead();
+//            //System.out.println("Druk op de knop om de schijf te kalibreren\n...");
+//            //while (arduino.serialRead().equals("")) {
+//            //    //wait for incoming message
+//            //}
+//            //System.out.println("Schijf gekalibreerd\n...");
+//            char c;
+//
+//            volgorde.add(1);
+//            for (int i : volgorde) {
+//                if (i < 7) {
+//                    System.out.println("Draai naar doos " + i + "\n...");
+//                    c = (char) (i + 48);
+//                    arduino.serialWrite(c);
+//                    while (arduino.serialRead().equals("")) {
+//                        //wait for incoming message
+//                    }
+//                    System.out.println("Schijf is gedraaid\n...");
+//                    Thread.sleep(1000);
+//                } else {
+//                    System.out.println("Kan niet draaien naar doos " + i + "\n...");
+//                }
+//            }
+//
+//            arduino.closeConnection();
+//            System.out.println("Done");
+//        } catch (Exception e) {
+//            System.out.println("Connectie met de motor kon niet worden opgezet\n...");
+//        }
+//    }
+    
+    public void resetRobots(Arduino arduino, Arduino arduino2){
+        arduino.serialWrite('h');
+        
+        try{
+            Thread.sleep(5000);
+        }catch(Exception e){
+            
         }
+        arduino.serialWrite('z');
+        
+        arduino2.serialWrite((char) 49);
+        
+        kraanPositie = 0;
+        doosPositie = 1;
+    }
+    
+    public void beweegKraan(int next, Arduino arduino) {
+        kraanPositie = route.get(next);
+        
+        String message = "";
+        message += "c";
+
+        message += items.get(route.get(next)).getLocatie().getCoord().getX();
+        message += items.get(route.get(next)).getLocatie().getCoord().getY();
+        System.out.println(message);
+        
+        //arduino.openConnection();
+        
+        arduino.serialWrite(message);
+        
+        String s;
+        do{
+            s = arduino.serialRead();
+        }while(s.equals("") || s == null);
+        
+        System.out.print("inkomend bericht:   "+ s);
+        
+//        while (arduino.serialRead().equals("") || arduino.serialRead() == null) {
+//            System.out.println(arduino.serialRead());
+//        }
+        
+        
+
+        //while (arduino.serialRead().equals("") || arduino.serialRead() == null) {
+            //wait for button
+        //}
+        
+        //arduino.closeConnection();
+    }
+    
+    public void tekenDoosPositie(Graphics g){
+       g.setColor(Color.BLUE);
+       g.fillRect(1000+100*doosPositie, 920, 50, 50);
+    }
+    
+    public void tekenKraanPositie(Graphics g){
+        g.setColor(Color.GREEN);
+        g.drawRect(203+100*items.get(kraanPositie).getLocatie().getCoord().getX(), 853-100*items.get(kraanPositie).getLocatie().getCoord().getY(), 95,95);
+    }
+    
+    public void tekenDoosInhoud(Graphics g){
+        g.setColor(Color.YELLOW);
+        
+    }
+
+    public void draaiSchijf(int next, Arduino arduino) {
+        char c = (char) (volgorde.get(next-1) +48);
+        System.out.println(volgorde.get(next - 1));
+        
+        doosPositie = volgorde.get(next-1);
+        
+        
+        
+        //arduino.openConnection();
+
+        arduino.serialWrite(c);
+
+        while (arduino.serialRead().equals("") || arduino.serialRead() == null) {
+            //wait for incoming message
+        }
+        
+        //arduino.closeConnection();
     }
 
     public static ArrayList<Item> maakBestellingAan(String naam, String adres1, String adres2, String land, ArrayList<Integer> besteldeItems) {
