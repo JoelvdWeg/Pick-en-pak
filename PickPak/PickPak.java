@@ -32,7 +32,6 @@ public class PickPak {
             haalItemsOp();
             sluitDatabaseConnectie();
         }
-        System.out.println("yeet");
     }
 
     public ArrayList<Item> leesBestelling(String f) {
