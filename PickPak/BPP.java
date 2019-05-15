@@ -8,8 +8,23 @@ public class BPP {
     private ArrayList<Item> items;
 
     public BPP(ArrayList<Item> items) {
+        //for(int i = 0; i < aantalDozen; i++){
+            
+        //}
+        
+        Doos.resetDozen();
+        
+        System.out.println(Doos.getAantalDozen());
+        
+        
+        
         dozen = new ArrayList<>();
         dozen.add(new Doos(0.5));
+        
+        for(Doos d: dozen){
+            System.out.println(d.getInhoud());
+        }
+        
         volgorde = new ArrayList<>();
         this.items = items;
         
@@ -28,6 +43,7 @@ public class BPP {
         //System.out.println("BESTFIT --------------------\n");
 
         for (int i = 0; i < items.size(); i++) {
+            System.out.println("aantal dozen: "+dozen.size());
             Doos geselecteerd;
 
             // Mogelijke dozen zoeken
