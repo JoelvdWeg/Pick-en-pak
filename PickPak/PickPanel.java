@@ -65,9 +65,6 @@ public class PickPanel extends JPanel {
         g.drawRect(1400, 500, 50, 400);
         g.drawRect(1500, 500, 50, 400);
         g.drawRect(1600, 500, 50, 400);
-        
-        g.setColor(Color.BLUE);
-        g.drawRect(1100, 920, 50, 50);
 
         g.setColor(Color.GRAY);
         g.fillRect(1100, 500, 50, 400);
@@ -95,8 +92,6 @@ public class PickPanel extends JPanel {
             y1 = y1 + 60;
 
         }
-        
-        //pickpak.tekenDoos(g);
 
         pickpak.tekenTSP(g);
 
