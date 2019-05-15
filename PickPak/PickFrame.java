@@ -100,6 +100,7 @@ public class PickFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {    
         if (e.getSource() == jbbevestig) {
+
             
             //if (status == 0) {
 
@@ -108,6 +109,85 @@ public class PickFrame extends JFrame implements ActionListener {
                 pickpak.voerTSPuit(arduino);
                 //pickpak.voerBPPuit(route, arduino);
                 //status = 1;
+
+            try {
+                String naam = "...";
+                String adres1 = "...";
+                String adres2 = "...";
+                String land = "...";
+                ArrayList<Integer> items = new ArrayList<>();
+
+                //File file = new File("userdata.xml");
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                org.w3c.dom.Document document = documentBuilder.parse(new File("bestelling.xml"));
+
+                Element rootElement = (Element) document.getFirstChild();
+
+                NodeList nlist = rootElement.getChildNodes();
+                System.out.println(nlist);
+
+                for (int i = 0; i < nlist.getLength(); i++) {
+                    //System.out.println("1:     "+nlist.item(i).getNodeType()+"\n...");
+                    //System.out.println("2:     "+nlist.item(i).getTextContent()+"\n...");
+                    //System.out.println("3:     "+nlist.item(i).getNodeName()+"\n...");
+
+                    Node child = nlist.item(i);
+                    //System.out.println(child);
+
+                    String nodeName = (String) child.getNodeName();
+                    //System.out.println("NODENAME" + child.getNodeType());
+                    if (nodeName.equals("naam")) {
+                        naam = child.getTextContent();
+                    } else if (nodeName.equals("adres1")) {
+                        adres1 = child.getTextContent();
+                    } else if (nodeName.equals("adres2")) {
+                        adres2 = child.getTextContent();
+                    } else if (nodeName.equals("land")) {
+                        land = child.getTextContent();
+                    } else if (nodeName.equals("item")) {
+                        
+                        //items.add(Integer.parseInt(child.getTextContent()));
+                        
+
+                        NodeList itemList = child.getChildNodes();
+                        //System.out.println(itemList);
+                        for (int j = 0; j < itemList.getLength(); j++) {
+
+                            if (itemList.item(j).getNodeType() == Node.ELEMENT_NODE) {
+                                
+                                System.out.println(itemList.item(j).getAttributes());
+
+                                Node itemChild = itemList.item(j);
+                                String itemNodeName = (String) itemChild.getNodeName();
+
+                                int itemID = -1;
+                                int aantal = -1;
+                                //System.out.println(itemNodeName);
+
+                                if (itemNodeName.equals("id")) {
+                                    itemID = Integer.parseInt(itemChild.getTextContent());
+                                } else if (itemNodeName.equals("aantal")) {
+                                    aantal = Integer.parseInt(itemChild.getTextContent());
+                                }
+                                for (int k = 0; k < aantal; k++) {
+                                    items.add(itemID);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                System.out.println(naam + " " + adres1 + " " + adres2 + " " + land);
+                for (int i : items) {
+                    System.out.println(i);
+                }
+//                String usr = document.g("user").item(0).getTextContent();
+//                String pwd = document.getElementsByTagName("password").item(0).getTextContent();
+//                //ArrayList<Item> bestelling = pickpak.maakBestellingAan("Lukas van Elten", "Molenmakerslaan 58", "3781DD Voorthuizen", "NEDERLAND", jtfFile.getText());
+
+                //pickpak.pickBestelling(bestelling);
+
                 jtfFile.setText("");
 
             //} else if (status == 1) {
