@@ -3,7 +3,7 @@ package PickPak;
 import java.util.ArrayList;
 
 public class Doos {
-    public static int aantalDozen = 0;
+    private static int aantalDozen = 0;
     private int doosID;
     //private static final int CAPACITEIT = 12;
     private double capaciteit;

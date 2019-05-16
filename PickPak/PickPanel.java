@@ -97,13 +97,13 @@ public class PickPanel extends JPanel {
         
         //pickpak.tekenDoos(g);
 
-        pickpak.tekenTSP(g);
-        
-        pickpak.tekenDoosPositie(g);
-        
         pickpak.tekenKraanPositie(g);
         
+        pickpak.tekenTSP(g);
+        
         pickpak.tekenDoosInhoud(g);
+        
+        pickpak.tekenDoosPositie(g);
 
     }
 }

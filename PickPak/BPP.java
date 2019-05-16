@@ -14,16 +14,16 @@ public class BPP {
         
         Doos.resetDozen();
         
-        System.out.println(Doos.getAantalDozen());
+        //System.out.println(Doos.getAantalDozen());
         
         
         
         dozen = new ArrayList<>();
         dozen.add(new Doos(0.5));
         
-        for(Doos d: dozen){
-            System.out.println(d.getInhoud());
-        }
+        //for(Doos d: dozen){
+        //    System.out.println(d.getInhoud());
+        //}
         
         volgorde = new ArrayList<>();
         this.items = items;
@@ -107,10 +107,10 @@ public class BPP {
             volgorde.add(geselecteerd);
 
             // Alle dozen printen
-            printRonde(i, geselecteerd);
+            //printRonde(i, geselecteerd);
         }
 
-        printVolgorde();
+        //printVolgorde();
     }
 
     public void printRonde(int i, Doos geselecteerd) {

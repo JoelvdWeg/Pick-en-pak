@@ -17,8 +17,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class PickPak {
-    
-    private int[] doosInhoud = {0,0,0,0,0,0};
+
+    private static final int AANTAL_DOZEN = 6;
+
+    private int[] doosInhoud;
+
+    private boolean push = false;
 
     private int kraanPositie, doosPositie;
 
@@ -28,18 +32,63 @@ public class PickPak {
 
     private static Connection connection;
 
-    private boolean aanHetKalibreren;
-    
-    private ArrayList<Doos> dozen;
-
     public PickPak() {
         kraanPositie = 0;
         doosPositie = 1;
-        aanHetKalibreren = false;
+
+        doosInhoud = new int[AANTAL_DOZEN];
+        for (int d : doosInhoud) {
+            doosInhoud[d] = 0;
+        }
 
         if (maakDatabaseConnectie()) {
             haalItemsOp();
             sluitDatabaseConnectie();
+        }
+    }
+
+    private static boolean maakDatabaseConnectie() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            String url = "jdbc:mysql://localhost/wideworldimporters";
+            connection = DriverManager.getConnection(url, "root", "");
+            System.out.println("Databaseconnectie succesvol\n...");
+            return true;
+        } catch (Exception e) {
+            System.out.println("Databaseconnectie niet succesvol, bestelling afgebroken\n...");
+            return false;
+        }
+    }
+
+    private static void sluitDatabaseConnectie() {
+        try {
+            connection.close();
+            System.out.println("Databaseconnectie succesvol gesloten\n...");
+        } catch (Exception e) {
+            System.out.println("Databaseconnectie kon niet worden gesloten\n...");
+        }
+    }
+
+    private void haalItemsOp() {
+        items = new ArrayList<>();
+
+        try {
+            PreparedStatement itemsStatement = connection.prepareStatement("SELECT StockItemID, StockItemName, TypicalWeightPerUnit FROM stockitems WHERE StockItemID < 26");
+            ResultSet itemsResultSet = itemsStatement.executeQuery();
+            int i = 0, j = 0;
+            while (itemsResultSet.next()) {
+                items.add(new Item(new Locatie(itemsResultSet.getInt(1) - 1, new Coordinate(j, i)), itemsResultSet.getDouble(3), itemsResultSet.getInt(1) - 1, itemsResultSet.getString(2)));
+                if (j != 4) {
+                    j++;
+                } else {
+                    i++;
+                    j = 0;
+                }
+            }
+            items.add(new Item(new Locatie(25, new Coordinate(0, 0)), 0, 25, "LOSPUNT"));
+            System.out.println("Items succesvol opgehaald uit database\n..");
+        } catch (Exception e) {
+            System.out.println("Kon items niet ophalen uit de database\n...");
         }
     }
 
@@ -90,6 +139,7 @@ public class PickPak {
             }
 
             ArrayList<Item> bestelling = maakBestellingAan(naam, adres1, adres2, land, besteldeItems);
+
             return bestelling;
         } catch (Exception ex) {
             System.out.println("Error!");
@@ -98,18 +148,139 @@ public class PickPak {
         return null;
     }
 
-    public void maakRouteVoorGUI(ArrayList<Item> picks) {
+    public static ArrayList<Item> maakBestellingAan(String naam, String adres1, String adres2, String land, ArrayList<Integer> besteldeItems) {
+        if (maakDatabaseConnectie()) {
+
+            ArrayList<Item> picks = new ArrayList<>();
+
+            Pakbon pakbon = null;
+            
+            int newPakbonID = 0;
+
+            try {
+                Statement bestellingIDstatement = connection.createStatement();
+                ResultSet bestellingIDresult = bestellingIDstatement.executeQuery("SELECT MAX(id) FROM bestelling");
+                bestellingIDresult.next();
+                newPakbonID = bestellingIDresult.getInt(1) + 1;
+                bestellingIDresult.close();
+
+                pakbon = new Pakbon(newPakbonID);
+
+                PreparedStatement newBestelling = connection.prepareStatement("INSERT INTO bestelling VALUES(?,?,?,?,?,?)");
+                newBestelling.setInt(1, newPakbonID);
+                newBestelling.setString(2, naam);
+                newBestelling.setString(3, adres1);
+                newBestelling.setString(4, adres2);
+                newBestelling.setString(5, land);
+                newBestelling.setInt(6, newPakbonID);
+                newBestelling.executeUpdate();
+
+                System.out.println("Bestelling toegevoegd aan database\n...");
+            } catch (Exception e) {
+                System.out.println("Kon geen bestelling toevoegen aan de database\n...");
+            }
+
+            int k = 1;
+            for (int i : besteldeItems) {
+
+                pakbon.voegItemToe(items.get(i));
+
+                try {
+                    Statement bestelRegelIDstatement = connection.createStatement();
+                    ResultSet bestelRegelIDresult = bestelRegelIDstatement.executeQuery("SELECT MAX(regelID) FROM bestelregel");
+                    bestelRegelIDresult.next();
+                    int newBestelregelID = bestelRegelIDresult.getInt(1) + 1;
+
+                    PreparedStatement newBestelregel = connection.prepareStatement("INSERT INTO bestelregel VALUES(?,?,?,?)");
+                    newBestelregel.setInt(1, newBestelregelID);
+                    newBestelregel.setInt(2, newPakbonID);
+                    newBestelregel.setInt(3, i);
+                    newBestelregel.setInt(4, 1); //<<<<<<<<<<<<<<<<<<<< Deze nog veranderen zodat twee dezelfde items in dezelfde regel komen met aantal 2
+                    newBestelregel.executeUpdate();             
+                } catch (Exception e) {
+
+                }
+
+                picks = voegToeAanPicks(i, picks);
+                k++;
+            }
+
+            System.out.println("Totaal: " + k + " items\n...");
+
+            sluitDatabaseConnectie();
+            return picks;
+        }
+        return null;
+    }
+
+    private static ArrayList<Item> voegToeAanPicks(int besteldItem, ArrayList<Item> picks) {
+        for (Item item : items) {
+            if (item.getLocatie().getID() == besteldItem) {
+                picks.add(item);
+                System.out.println("Item met locatie-id " + item.getLocatie().getID() + " toegevoegd aan picklijst");
+                break;
+            }
+        }
+        return picks;
+    }
+
+    public ArrayList<Integer> voerTSPuit(ArrayList<Item> picks) {
         route = null;
         TSP tsp = null;
         tsp = new TSP(picks);
         route = tsp.getBestRoute();
         System.out.println("Route bepaald:");
         System.out.println(route + "\n...");
+
+        return route;
     }
 
-    public void kalibreerSchijf(Arduino arduino) {
-        //arduino = new Arduino("COM3", 9600);
-        arduino.openConnection();
+    public void voerBPPuit(ArrayList<Integer> pickRoute) {
+        volgorde = null;
+        BPP bpp = null;
+
+        ArrayList<Item> picks = new ArrayList<>();
+
+        for (int i = 1; i < pickRoute.size() - 1; i++) {
+            picks.add(items.get(pickRoute.get(i)));
+        }
+
+        bpp = new BPP(picks);
+        volgorde = bpp.getVolgorde();
+        System.out.println("Doos volgorde bepaald:");
+        System.out.println(volgorde + "\n...");
+    }
+
+    public void beweegKraan(int next, Arduino arduino) {
+        kraanPositie = route.get(next);
+
+        String message = "";
+        message += "c";
+
+        message += items.get(route.get(next)).getLocatie().getCoord().getX();
+        message += items.get(route.get(next)).getLocatie().getCoord().getY();
+
+        arduino.serialWrite(message);
+
+        String s;
+        do {
+            s = arduino.serialRead();
+        } while (s.equals("") || s == null);
+    }
+
+    public void draaiSchijf(int next, Arduino arduino) {
+        char c = (char) (volgorde.get(next - 1) + 48);
+
+        doosPositie = volgorde.get(next - 1);
+
+        arduino.serialWrite(c);
+
+        while (arduino.serialRead().equals("") || arduino.serialRead() == null) {
+            //wait for incoming message
+        }
+    }
+
+    public void kalibreerSchijf(Arduino arduino, boolean aanHetKalibreren) {
         if (aanHetKalibreren) {
             try {
 
@@ -118,8 +289,6 @@ public class PickPak {
 
                 System.out.println("Schijf gekalibreerd\n...");
 
-                Thread.sleep(1000);
-
             } catch (Exception e) {
                 System.out.println(e);
             }
@@ -127,20 +296,36 @@ public class PickPak {
             System.out.println("Schijf kalibreren\n...");
 
             aanHetKalibreren = true;
+
             arduino.serialWrite('k');
         }
-        arduino.closeConnection();
-
     }
 
-    public void voerBPPuit(ArrayList<Item> picks) {
+    public void setPush(boolean push) {
+        this.push = push;
+    }
+
+    public void resetRobots(Arduino arduino, Arduino arduino2) {
+        arduino.serialWrite('h');
+
+        try {
+            Thread.sleep(2000);
+        } catch (Exception e) {
+
+        }
+        arduino.serialWrite('z');
+
+        arduino2.serialWrite((char) 49);
+
+        kraanPositie = 0;
+        doosPositie = 1;
+
+        for (int i = 0; i < 12; i++) {
+            doosInhoud[i] = 0;
+        }
+
+        route = null;
         volgorde = null;
-        BPP bpp = null;
-        bpp = new BPP(picks);
-        volgorde = bpp.getVolgorde();
-        dozen = bpp.getDozen();
-        System.out.println("Doos volgorde bepaald:");
-        System.out.println(volgorde + "\n...");
     }
 
     public void tekenTSP(Graphics g) {
@@ -164,7 +349,6 @@ public class PickPak {
                 } else {
                     g.drawLine(250 + startx * 100, 900 - 100 * starty, 250 + eindx * 100, 900 - eindy * 100);
                 }
-                
 
                 if (k == 0) {
                     g.setColor(Color.GREEN);
@@ -178,217 +362,34 @@ public class PickPak {
         }
     }
 
-    private static boolean maakDatabaseConnectie() {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            String url = "jdbc:mysql://localhost/wideworldimporters";
-            connection = DriverManager.getConnection(url, "root", "");
-            System.out.println("Databaseconnectie succesvol\n...");
-            return true;
-        } catch (Exception e) {
-            System.out.println("Databaseconnectie niet succesvol, bestelling afgebroken\n...");
-            return false;
+    public void tekenKraanPositie(Graphics g) {
+        if (push) {
+            g.setColor(Color.RED);
+        } else {
+            g.setColor(Color.GREEN);
         }
-    }
-
-    private static void sluitDatabaseConnectie() {
-        try {
-            connection.close();
-            System.out.println("Databaseconnectie succesvol gesloten\n...");
-        } catch (Exception e) {
-            System.out.println("Databaseconnectie kon niet worden gesloten\n...");
-        }
-    }
-
-    public void resetRobots(Arduino arduino, Arduino arduino2) {
-        arduino.serialWrite('h');
-
-        try {
-            Thread.sleep(5000);
-        } catch (Exception e) {
-
-        }
-        arduino.serialWrite('z');
-
-        arduino2.serialWrite((char) 49);
-
-        kraanPositie = 0;
-        doosPositie = 1;
-        
-        for(int i = 0; i < 6; i++){
-            doosInhoud[i] = 0;
-        }
-        
-        //for(int d: volgorde){
-            
-        //}
-        
-        Doos.aantalDozen = 0;
-        
-        for(Doos d: dozen){
-            d.resetInhoud();
-        }
-        
-        route = null;
-        volgorde = null;
-    }
-
-    public void beweegKraan(int next, Arduino arduino) {
-        kraanPositie = route.get(next);
-
-        String message = "";
-        message += "c";
-
-        message += items.get(route.get(next)).getLocatie().getCoord().getX();
-        message += items.get(route.get(next)).getLocatie().getCoord().getY();
-        //System.out.println(message);
-
-        arduino.serialWrite(message);
-
-        String s;
-        do {
-            s = arduino.serialRead();
-        } while (s.equals("") || s == null);
-
-        //System.out.print("inkomend bericht:   " + s);
-//        DEZE CODE WACHT OP DE KNOP, IS VOOR TESTEN EVEN VERVANGEN DOOR EEN SLEEP
-
-        //      try{
-        //          Thread.sleep(2000);
-        //      } catch(Exception e){
-        //      }
+        g.drawRect(203 + 100 * items.get(kraanPositie).getLocatie().getCoord().getX(), 853 - 100 * items.get(kraanPositie).getLocatie().getCoord().getY(), 95, 95);
     }
 
     public void tekenDoosPositie(Graphics g) {
         g.setColor(Color.GREEN);
-        //g.fillRect(1000 + 100 * doosPositie, 920, 50, 50);
-        
         g.drawRect(1000 + 100 * doosPositie, 500, 50, 400);
     }
 
-    public void tekenKraanPositie(Graphics g) {
-        g.setColor(Color.GREEN);
-        g.drawRect(203 + 100 * items.get(kraanPositie).getLocatie().getCoord().getX(), 853 - 100 * items.get(kraanPositie).getLocatie().getCoord().getY(), 95, 95);
-    }
-    
-    public void werkDoosInhoudBij(int next){
+    public void werkDoosInhoudBij(int next) {
         double extraInhoud = items.get(route.get(next)).getGrootte();
-        
-        System.out.println("EXTRA INHOUD:   "+extraInhoud);
-        
+
         double extraPixels = extraInhoud * 800.0;
         int intExtraPixels = (int) extraPixels;
-        
-        doosInhoud[volgorde.get(next-1)-1] += intExtraPixels;
-        
-        //doosInhoud[volgorde.get(next)] += items.get(route.get(next)).getGrootte();
-        
-        for(double d: doosInhoud){
-            System.out.println("INHOUD: "+ d);
-        }
-        
+
+        doosInhoud[volgorde.get(next - 1) - 1] += intExtraPixels;
     }
 
     public void tekenDoosInhoud(Graphics g) {
-        g.setColor(Color.RED);
-        
-        for(int i = 0; i < 6; i++){
-        
-            g.fillRect(1100 + 100 * i, 900 - doosInhoud[i],   50, doosInhoud[i]);
+        g.setColor(new Color(255, 100, 100));
 
-        }
-    }
-
-    public void draaiSchijf(int next, Arduino arduino) {
-        char c = (char) (volgorde.get(next - 1) + 48);
-        //System.out.println(volgorde.get(next - 1));
-
-        doosPositie = volgorde.get(next - 1);
-
-        //arduino.openConnection();
-        arduino.serialWrite(c);
-
-        while (arduino.serialRead().equals("") || arduino.serialRead() == null) {
-            //wait for incoming message
-        }
-
-        //arduino.closeConnection();
-    }
-
-    public static ArrayList<Item> maakBestellingAan(String naam, String adres1, String adres2, String land, ArrayList<Integer> besteldeItems) {
-        if (maakDatabaseConnectie()) {
-
-            ArrayList<Item> picks = new ArrayList<>();
-
-            try {
-                Statement bestellingIDstatement = connection.createStatement();
-                ResultSet bestellingIDresult = bestellingIDstatement.executeQuery("SELECT MAX(id) FROM bestelling");
-                bestellingIDresult.next();
-                int newPakbonID = bestellingIDresult.getInt(1) + 1;
-                bestellingIDresult.close();
-
-                PreparedStatement newBestelling = connection.prepareStatement("INSERT INTO bestelling VALUES(?,?,?,?,?,?)");
-                newBestelling.setInt(1, newPakbonID);
-                newBestelling.setString(2, naam);
-                newBestelling.setString(3, adres1);
-                newBestelling.setString(4, adres2);
-                newBestelling.setString(5, land);
-                newBestelling.setInt(6, newPakbonID);
-                newBestelling.executeUpdate();
-
-                System.out.println("Bestelling toegevoegd aan database\n...");
-            } catch (Exception e) {
-                System.out.println("Kon geen bestelling toevoegen aan de database\n...");
-            }
-
-            int k = 1;
-            for (int i : besteldeItems) {
-
-                picks = voegToeAanPicks(i, picks);
-                k++;
-            }
-
-            System.out.println("Totaal: " + k + " items\n...");
-
-            sluitDatabaseConnectie();
-            return picks;
-        }
-        return null;
-    }
-
-    private static ArrayList<Item> voegToeAanPicks(int besteldItem, ArrayList<Item> picks) {
-        //int nextItemID = Integer.parseInt(line);
-
-        for (Item item : items) {
-            if (item.getLocatie().getID() == besteldItem) {
-                picks.add(item);
-                System.out.println("Item met locatie-id " + item.getLocatie().getID() + " toegevoegd aan picklijst");
-                break;
-            }
-        }
-        return picks;
-    }
-
-    private static void haalItemsOp() {
-        items = new ArrayList<>();
-
-        try {
-            PreparedStatement itemsStatement = connection.prepareStatement("SELECT StockItemID, StockItemName, TypicalWeightPerUnit FROM stockitems WHERE StockItemID < 26");
-            ResultSet itemsResultSet = itemsStatement.executeQuery();
-            int i = 0, j = 0;
-            while (itemsResultSet.next()) {
-                items.add(new Item(new Locatie(itemsResultSet.getInt(1) - 1, new Coordinate(j, i)), itemsResultSet.getDouble(3), itemsResultSet.getInt(1) - 1, itemsResultSet.getString(2)));
-                if (j != 4) {
-                    j++;
-                } else {
-                    i++;
-                    j = 0;
-                }
-            }
-            items.add(new Item(new Locatie(25, new Coordinate(0, 0)), 0, 25, "LOSPUNT"));
-            System.out.println("Items succesvol opgehaald uit database\n..");
-        } catch (Exception e) {
-            System.out.println("Kon items niet ophalen uit de database\n...");
+        for (int i = 0; i < AANTAL_DOZEN; i++) {
+            g.fillRect(1100 + 100 * i, 900 - doosInhoud[i], 50, doosInhoud[i]);
         }
     }
 }

@@ -1,20 +1,57 @@
 package PickPak;
 
-
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 public class Pakbon {
-    
+
     private int id;
     private String naam;
     private String adres1;
     private String adres2;
     private String land;
     private ArrayList<Item> items;
+    public static String newline = System.getProperty("line.separator");
 
     public Pakbon(int id) {
         items = new ArrayList<>();
         this.id = id;
+    }
+
+    public void maakPakbon() {
+
+        try {
+            FileWriter fw = new FileWriter(naam + ".txt");
+            fw.write(toString());
+            fw.close();
+            System.out.println(toString());
+            Desktop.getDesktop().open(new File(naam + ".txt"));
+        } catch (Exception ex) {
+            System.err.println("Couldn't log this: ");
+        }
+    }
+
+    public String toString() {
+
+        String s = "";
+        s += "PAKBON" + newline;
+        s += "----------------------------" + newline;
+        s += naam + newline;
+        s += adres1 + newline;
+        s += adres2 + newline;
+        s += land + newline;
+        s += "----------------------------" + newline + newline;
+        s += "Producten:" + newline;
+
+        for (Item item : items) {
+            s += item + newline;
+        }
+
+        s += "----------------------------" + newline + newline;
+
+        return s;
     }
 
     public String getNaam() {
@@ -57,23 +94,23 @@ public class Pakbon {
         items.add(item);
     }
 
-    public String toString() {
-        String s = "";
-        s += "PAKBON\n\n";
-        s += "----------------------------\n";
-        s += naam + "\n";
-        s += adres1 + "\n";
-        s += adres2 + "\n";
-        s += land + "\n";
-        s += "----------------------------\n\n";
-        s += "Producten:\n";
-
-        for (Item item : items) {
-            s += item + "\n";
-        }
-        
-        s += "----------------------------\n\n";
-        
-        return s;
-    }
+//    public String toString() {
+//        String s = "";
+//        s += "PAKBON\n\n";
+//        s += "----------------------------\n";
+//        s += naam + "\n";
+//        s += adres1 + "\n";
+//        s += adres2 + "\n";
+//        s += land + "\n";
+//        s += "----------------------------\n\n";
+//        s += "Producten:\n";
+//
+//        for (Item item : items) {
+//            s += item + "\n";
+//        }
+//
+//        s += "----------------------------\n\n";
+//
+//        return s;
+//    }
 }
