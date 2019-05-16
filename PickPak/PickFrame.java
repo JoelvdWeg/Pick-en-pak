@@ -28,6 +28,8 @@ public class PickFrame extends JFrame implements ActionListener {
     private JLabel jlStockItemID;
     private JLabel jlStockItemName;
     public Arduino arduino, arduino2;
+    
+    private double[] doosInhoud = new double[6];
 
     //ArrayList<Integer> route = null;
     private boolean aanHetKalibreren = false;
@@ -103,11 +105,15 @@ public class PickFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbbevestig) {
 
+            jbTekenTSP.setEnabled(false);
+            jbbevestig.setEnabled(false);
             //if (status == 0) {
             //pickpak.maakRouteVoorGUI(bestelling);
             //repaint();
             jtfFile.setText("");
             voerTSPuit();
+            
+            jbTekenTSP.setEnabled(true);
             
             arduino.closeConnection();
             arduino2.closeConnection();
@@ -124,7 +130,7 @@ public class PickFrame extends JFrame implements ActionListener {
             pdmCOM.refreshMenu();
         } else if (e.getSource() == jbConnect) {
             if (jbConnect.getText().equals("Connect")) {
-                arduino = new Arduino("COM5", 9600);
+                arduino = new Arduino("COM6", 9600);
                 arduino2 = new Arduino("COM3", 9600);
                 if (arduino.openConnection() && arduino2.openConnection()) {
                     jbConnect.setText("Disconnect");
@@ -191,6 +197,10 @@ public class PickFrame extends JFrame implements ActionListener {
             panel.paintImmediately(0, 0, 1920, 1080);
             
             arduino.serialWrite('p');
+            
+            pickpak.werkDoosInhoudBij(it-1);
+            
+            panel.paintImmediately(0, 0, 1920, 1080);
             
             while(arduino.serialRead().equals("") || arduino2.serialRead() == null){
                 //wacht tot klaar met pushen
