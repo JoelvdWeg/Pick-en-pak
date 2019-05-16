@@ -18,7 +18,7 @@ import org.w3c.dom.NodeList;
 
 public class PickPak {
     
-    private double[] doosInhoud = {0.0,0.0,0.0,0.0,0.0,0.0};
+    private int[] doosInhoud = {0,0,0,0,0,0};
 
     private int kraanPositie, doosPositie;
 
@@ -211,6 +211,9 @@ public class PickPak {
 
         kraanPositie = 0;
         doosPositie = 1;
+        for(int i = 0; i < 6; i++){
+            doosInhoud[i] = 0;
+        }
     }
 
     public void beweegKraan(int next, Arduino arduino) {
@@ -221,7 +224,7 @@ public class PickPak {
 
         message += items.get(route.get(next)).getLocatie().getCoord().getX();
         message += items.get(route.get(next)).getLocatie().getCoord().getY();
-        System.out.println(message);
+        //System.out.println(message);
 
         arduino.serialWrite(message);
 
@@ -230,7 +233,7 @@ public class PickPak {
             s = arduino.serialRead();
         } while (s.equals("") || s == null);
 
-        System.out.print("inkomend bericht:   " + s);
+        //System.out.print("inkomend bericht:   " + s);
 //        DEZE CODE WACHT OP DE KNOP, IS VOOR TESTEN EVEN VERVANGEN DOOR EEN SLEEP
 
         //      try{
@@ -252,7 +255,16 @@ public class PickPak {
     }
     
     public void werkDoosInhoudBij(int next){
-        doosInhoud[volgorde.get(next)] += items.get(route.get(next)).getGrootte();
+        double extraInhoud = items.get(route.get(next)).getGrootte();
+        
+        System.out.println("EXTRA INHOUD:   "+extraInhoud);
+        
+        double extraPixels = extraInhoud * 800.0;
+        int intExtraPixels = (int) extraPixels;
+        
+        doosInhoud[volgorde.get(next)] += intExtraPixels;
+        
+        //doosInhoud[volgorde.get(next)] += items.get(route.get(next)).getGrootte();
         
         for(double d: doosInhoud){
             System.out.println("INHOUD: "+ d);
@@ -261,18 +273,18 @@ public class PickPak {
     }
 
     public void tekenDoosInhoud(Graphics g) {
-        g.setColor(Color.YELLOW);
+        g.setColor(Color.RED);
         
         for(int i = 0; i < 6; i++){
         
-        g.fillRect(1000 + 100 * i, (int) (800.0*(900.0 -  doosInhoud[i])),   50, (int) (800.0*doosInhoud[i]));
+            g.fillRect(1000 + 100 * i, 900 - doosInhoud[i],   50, doosInhoud[i]);
 
         }
     }
 
     public void draaiSchijf(int next, Arduino arduino) {
         char c = (char) (volgorde.get(next - 1) + 48);
-        System.out.println(volgorde.get(next - 1));
+        //System.out.println(volgorde.get(next - 1));
 
         doosPositie = volgorde.get(next - 1);
 
