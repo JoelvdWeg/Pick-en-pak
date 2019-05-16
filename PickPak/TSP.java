@@ -1,3 +1,5 @@
+package PickPak;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -9,14 +11,14 @@ public class TSP {
     private ArrayList<Integer> pickItems;
     
     public TSP(ArrayList<Item> bestelling){
-        items = run.items;
+        items = PickPak.items;
         pickItems = new ArrayList<>();
         
         for(Item item: bestelling){
             pickItems.add(item.getLocatie().getID());
         }
-   
-        nearestNeighbour(new ArrayList<>(), pickItems);   
+        
+        nearestNeighbour(new ArrayList<>(), pickItems); 
         optimize(bestRoute);
     }
 
@@ -33,7 +35,6 @@ public class TSP {
     
    
     public void nearestNeighbour(ArrayList<Integer> r, ArrayList<Integer> citiesNotInRoute) {
-        //System.out.println(citiesNotInRoute);
         if (r.isEmpty()) {
             r.add(AANTAL_VAKKEN);
         }
