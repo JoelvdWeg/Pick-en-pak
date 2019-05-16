@@ -28,7 +28,7 @@ public class PickFrame extends JFrame implements ActionListener {
     private JLabel jlStockItemID;
     private JLabel jlStockItemName;
     public Arduino arduino, arduino2;
-    
+
     private double[] doosInhoud = new double[6];
 
     //ArrayList<Integer> route = null;
@@ -36,7 +36,7 @@ public class PickFrame extends JFrame implements ActionListener {
 
     private PortDropdownMenu pdmCOM;
     private JButton jbRefresh;
-    private JButton jbConnect, jbKalibreer, jbTekenTSP;
+    private JButton jbConnect, jbKalibreer, jbTekenTSP, jbReset;
     private PickPanel panel;
 
     public PickFrame(PickPak pickpak) {
@@ -95,6 +95,11 @@ public class PickFrame extends JFrame implements ActionListener {
         jbTekenTSP.addActionListener(this);
         add(jbTekenTSP);
 
+        jbReset = new JButton("Reset");
+        jbReset.addActionListener(this);
+        jbReset.setEnabled(false);
+        add(jbReset);
+
         setVisible(true);
         panel = new PickPanel(pickpak);
         add(panel);
@@ -107,21 +112,19 @@ public class PickFrame extends JFrame implements ActionListener {
 
             jbTekenTSP.setEnabled(false);
             jbbevestig.setEnabled(false);
+            jbReset.setEnabled(true);
             //if (status == 0) {
             //pickpak.maakRouteVoorGUI(bestelling);
             //repaint();
             jtfFile.setText("");
             voerTSPuit();
-            
+
             jbTekenTSP.setEnabled(true);
-            
-            arduino.closeConnection();
-            arduino2.closeConnection();
-            
-            //pickpak.voerBPPuit(route, arduino);
-            //status = 1;
+
             
 
+            //pickpak.voerBPPuit(route, arduino);
+            //status = 1;
             //} else if (status == 1) {
             //pickpak.voerBPPuit(bestelling, arduino);
             //
@@ -136,8 +139,7 @@ public class PickFrame extends JFrame implements ActionListener {
                     jbConnect.setText("Disconnect");
                     pdmCOM.setEnabled(false);
                     jbRefresh.setEnabled(false);
-                    jbKalibreer.setEnabled(true);
-                    
+                    jbKalibreer.setEnabled(false);
 
                     //jlx.setEnabled(true);
                     //jtfx.setEnabled(true);
@@ -163,22 +165,29 @@ public class PickFrame extends JFrame implements ActionListener {
             pickpak.kalibreerSchijf(arduino2);
         } else if (e.getSource() == jbTekenTSP) {
             aantalBestellingen++;
-            if(aantalBestellingen > 1){
+            if (aantalBestellingen > 1) {
                 reconnect();
             }
             bestelling = null;
             bestelling = pickpak.leesBestelling(jtfFile.getText());
             pickpak.maakRouteVoorGUI(bestelling);
             pickpak.voerBPPuit(bestelling);
-            
+
             jbbevestig.setEnabled(true);
             jbTekenTSP.setEnabled(false);
             //System.out.println(pickpak.maakRouteVoorGUI(bestelling));
+        } else if (e.getSource() == jbReset) {
+            pickpak.resetRobots(arduino, arduino2);
+            
+            arduino.closeConnection();
+            arduino2.closeConnection();
+
+            panel.paintImmediately(0, 0, 1920, 1080);
         }
         repaint();
     }
-    
-    private void reconnect(){
+
+    private void reconnect() {
         arduino.openConnection();
         arduino2.openConnection();
     }
@@ -189,36 +198,38 @@ public class PickFrame extends JFrame implements ActionListener {
         for (int it = 1; it < pickpak.route.size() - 1; it++) {
 
             pickpak.draaiSchijf(it, arduino2);
-            
+
             panel.paintImmediately(0, 0, 1920, 1080);
-            
+
             pickpak.beweegKraan(it, arduino);
 
             panel.paintImmediately(0, 0, 1920, 1080);
-            
+
             arduino.serialWrite('p');
+
             
-            pickpak.werkDoosInhoudBij(it-1);
+
             
-            panel.paintImmediately(0, 0, 1920, 1080);
-            
-            while(arduino.serialRead().equals("") || arduino2.serialRead() == null){
+
+            while (arduino.serialRead().equals("") || arduino2.serialRead() == null) {
                 //wacht tot klaar met pushen
             }
+
+            //while (arduino2.serialRead().equals("") || arduino2.serialRead() == null) {
+            //    //wacht op knop
+            //}
             
-            while (arduino2.serialRead().equals("") || arduino2.serialRead() == null) {
-                //wacht op knop
+            try{
+                Thread.sleep(2000);
+            }catch(Exception e){
+                
             }
+            
+            pickpak.werkDoosInhoudBij(it);
+
+            panel.paintImmediately(0, 0, 1920, 1080);
         }
-        
-        pickpak.resetRobots(arduino, arduino2);
-        
-        //arduino2.serialWrite((char) 49);
-        //arduino.serialWrite('h');
-        
-        //arduino.closeConnection();
-        //arduino2.closeConnection();
-        panel.paintImmediately(0,0,1920, 1080);
+
     }
 
 }

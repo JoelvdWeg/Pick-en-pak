@@ -29,6 +29,8 @@ public class PickPak {
     private static Connection connection;
 
     private boolean aanHetKalibreren;
+    
+    private ArrayList<Doos> dozen;
 
     public PickPak() {
         kraanPositie = 0;
@@ -136,6 +138,7 @@ public class PickPak {
         BPP bpp = null;
         bpp = new BPP(picks);
         volgorde = bpp.getVolgorde();
+        dozen = bpp.getDozen();
         System.out.println("Doos volgorde bepaald:");
         System.out.println(volgorde + "\n...");
     }
@@ -211,9 +214,23 @@ public class PickPak {
 
         kraanPositie = 0;
         doosPositie = 1;
+        
         for(int i = 0; i < 6; i++){
             doosInhoud[i] = 0;
         }
+        
+        //for(int d: volgorde){
+            
+        //}
+        
+        Doos.aantalDozen = 0;
+        
+        for(Doos d: dozen){
+            d.resetInhoud();
+        }
+        
+        route = null;
+        volgorde = null;
     }
 
     public void beweegKraan(int next, Arduino arduino) {
@@ -262,7 +279,7 @@ public class PickPak {
         double extraPixels = extraInhoud * 800.0;
         int intExtraPixels = (int) extraPixels;
         
-        doosInhoud[volgorde.get(next)] += intExtraPixels;
+        doosInhoud[volgorde.get(next-1)-1] += intExtraPixels;
         
         //doosInhoud[volgorde.get(next)] += items.get(route.get(next)).getGrootte();
         
@@ -277,7 +294,7 @@ public class PickPak {
         
         for(int i = 0; i < 6; i++){
         
-            g.fillRect(1000 + 100 * i, 900 - doosInhoud[i],   50, doosInhoud[i]);
+            g.fillRect(1100 + 100 * i, 900 - doosInhoud[i],   50, doosInhoud[i]);
 
         }
     }

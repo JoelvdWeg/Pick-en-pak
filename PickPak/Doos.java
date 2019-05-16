@@ -3,7 +3,7 @@ package PickPak;
 import java.util.ArrayList;
 
 public class Doos {
-    private static int aantalDozen = 0;
+    public static int aantalDozen = 0;
     private int doosID;
     //private static final int CAPACITEIT = 12;
     private double capaciteit;
@@ -48,6 +48,11 @@ public class Doos {
     
     public double getRuimte() {
         return capaciteit - getInhoud();
+    }
+    
+    public void resetInhoud(){
+        inhoud = new ArrayList<Item>();
+        //aantalDozen = 0;
     }
 
     public double getInhoud() {

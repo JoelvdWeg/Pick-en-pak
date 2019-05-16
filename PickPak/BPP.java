@@ -107,10 +107,10 @@ public class BPP {
             volgorde.add(geselecteerd);
 
             // Alle dozen printen
-            //printRonde(i, geselecteerd);
+            printRonde(i, geselecteerd);
         }
 
-        //printVolgorde();
+        printVolgorde();
     }
 
     public void printRonde(int i, Doos geselecteerd) {
@@ -145,5 +145,9 @@ public class BPP {
             volgorde.add(doos.getDoosID());
         }
         return volgorde;
+    }
+    
+    public ArrayList<Doos> getDozen(){
+        return dozen;
     }
 }
