@@ -20,16 +20,27 @@ public class Pakbon {
         this.id = id;
     }
 
-    public void maakPakbon() {
+    public Pakbon(int id, String naam, String adres1, String adres2, String land) {
+        this(id);
+        this.naam = naam;
+        this.adres1 = adres1;
+        this.adres2 = adres2;
+        this.land = land;
+    }
+
+    public void maakPakbonBestand() {
+        String fileName = "pakbonnen/" + naam + ".txt";
 
         try {
-            FileWriter fw = new FileWriter(naam + ".txt");
+
+            FileWriter fw = new FileWriter(fileName);
             fw.write(toString());
             fw.close();
             System.out.println(toString());
             Desktop.getDesktop().open(new File(naam + ".txt"));
         } catch (Exception ex) {
             System.err.println("Couldn't log this: ");
+            System.out.println(ex);
         }
     }
 

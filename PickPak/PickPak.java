@@ -200,10 +200,11 @@ public class PickPak {
                 } catch (Exception e) {
 
                 }
-
                 picks = voegToeAanPicks(i, picks);
                 k++;
             }
+            
+            pakbon.maakPakbonBestand();
 
             System.out.println("Totaal: " + k + " items\n...");
 
