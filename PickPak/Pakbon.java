@@ -39,7 +39,7 @@ public class Pakbon {
             System.out.println(toString());
             Desktop.getDesktop().open(new File(naam + ".txt"));
         } catch (Exception ex) {
-            System.err.println("Couldn't log this: ");
+            System.err.println("Couldn't log this\n...");
             System.out.println(ex);
         }
     }

@@ -164,7 +164,7 @@ public class PickPak {
                 newPakbonID = bestellingIDresult.getInt(1) + 1;
                 bestellingIDresult.close();
 
-                pakbon = new Pakbon(newPakbonID);
+                pakbon = new Pakbon(newPakbonID, naam, adres1, adres2, land);
 
                 PreparedStatement newBestelling = connection.prepareStatement("INSERT INTO bestelling VALUES(?,?,?,?,?,?)");
                 newBestelling.setInt(1, newPakbonID);
