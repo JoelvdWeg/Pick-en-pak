@@ -49,6 +49,11 @@ public class Doos {
     public double getRuimte() {
         return capaciteit - getInhoud();
     }
+    
+    public void resetInhoud(){
+        inhoud = new ArrayList<Item>();
+        //aantalDozen = 0;
+    }
 
     public double getInhoud() {
         double inhoudSum = 0;

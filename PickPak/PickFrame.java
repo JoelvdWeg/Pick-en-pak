@@ -6,36 +6,29 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import arduino.*;
-import java.io.File;
 import java.util.ArrayList;
-import javax.swing.SwingUtilities;
-import javax.swing.text.Document;
-import javax.xml.parsers.*;
-import org.w3c.dom.*;
 
 public class PickFrame extends JFrame implements ActionListener {
 
-    private int status = 0;
     private int aantalBestellingen = 0;
-    ArrayList<Item> bestelling;
-    private PickPak pickpak;
-    private JTextField jtfx, jtfy, jtfFile;
-    private JLabel jlx, jly, jlFile;
-    private JButton jbbevestig;
-    private JLabel jlStockItemID;
-    private JLabel jlStockItemName;
-    public Arduino arduino, arduino2;
-
-    //ArrayList<Integer> route = null;
     private boolean aanHetKalibreren = false;
+    private boolean stop = false;
+    private int picknr = 0;
+    ArrayList<Item> bestelling;
 
-    private PortDropdownMenu pdmCOM;
-    private JButton jbRefresh;
-    private JButton jbConnect, jbKalibreer, jbTekenTSP;
+    private PickPak pickpak;
+
+    private JTextField jtfFile;
+    private JLabel jlFile, jlCOMschijf, jlCOMkraan;
+    private JButton jbbevestig, jbRefresh, jbConnect, jbKalibreer, jbTekenRoute, jbReset, jbStop;
+
+    private PortDropdownMenu pdmCOMschijf, pdmCOMkraan;
+
     private PickPanel panel;
+
+    private Arduino arduino, arduino2;
 
     public PickFrame(PickPak pickpak) {
         setTitle("GUI");
@@ -45,38 +38,36 @@ public class PickFrame extends JFrame implements ActionListener {
 
         this.pickpak = pickpak;
 
-        pdmCOM = new PortDropdownMenu();
-        add(pdmCOM);
-        pdmCOM.refreshMenu();
+        jlCOMkraan = new JLabel("Kraan:");
+        add(jlCOMkraan);
+
+        pdmCOMkraan = new PortDropdownMenu();
+        add(pdmCOMkraan);
+        pdmCOMkraan.refreshMenu();
+
+        jlCOMschijf = new JLabel("Schijf:");
+        add(jlCOMschijf);
+
+        pdmCOMschijf = new PortDropdownMenu();
+        add(pdmCOMschijf);
+        pdmCOMschijf.refreshMenu();
+
+        jbConnect = new JButton("Connect");
+        jbConnect.addActionListener(this);
+        add(jbConnect);
 
         jbRefresh = new JButton("Refresh");
         jbRefresh.addActionListener(this);
         add(jbRefresh);
 
-        jbConnect = new JButton("Connect");
-        jbConnect.addActionListener(this);
-        add(jbConnect);
+        add(new JLabel("     "));
 
         jbKalibreer = new JButton("Kalibreer");
         jbKalibreer.setEnabled(false);
         jbKalibreer.addActionListener(this);
         add(jbKalibreer);
 
-        jlx = new JLabel("x-as");
-        jlx.setEnabled(false);
-        //add(jlx);
-
-        jtfx = new JTextField(4);
-        jtfx.setEnabled(false);
-        //add(jtfx);
-
-        jly = new JLabel("y-as");
-        jly.setEnabled(false);
-        //add(jly);
-
-        jtfy = new JTextField(4);
-        jtfy.setEnabled(false);
-        //add(jtfy);
+        add(new JLabel("     "));
 
         jlFile = new JLabel("Bestelling: ");
         add(jlFile);
@@ -84,131 +75,207 @@ public class PickFrame extends JFrame implements ActionListener {
         jtfFile = new JTextField(10);
         add(jtfFile);
 
-        jbbevestig = new JButton("Bevestig");
+        jbTekenRoute = new JButton("Teken route");
+        jbTekenRoute.addActionListener(this);
+        jbTekenRoute.setEnabled(false);
+        add(jbTekenRoute);
+
+        jbbevestig = new JButton("Start picken");
         jbbevestig.addActionListener(this);
         jbbevestig.setEnabled(false);
         add(jbbevestig);
 
-        jbTekenTSP = new JButton("Teken TSP");
-        jbTekenTSP.addActionListener(this);
-        add(jbTekenTSP);
+        add(new JLabel("     "));
 
-        setVisible(true);
+        jbReset = new JButton("Reset");
+        jbReset.addActionListener(this);
+        jbReset.setEnabled(false);
+        add(jbReset);
+
+        jbStop = new JButton("Stop");
+        
+        jbStop.addActionListener(this);
+
+//        jbStop.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                stop = true;
+//            }
+//        });
+
+        add(jbStop);
+
         panel = new PickPanel(pickpak);
         add(panel);
 
+        if (pdmCOMschijf.getItemCount() == 0 || pdmCOMschijf.getItemCount() == 0) {
+            jbConnect.setEnabled(false);
+        }
+
+        setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbbevestig) {
+            jbTekenRoute.setEnabled(false);
+            jbbevestig.setEnabled(false);
+            jbReset.setEnabled(false);
+            jbKalibreer.setEnabled(false);
 
-            //if (status == 0) {
-            //pickpak.maakRouteVoorGUI(bestelling);
-            //repaint();
             jtfFile.setText("");
-            voerTSPuit();
-            
-            arduino.closeConnection();
-            arduino2.closeConnection();
-            
-            //pickpak.voerBPPuit(route, arduino);
-            //status = 1;
-            
 
-            //} else if (status == 1) {
-            //pickpak.voerBPPuit(bestelling, arduino);
-            //
-            //}
-        } else if (e.getSource() == jbRefresh) {
-            pdmCOM.refreshMenu();
+            pickBestelling();
+
+            jbReset.setEnabled(true);
+            jbKalibreer.setEnabled(true);
+
+        } else if(e.getSource() == jbStop){
+            System.out.println("STOP");
+        } 
+        else if (e.getSource() == jbRefresh) {
+
+            pdmCOMkraan.refreshMenu();
+            pdmCOMschijf.refreshMenu();
+
+            if (pdmCOMkraan.getItemCount() == 0 || pdmCOMschijf.getItemCount() == 0) {
+                jbConnect.setEnabled(false);
+            } else {
+                jbConnect.setEnabled(true);
+            }
+
         } else if (e.getSource() == jbConnect) {
-            if (jbConnect.getText().equals("Connect")) {
-                arduino = new Arduino("COM5", 9600);
-                arduino2 = new Arduino("COM3", 9600);
-                if (arduino.openConnection() && arduino2.openConnection()) {
-                    jbConnect.setText("Disconnect");
-                    pdmCOM.setEnabled(false);
-                    jbRefresh.setEnabled(false);
-                    jbKalibreer.setEnabled(true);
-                    
 
-                    //jlx.setEnabled(true);
-                    //jtfx.setEnabled(true);
-                    //jly.setEnabled(true);
-                    //jtfy.setEnabled(true);
-                    //jbbevestig.setEnabled(true);
+            if (jbConnect.getText().equals("Connect")) {
+                String kraanPort = (String) pdmCOMkraan.getSelectedItem();
+                String schijfPort = (String) pdmCOMschijf.getSelectedItem();
+
+                if (!kraanPort.equals(schijfPort)) {
+
+                    arduino = new Arduino(kraanPort, 9600);
+                    arduino2 = new Arduino(schijfPort, 9600);
+
+                    if (arduino.openConnection() && arduino2.openConnection()) {
+                        jbConnect.setText("Disconnect");
+                        pdmCOMschijf.setEnabled(false);
+                        pdmCOMkraan.setEnabled(false);
+                        jbRefresh.setEnabled(false);
+                        jbKalibreer.setEnabled(true);
+                        jbTekenRoute.setEnabled(true);
+                    }
                 }
+
             } else {
                 arduino.closeConnection();
                 arduino2.closeConnection();
-                jbConnect.setText("Connect");;
-                pdmCOM.setEnabled(true);
-                jbRefresh.setEnabled(true);
 
-                jlx.setEnabled(false);
-                jtfx.setEnabled(false);
-                jly.setEnabled(false);
-                jtfy.setEnabled(false);
-                //jbbevestig.setEnabled(false);
+                jbConnect.setText("Connect");;
+
+                pdmCOMschijf.setEnabled(true);
+                pdmCOMkraan.setEnabled(true);
+                jbRefresh.setEnabled(true);
+                jbTekenRoute.setEnabled(false);
+                jbbevestig.setEnabled(false);
                 jbKalibreer.setEnabled(false);
             }
+
         } else if (e.getSource() == jbKalibreer) {
-            pickpak.kalibreerSchijf(arduino2);
-        } else if (e.getSource() == jbTekenTSP) {
-            aantalBestellingen++;
-            if(aantalBestellingen > 1){
-                reconnect();
+
+            if (aanHetKalibreren) {
+                jbKalibreer.setText("Kalibreer");
+
+                jbTekenRoute.setEnabled(true);
+                jbConnect.setEnabled(true);
+                jbReset.setEnabled(true);
+
+            } else {
+                jbKalibreer.setText("Stop");
+
+                jbbevestig.setEnabled(false);
+                jbTekenRoute.setEnabled(false);
+                jbConnect.setEnabled(false);
+                jbReset.setEnabled(false);
             }
-            bestelling = null;
-            bestelling = pickpak.leesBestelling(jtfFile.getText());
-            pickpak.maakRouteVoorGUI(bestelling);
-            pickpak.voerBPPuit(bestelling);
-            
-            jbbevestig.setEnabled(true);
-            jbTekenTSP.setEnabled(false);
-            //System.out.println(pickpak.maakRouteVoorGUI(bestelling));
+
+            pickpak.kalibreerSchijf(arduino2, aanHetKalibreren);
+            aanHetKalibreren = !aanHetKalibreren;
+
+        } else if (e.getSource() == jbTekenRoute) {
+            try {
+                aantalBestellingen++;
+                if (aantalBestellingen > 1) {
+                    reconnect();
+                }
+
+                bestelling = null;
+                bestelling = pickpak.leesBestelling(jtfFile.getText());
+
+                ArrayList<Integer> route = pickpak.voerTSPuit(bestelling);
+
+                pickpak.voerBPPuit(route);
+
+                jbbevestig.setEnabled(true);
+                jbTekenRoute.setEnabled(false);
+
+            } catch (Exception ex) {
+                System.out.println("Bestand niet gevonden\n...");
+            }
+        } else if (e.getSource() == jbReset) {
+
+            pickpak.resetRobots(arduino, arduino2);
+
+            panel.paintImmediately(0, 0, 1920, 1080);
+
+            jbTekenRoute.setEnabled(true);
         }
         repaint();
     }
-    
-    private void reconnect(){
+
+    private void reconnect() {
         arduino.openConnection();
         arduino2.openConnection();
     }
 
-    public void voerTSPuit() {
-        System.out.println("route: " + pickpak.route);
-
+    public void pickBestelling() {
         for (int it = 1; it < pickpak.route.size() - 1; it++) {
+            
+            if(stop){
+                stop = false;
+                break;
+            }
 
             pickpak.draaiSchijf(it, arduino2);
-            
+
             panel.paintImmediately(0, 0, 1920, 1080);
-            
+
             pickpak.beweegKraan(it, arduino);
 
             panel.paintImmediately(0, 0, 1920, 1080);
-            
+
             arduino.serialWrite('p');
-            
-            while(arduino.serialRead().equals("") || arduino2.serialRead() == null){
+
+            pickpak.setPush(true);
+
+            panel.paintImmediately(0, 0, 1920, 1080);
+
+            while (arduino.serialRead().equals("") || arduino.serialRead() == null) {
                 //wacht tot klaar met pushen
             }
-            
-            while (arduino2.serialRead().equals("") || arduino2.serialRead() == null) {
-                //wacht op knop
-            }
-        }
-        
-        pickpak.resetRobots(arduino, arduino2);
-        
-        //arduino2.serialWrite((char) 49);
-        //arduino.serialWrite('h');
-        
-        //arduino.closeConnection();
-        //arduino2.closeConnection();
-        panel.paintImmediately(0,0,1920, 1080);
-    }
 
+            pickpak.setPush(false);
+
+            panel.paintImmediately(0, 0, 1920, 1080);
+
+            //WACHT OP VALLEN PRODUCT
+            try {
+                Thread.sleep(1000);
+            } catch (Exception ex) {
+
+            }
+
+            pickpak.werkDoosInhoudBij(it);
+
+            panel.paintImmediately(0, 0, 1920, 1080);
+        }
+    }
 }
