@@ -36,11 +36,14 @@ public class Pakbon {
             FileWriter fw = new FileWriter(fileName);
             fw.write(toString());
             fw.close();
+            
+            Thread.sleep(1000);
+            
             System.out.println(toString());
-            Desktop.getDesktop().open(new File(naam + ".txt"));
+            Desktop.getDesktop().open(new File(fileName));
         } catch (Exception ex) {
-            System.err.println("Couldn't log this\n...");
-            System.out.println(ex);
+            System.err.println("Kon het bestand niet openen\n...");
+            //System.out.println(ex);
         }
     }
 

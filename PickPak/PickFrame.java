@@ -77,7 +77,6 @@ public class PickFrame extends JFrame implements ActionListener {
 
         jbTekenRoute = new JButton("Teken route");
         jbTekenRoute.addActionListener(this);
-        jbTekenRoute.setEnabled(false);
         add(jbTekenRoute);
 
         jbbevestig = new JButton("Start picken");
@@ -93,7 +92,7 @@ public class PickFrame extends JFrame implements ActionListener {
         add(jbReset);
 
         jbStop = new JButton("Stop");
-        
+
         jbStop.addActionListener(this);
 
 //        jbStop.addActionListener(new ActionListener() {
@@ -102,7 +101,6 @@ public class PickFrame extends JFrame implements ActionListener {
 //                stop = true;
 //            }
 //        });
-
         add(jbStop);
 
         panel = new PickPanel(pickpak);
@@ -125,15 +123,19 @@ public class PickFrame extends JFrame implements ActionListener {
 
             jtfFile.setText("");
 
+            aantalBestellingen++;
+            if (aantalBestellingen > 1) {
+                reconnect();
+            }
+
             pickBestelling();
 
             jbReset.setEnabled(true);
             jbKalibreer.setEnabled(true);
 
-        } else if(e.getSource() == jbStop){
+        } else if (e.getSource() == jbStop) {
             System.out.println("STOP");
-        } 
-        else if (e.getSource() == jbRefresh) {
+        } else if (e.getSource() == jbRefresh) {
 
             pdmCOMkraan.refreshMenu();
             pdmCOMschijf.refreshMenu();
@@ -174,7 +176,6 @@ public class PickFrame extends JFrame implements ActionListener {
                 pdmCOMschijf.setEnabled(true);
                 pdmCOMkraan.setEnabled(true);
                 jbRefresh.setEnabled(true);
-                jbTekenRoute.setEnabled(false);
                 jbbevestig.setEnabled(false);
                 jbKalibreer.setEnabled(false);
             }
@@ -202,10 +203,6 @@ public class PickFrame extends JFrame implements ActionListener {
 
         } else if (e.getSource() == jbTekenRoute) {
             try {
-                aantalBestellingen++;
-                if (aantalBestellingen > 1) {
-                    reconnect();
-                }
 
                 bestelling = null;
                 bestelling = pickpak.leesBestelling(jtfFile.getText());
@@ -214,7 +211,10 @@ public class PickFrame extends JFrame implements ActionListener {
 
                 pickpak.voerBPPuit(route);
 
-                jbbevestig.setEnabled(true);
+                if (jbConnect.getText().equals("Disconnect")) {
+                    jbbevestig.setEnabled(true);
+                }
+
                 jbTekenRoute.setEnabled(false);
 
             } catch (Exception ex) {
@@ -238,8 +238,8 @@ public class PickFrame extends JFrame implements ActionListener {
 
     public void pickBestelling() {
         for (int it = 1; it < pickpak.route.size() - 1; it++) {
-            
-            if(stop){
+
+            if (stop) {
                 stop = false;
                 break;
             }
