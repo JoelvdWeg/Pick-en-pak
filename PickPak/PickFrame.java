@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import arduino.*;
 import java.util.ArrayList;
+import javax.swing.JTable;
 
 public class PickFrame extends JFrame implements ActionListener {
 
@@ -23,6 +24,7 @@ public class PickFrame extends JFrame implements ActionListener {
     private JTextField jtfFile;
     private JLabel jlFile, jlCOMschijf, jlCOMkraan;
     private JButton jbbevestig, jbRefresh, jbConnect, jbKalibreer, jbTekenRoute, jbReset, jbStop;
+    private JTable tabel;
 
     private PortDropdownMenu pdmCOMschijf, pdmCOMkraan;
 
@@ -102,6 +104,10 @@ public class PickFrame extends JFrame implements ActionListener {
 //            }
 //        });
         add(jbStop);
+
+        tabel = pickpak.maakTabel();
+
+        add(tabel);
 
         panel = new PickPanel(pickpak);
         add(panel);
@@ -203,6 +209,8 @@ public class PickFrame extends JFrame implements ActionListener {
 
         } else if (e.getSource() == jbTekenRoute) {
             try {
+
+                tabel = pickpak.maakTabel();
 
                 bestelling = null;
                 bestelling = pickpak.leesBestelling(jtfFile.getText());

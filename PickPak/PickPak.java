@@ -10,6 +10,8 @@ import java.sql.*;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+import javax.swing.JTable;
+import javax.swing.table.TableColumn;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Element;
@@ -32,9 +34,15 @@ public class PickPak {
 
     private static Connection connection;
 
+    private Pakbon pakbon;
+
+    private JTable table = null;
+
     public PickPak() {
         kraanPositie = 0;
         doosPositie = 1;
+
+        pakbon = null;
 
         doosInhoud = new int[AANTAL_DOZEN];
         for (int d : doosInhoud) {
@@ -148,13 +156,13 @@ public class PickPak {
         return null;
     }
 
-    public static ArrayList<Item> maakBestellingAan(String naam, String adres1, String adres2, String land, ArrayList<Integer> besteldeItems) {
+    public ArrayList<Item> maakBestellingAan(String naam, String adres1, String adres2, String land, ArrayList<Integer> besteldeItems) {
         if (maakDatabaseConnectie()) {
 
             ArrayList<Item> picks = new ArrayList<>();
 
-            Pakbon pakbon = null;
-            
+            pakbon = null;
+
             int newPakbonID = 0;
 
             try {
@@ -196,14 +204,14 @@ public class PickPak {
                     newBestelregel.setInt(2, newPakbonID);
                     newBestelregel.setInt(3, i);
                     newBestelregel.setInt(4, 1); //<<<<<<<<<<<<<<<<<<<< Deze nog veranderen zodat twee dezelfde items in dezelfde regel komen met aantal 2
-                    newBestelregel.executeUpdate();             
+                    newBestelregel.executeUpdate();
                 } catch (Exception e) {
 
                 }
                 picks = voegToeAanPicks(i, picks);
                 k++;
             }
-            
+
             pakbon.maakPakbonBestand();
 
             System.out.println("Totaal: " + k + " items\n...");
@@ -223,6 +231,44 @@ public class PickPak {
             }
         }
         return picks;
+    }
+
+    public JTable maakTabel() {
+
+        String[] columnNames = {"Id",
+            "Product",
+            "Grotte",
+            "Coördinaten"};
+
+        //pakbon.items;
+        int numRow = 0;
+        int numCol = 4;
+
+        if (pakbon != null) {
+            numRow = pakbon.getSize();
+
+        }
+
+        Object[][] array = new Object[numRow][numCol];
+
+        int i, j;
+        for (i = 0; i < numRow; i++) {
+            array[0][i] = pakbon.items.get(i).getID();
+            array[1][i] = pakbon.items.get(i).getNaam();
+            array[2][i] = pakbon.items.get(i).getGrootte();
+            array[3][i] = pakbon.items.get(i).getLocatie().getCoord();
+        }
+        table = new JTable(array, columnNames);
+        System.out.println("array:" + array);
+
+        TableColumn column = null;
+        for (int t = 0; t < 4; t++) {
+            column = table.getColumnModel().getColumn(t);
+            column.setPreferredWidth(250);
+        }
+
+        return table;
+
     }
 
     public ArrayList<Integer> voerTSPuit(ArrayList<Item> picks) {
@@ -345,10 +391,10 @@ public class PickPak {
                     Graphics2D g2d = (Graphics2D) g;
                     Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
                     g2d.setStroke(dashed);
-                    g2d.drawLine(250 + startx * 100, 900 - 100 * starty, 250 + eindx * 100, 900 - eindy * 100);
+                    g2d.drawLine(250 + startx * 100, 460 - 100 * starty, 250 + eindx * 100, 460 - eindy * 100);
                     g2d.setStroke(new BasicStroke(4));
                 } else {
-                    g.drawLine(250 + startx * 100, 900 - 100 * starty, 250 + eindx * 100, 900 - eindy * 100);
+                    g.drawLine(250 + startx * 100, 460 - 100 * starty, 250 + eindx * 100, 460 - eindy * 100);
                 }
 
                 if (k == 0) {
@@ -356,7 +402,7 @@ public class PickPak {
                 } else if (k == route.size() - 2) {
                     g.setColor(Color.RED);
                 }
-                g.fillOval(startx * 100 + 243, 893 - starty * 100, 14, 14);
+                g.fillOval(startx * 100 + 243, 453 - starty * 100, 14, 14);
                 g.setColor(Color.BLUE);
                 k++;
             }
@@ -369,12 +415,12 @@ public class PickPak {
         } else {
             g.setColor(Color.GREEN);
         }
-        g.drawRect(203 + 100 * items.get(kraanPositie).getLocatie().getCoord().getX(), 853 - 100 * items.get(kraanPositie).getLocatie().getCoord().getY(), 95, 95);
+        g.drawRect(203 + 100 * items.get(kraanPositie).getLocatie().getCoord().getX(), 413 - 100 * items.get(kraanPositie).getLocatie().getCoord().getY(), 95, 95);
     }
 
     public void tekenDoosPositie(Graphics g) {
         g.setColor(Color.GREEN);
-        g.drawRect(1000 + 100 * doosPositie, 500, 50, 400);
+        g.drawRect(1000 + 100 * doosPositie, 110, 50, 400);
     }
 
     public void werkDoosInhoudBij(int next) {

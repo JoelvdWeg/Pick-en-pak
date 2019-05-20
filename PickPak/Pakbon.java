@@ -12,7 +12,7 @@ public class Pakbon {
     private String adres1;
     private String adres2;
     private String land;
-    private ArrayList<Item> items;
+    public ArrayList<Item> items;
     public static String newline = System.getProperty("line.separator");
 
     public Pakbon(int id) {
@@ -26,6 +26,11 @@ public class Pakbon {
         this.adres1 = adres1;
         this.adres2 = adres2;
         this.land = land;
+
+    }
+
+    public int getSize() {
+        return items.size();
     }
 
     public void maakPakbonBestand() {
@@ -36,9 +41,9 @@ public class Pakbon {
             FileWriter fw = new FileWriter(fileName);
             fw.write(toString());
             fw.close();
-            
+
             Thread.sleep(1000);
-            
+
             System.out.println(toString());
             Desktop.getDesktop().open(new File(fileName));
         } catch (Exception ex) {

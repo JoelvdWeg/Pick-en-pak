@@ -22,7 +22,7 @@ public class PickPanel extends JPanel {
     PickPak pickpak;
 
     public PickPanel(PickPak pickpak) {
-        setPreferredSize(new Dimension(1920, 1080));
+        setPreferredSize(new Dimension(1920, 540));
         this.pickpak = pickpak;
     }
 
@@ -36,73 +36,71 @@ public class PickPanel extends JPanel {
         g2.setStroke(new BasicStroke(5));
 
 //        grote vierkant
-        g.drawRect(10, 10, 1900, 990);
-        g.drawLine(950, 10, 950, 1000);
+        //       g.drawRect(10, 10, 1900, 990);
+        g.drawLine(950, 10, 950, 500);
 //          lijn op de horizontale helft
-        g.drawLine(10, 400, 1920, 400);
-        g.drawRect(200, 450, 500, 500);
+//        g.drawLine(10, 400, 1920, 400);
+        g.drawRect(200, 10, 500, 500);
 
-//        GRID 
+//        GRID
         int x = 300;
         for (int i = 0; i < 4; i++) {
 
-            g.drawLine(x, 450, x, 950);
+            g.drawLine(x, 10, x, 510);
             x = x + 100;
         }
 
-        int y = 550;
+        int y = 110;
         for (int i = 0; i < 4; i++) {
 
             g.drawLine(200, y, 700, y);
             y = y + 100;
         }
 
-//            DOZEN 
+//            DOZEN
         g2.setStroke(new BasicStroke(2));
-        g.drawRect(1100, 500, 50, 400);
-        g.drawRect(1200, 500, 50, 400);
-        g.drawRect(1300, 500, 50, 400);
-        g.drawRect(1400, 500, 50, 400);
-        g.drawRect(1500, 500, 50, 400);
-        g.drawRect(1600, 500, 50, 400);
-        
-
+        g.drawRect(1100, 110, 50, 400);
+        g.drawRect(1200, 110, 50, 400);
+        g.drawRect(1300, 110, 50, 400);
+        g.drawRect(1400, 110, 50, 400);
+        g.drawRect(1500, 110, 50, 400);
+        g.drawRect(1600, 110, 50, 400);
 
         g.setColor(Color.GRAY);
-        g.fillRect(1100, 500, 50, 400);
-        g.fillRect(1200, 500, 50, 400);
-        g.fillRect(1300, 500, 50, 400);
-        g.fillRect(1400, 500, 50, 400);
-        g.fillRect(1500, 500, 50, 400);
-        g.fillRect(1600, 500, 50, 400);
+        g.fillRect(1100, 110, 50, 400);
+        g.fillRect(1200, 110, 50, 400);
+        g.fillRect(1300, 110, 50, 400);
+        g.fillRect(1400, 110, 50, 400);
+        g.fillRect(1500, 110, 50, 400);
+        g.fillRect(1600, 110, 50, 400);
 
-        g.setColor(Color.BLACK);
-        g2.setStroke(new BasicStroke(4));
-        g.drawRect(1100, 75, 700, 300);
-
-        int x1 = 1250;
-        for (int i = 0; i < 4; i++) {
-
-            g.drawLine(x1, 75, x1, 375);
-            x1 = x1 + 140;
-        }
-
-        int y1 = 140;
-        for (int i = 0; i < 4; i++) {
-
-            g.drawLine(1100, y1, 1800, y1);
-            y1 = y1 + 60;
-
-        }
-        
+//        g.setColor(Color.BLACK);
+//        g2.setStroke(new BasicStroke(4));
+//        g.drawRect(1100, 75, 700, 300);
+//
+//
+//        //
+//        int x1 = 1250;
+//        for (int i = 0; i < 4; i++) {
+//
+//            g.drawLine(x1, 75, x1, 375);
+//            x1 = x1 + 140;
+//        }
+//
+//        int y1 = 140;
+//        for (int i = 0; i < 4; i++) {
+//
+//            g.drawLine(1100, y1, 1800, y1);
+//            y1 = y1 + 60;
+//
+//        }
         //pickpak.tekenDoos(g);
-
         pickpak.tekenKraanPositie(g);
-        
+
         pickpak.tekenTSP(g);
-        
+
         pickpak.tekenDoosInhoud(g);
-        
+
         pickpak.tekenDoosPositie(g);
 
     }
