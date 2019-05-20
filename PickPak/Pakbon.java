@@ -113,23 +113,4 @@ public class Pakbon {
         items.add(item);
     }
 
-//    public String toString() {
-//        String s = "";
-//        s += "PAKBON\n\n";
-//        s += "----------------------------\n";
-//        s += naam + "\n";
-//        s += adres1 + "\n";
-//        s += adres2 + "\n";
-//        s += land + "\n";
-//        s += "----------------------------\n\n";
-//        s += "Producten:\n";
-//
-//        for (Item item : items) {
-//            s += item + "\n";
-//        }
-//
-//        s += "----------------------------\n\n";
-//
-//        return s;
-//    }
 }
