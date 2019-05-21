@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import arduino.*;
-<<<<<<< HEAD
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Scrollbar;
@@ -31,7 +31,7 @@ public class PickFrame extends JFrame implements ActionListener {
     private Arduino arduino;
     private JTabbedPane pane;
     private JPanel main, advanced;
-=======
+
 import java.util.ArrayList;
 
 public class PickFrame extends JFrame implements ActionListener {
@@ -43,7 +43,7 @@ public class PickFrame extends JFrame implements ActionListener {
     ArrayList<Item> bestelling;
 
     private PickPak pickpak;
->>>>>>> master
+
 
     private GeavanceerdDialoog jdGeavanceerd;
 
@@ -68,7 +68,7 @@ public class PickFrame extends JFrame implements ActionListener {
         advanced = new JPanel();
 
         this.pickpak = pickpak;
-<<<<<<< HEAD
+
         pdmCOM = new PortDropdownMenu();
         main.add(pdmCOM, BorderLayout.NORTH);
         pdmCOM.refreshMenu();
@@ -101,23 +101,21 @@ public class PickFrame extends JFrame implements ActionListener {
         jtfy = new JTextField(4);
         jtfy.setEnabled(false);
         //add(jtfy);
-=======
->>>>>>> master
+
 
         jlFile = new JLabel("Bestelling: ");
         main.add(jlFile, BorderLayout.NORTH);
 
         jtfFile = new JTextField(10);
-<<<<<<< HEAD
+
         main.add(jtfFile, BorderLayout.NORTH);
-=======
+
         jtfFile.setText("bestelling.xml");
         add(jtfFile);
->>>>>>> master
+
 
         jbbevestig = new JButton("Start");
-        jbbevestig.addActionListener(this);
-<<<<<<< HEAD
+
         jbbevestig.setEnabled(true);
         main.add(jbbevestig, BorderLayout.NORTH);
 
@@ -137,7 +135,7 @@ public class PickFrame extends JFrame implements ActionListener {
         main.setAutoscrolls(true);
         scrollFrame.setPreferredSize(new Dimension(1800, 1100));
         this.add(scrollFrame);
-=======
+
         add(jbbevestig);
 
         jbStop = new JButton("Stop");
@@ -161,7 +159,6 @@ public class PickFrame extends JFrame implements ActionListener {
 
         setVisible(true);
 
->>>>>>> master
     }
 
     @Override
@@ -169,7 +166,7 @@ public class PickFrame extends JFrame implements ActionListener {
         if (e.getSource() == jbbevestig) {
             jbbevestig.setEnabled(false);
 
-<<<<<<< HEAD
+
             try {
                 String naam = "...";
                 String adres1 = "...";
@@ -237,9 +234,6 @@ public class PickFrame extends JFrame implements ActionListener {
 //                        }
                     }
                 }
-=======
-            
->>>>>>> master
 
             aantalBestellingen++;
             if (aantalBestellingen > 1) { // aanpassen!

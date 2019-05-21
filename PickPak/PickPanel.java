@@ -73,11 +73,10 @@ public class PickPanel extends JPanel {
         g.drawRect(1500, 500, 50, 400);
         g.drawRect(1600, 500, 50, 400);
 
-<<<<<<< HEAD
-=======
 
 
->>>>>>> master
+
+
         g.setColor(Color.GRAY);
         g.fillRect(1100, 500, 50, 400);
         g.fillRect(1200, 500, 50, 400);
@@ -97,7 +96,7 @@ public class PickPanel extends JPanel {
             x1 = x1 + 140;
         }
 
-<<<<<<< HEAD
+
         int y1 = 140;
         for (int i = 0; i < 4; i++) {
 
@@ -105,17 +104,12 @@ public class PickPanel extends JPanel {
             y1 = y1 + 60;
 
         }
-=======
 
->>>>>>> master
 
 //      Titels
         g.setColor(Color.BLACK);
         g.setFont(new Font("default", Font.BOLD, 50));
-<<<<<<< HEAD
-=======
 
->>>>>>> master
 
         g.drawString("0", 130, 920);
         g.drawString("1", 130, 820);
