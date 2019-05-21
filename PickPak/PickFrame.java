@@ -114,7 +114,7 @@ public class PickFrame extends JFrame implements ActionListener {
     private void tekenRoute(String f) {
         try {
             bestelling = null;
-            bestelling = pickpak.leesBestelling(f);
+            bestelling = pickpak.leesBestelling("bestelling.xml");
 
             if (bestelling == null) {
                 System.out.println("hoi");
@@ -200,6 +200,6 @@ public class PickFrame extends JFrame implements ActionListener {
 
             panel.paintImmediately(0, 0, 1920, 1080);
         }
-        pickpak.resetRobots(arduinoKraan, arduinoSchijf);
+        //pickpak.resetRobots(arduinoKraan, arduinoSchijf);
     }
 }
