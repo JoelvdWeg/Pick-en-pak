@@ -80,7 +80,7 @@ public class PickFrame extends JFrame implements ActionListener {
         if (e.getSource() == jbbevestig) {
             jbbevestig.setEnabled(false);
 
-            jtfFile.setText("");
+            
 
             aantalBestellingen++;
             if (aantalBestellingen > 1) { // aanpassen!
@@ -203,7 +203,10 @@ public class PickFrame extends JFrame implements ActionListener {
 
             panel.paintImmediately(0, 0, 1920, 1080);
         }
-         arduinoKraan.serialWrite("c00");
+        arduinoKraan.serialWrite("c00");
         arduinoSchijf.serialWrite("c1");
+        
+        jbbevestig.setEnabled(true);
+        
     }
 }
