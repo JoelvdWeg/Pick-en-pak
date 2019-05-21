@@ -200,6 +200,6 @@ public class PickFrame extends JFrame implements ActionListener {
 
             panel.paintImmediately(0, 0, 1920, 1080);
         }
-        //pickpak.resetRobots(arduinoKraan, arduinoSchijf);
+        pickpak.resetRobots(arduinoKraan, arduinoSchijf);
     }
 }
