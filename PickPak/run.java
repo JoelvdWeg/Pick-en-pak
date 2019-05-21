@@ -5,11 +5,10 @@ import javax.swing.JFrame;
 
 public class run {
 
-    
-
     public static void main(String[] args) {
        PickPak pp = new PickPak();
         
+<<<<<<< HEAD
        PickFrame pf = new PickFrame(pp);
 
         
@@ -30,6 +29,8 @@ public class run {
 //        } catch (FileNotFoundException fe) {
 //            System.out.println("Kon items niet ophalen\n...");
 //        }
+=======
+>>>>>>> master
 
     }
 }
