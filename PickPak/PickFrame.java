@@ -9,14 +9,19 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import arduino.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Scrollbar;
 import java.io.File;
 import java.util.ArrayList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.text.Document;
 import javax.xml.parsers.*;
 import org.w3c.dom.*;
 
 public class PickFrame extends JFrame implements ActionListener {
-
     private PickPak pickpak;
     private JTextField jtfx, jtfy, jtfFile;
     private JLabel jlx, jly, jlFile;
@@ -24,6 +29,8 @@ public class PickFrame extends JFrame implements ActionListener {
     private JLabel jlStockItemID;
     private JLabel jlStockItemName;
     private Arduino arduino;
+    private JTabbedPane pane;
+    private JPanel main, advanced;
 
     private boolean aanHetKalibreren = false;
 
@@ -36,29 +43,31 @@ public class PickFrame extends JFrame implements ActionListener {
         setSize(1920, 1080);
         setLayout(new FlowLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        main = new JPanel();
+        advanced = new JPanel();
 
         this.pickpak = pickpak;
-
         pdmCOM = new PortDropdownMenu();
-        add(pdmCOM);
+        main.add(pdmCOM, BorderLayout.NORTH);
         pdmCOM.refreshMenu();
-
+        
         jbRefresh = new JButton("Refresh");
         jbRefresh.addActionListener(this);
-        add(jbRefresh);
+        main.add(jbRefresh,BorderLayout.NORTH);
 
         jbConnect = new JButton("Connect");
         jbConnect.addActionListener(this);
-        add(jbConnect);
+        main.add(jbConnect, BorderLayout.NORTH);
 
         jbKalibreer = new JButton("Kalibreer");
         jbKalibreer.setEnabled(false);
         jbKalibreer.addActionListener(this);
-        add(jbKalibreer);
+        main.add(jbKalibreer, BorderLayout.NORTH);
 
         jlx = new JLabel("x-as");
         jlx.setEnabled(false);
-        //add(jlx);
+//        add(jlx);
 
         jtfx = new JTextField(4);
         jtfx.setEnabled(false);
@@ -73,20 +82,32 @@ public class PickFrame extends JFrame implements ActionListener {
         //add(jtfy);
 
         jlFile = new JLabel("Bestelling: ");
-        add(jlFile);
+        main.add(jlFile, BorderLayout.NORTH);
 
         jtfFile = new JTextField(10);
-        add(jtfFile);
+        main.add(jtfFile, BorderLayout.NORTH);
 
         jbbevestig = new JButton("Bevestig");
         jbbevestig.addActionListener(this);
         jbbevestig.setEnabled(true);
-        add(jbbevestig);
+        main.add(jbbevestig, BorderLayout.NORTH);
 
         setVisible(true);
         PickPanel panel = new PickPanel(pickpak);
-        add(panel);
+        main.add(panel);
+        
 
+
+        pane = new JTabbedPane();
+        add(pane);
+        pane.add(main, "main");
+        pane.add(advanced, "advanced");
+        
+        main.setPreferredSize(new Dimension(1920, 1080));
+        JScrollPane scrollFrame = new JScrollPane(main);
+        main.setAutoscrolls(true);
+        scrollFrame.setPreferredSize(new Dimension(1800, 1100));
+        this.add(scrollFrame);
     }
 
     @Override
