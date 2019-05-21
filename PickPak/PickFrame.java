@@ -84,6 +84,9 @@ public class PickFrame extends JFrame implements ActionListener {
 
             aantalBestellingen++;
             if (aantalBestellingen > 1) { // aanpassen!
+                
+                pickpak.resetRobots(arduinoKraan, arduinoSchijf);
+                
                 //pickpak.resetRobots(arduinoKraan, arduinoSchijf);
 
                 //reconnect();
@@ -200,6 +203,7 @@ public class PickFrame extends JFrame implements ActionListener {
 
             panel.paintImmediately(0, 0, 1920, 1080);
         }
-        pickpak.resetRobots(arduinoKraan, arduinoSchijf);
+         arduinoKraan.serialWrite("c00");
+        arduinoSchijf.serialWrite("c1");
     }
 }
