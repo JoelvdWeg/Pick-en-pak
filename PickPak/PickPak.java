@@ -102,6 +102,8 @@ public class PickPak {
             String adres1 = "";
             String adres2 = "";
             String land = "";
+
+            System.out.println("--" + f);
             ArrayList<Integer> besteldeItems = new ArrayList<>();
 
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -182,6 +184,7 @@ public class PickPak {
                 System.out.println("Bestelling toegevoegd aan database\n...");
             } catch (Exception e) {
                 System.out.println("Kon geen bestelling toevoegen aan de database\n...");
+                System.out.println(e);
             }
 
             int k = 1;

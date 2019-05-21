@@ -90,7 +90,7 @@ public class PickFrame extends JFrame implements ActionListener {
                 panel.paintImmediately(0, 0, 1920, 1080);
             }
 
-            tekenRoute();
+            tekenRoute(jtfFile.getText());
 
             pickBestelling();
 
@@ -110,14 +110,20 @@ public class PickFrame extends JFrame implements ActionListener {
         repaint();
     }
 
-    private void tekenRoute() {
+    private void tekenRoute(String f) {
         try {
             bestelling = null;
-            bestelling = pickpak.leesBestelling(jtfFile.getText());
+            bestelling = pickpak.leesBestelling("bestelling.xml");
 
-            ArrayList<Integer> route = pickpak.voerTSPuit(bestelling);
+            if (bestelling == null) {
+                System.out.println("hoi");
+            }
+            else {
+                ArrayList<Integer> route = pickpak.voerTSPuit(bestelling);
 
-            pickpak.voerBPPuit(route, BPPalgoritme);
+                pickpak.voerBPPuit(route, BPPalgoritme);
+            }
+
 
         } catch (Exception ex) {
             System.out.println("Bestand niet gevonden\n...");
