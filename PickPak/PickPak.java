@@ -44,6 +44,10 @@ public class PickPak {
         if (maakDatabaseConnectie()) {
             haalItemsOp();
             sluitDatabaseConnectie();
+            PickFrame pf = new PickFrame(this);
+        }
+        else {
+            System.exit(0);
         }
     }
 
@@ -51,7 +55,7 @@ public class PickPak {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://localhost/wideworldimporters";
-            connection = DriverManager.getConnection(url, "root", "");
+            connection = DriverManager.getConnection(url, "root", "root");
             System.out.println("Databaseconnectie succesvol\n...");
             return true;
         } catch (Exception e) {
