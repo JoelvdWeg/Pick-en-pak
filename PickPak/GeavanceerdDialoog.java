@@ -61,8 +61,8 @@ public class GeavanceerdDialoog extends JDialog implements ActionListener{
         pdmCOMschijf.refreshMenu();
         jpArduino.add(pdmCOMschijf);
         
-         jbRefresh = new JButton("Refresh");
-         jbRefresh.addActionListener(this);
+        jbRefresh = new JButton("Refresh");
+        jbRefresh.addActionListener(this);
         jpArduino.add(jbRefresh);
         
         jbConnect = new JButton("Connect");
@@ -260,5 +260,13 @@ public class GeavanceerdDialoog extends JDialog implements ActionListener{
 
     public int getBPPalgoritme() {
         return BPPalgoritme;
+    }
+
+    public Arduino getArduinoKraan() {
+        return arduinoKraan;
+    }
+
+    public Arduino getArduinoSchijf() {
+        return arduinoSchijf;
     }
 }
