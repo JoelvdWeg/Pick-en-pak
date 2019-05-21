@@ -223,6 +223,8 @@ public class PickFrame extends JFrame implements ActionListener {
         } else if (e.getSource() == jbReset) {
 
             pickpak.resetRobots(arduino, arduino2);
+            
+            reconnect();
 
             panel.paintImmediately(0, 0, 1920, 1080);
 
@@ -232,8 +234,13 @@ public class PickFrame extends JFrame implements ActionListener {
     }
 
     private void reconnect() {
-        arduino.openConnection();
-        arduino2.openConnection();
+        try {
+            arduino.openConnection();
+            arduino2.openConnection();
+        } catch (Exception ex) {
+
+        }
+
     }
 
     public void pickBestelling() {
@@ -246,32 +253,50 @@ public class PickFrame extends JFrame implements ActionListener {
 
             pickpak.draaiSchijf(it, arduino2);
 
+            char s = '.';
+            do {
+                try {
+                    s = arduino2.serialRead().charAt(0);
+                } catch (Exception ex) {
+
+                }
+            } while (s != 'd'); // schijf draaien
+
+            System.out.println(s);
+            //while(){
+            // wacht op signaal
+            // }
             panel.paintImmediately(0, 0, 1920, 1080);
 
             pickpak.beweegKraan(it, arduino);
 
             panel.paintImmediately(0, 0, 1920, 1080);
 
-            arduino.serialWrite('p');
+            arduino.serialWrite('p'); //push
 
             pickpak.setPush(true);
 
             panel.paintImmediately(0, 0, 1920, 1080);
 
-            while (arduino.serialRead().equals("") || arduino.serialRead() == null) {
-                //wacht tot klaar met pushen
+            char t = '.';
+            do {
+                try {
+                    t = arduino2.serialRead().charAt(0);
+                } catch (Exception ex) {
+
+                }
+            } while (t != 'p'); //sensor
+
+            try {
+                Thread.sleep(1000);
+            } catch (Exception ex) {
             }
+
+            System.out.println(t);
 
             pickpak.setPush(false);
 
             panel.paintImmediately(0, 0, 1920, 1080);
-
-            //WACHT OP VALLEN PRODUCT
-            try {
-                Thread.sleep(1000);
-            } catch (Exception ex) {
-
-            }
 
             pickpak.werkDoosInhoudBij(it);
 

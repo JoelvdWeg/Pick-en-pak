@@ -18,6 +18,8 @@ import org.w3c.dom.NodeList;
 
 public class PickPak {
 
+    private Pakbon pakbon;
+
     private static final int AANTAL_DOZEN = 6;
 
     private int[] doosInhoud;
@@ -154,7 +156,7 @@ public class PickPak {
             ArrayList<Item> picks = new ArrayList<>();
 
             Pakbon pakbon = null;
-            
+
             int newPakbonID = 0;
 
             try {
@@ -196,14 +198,14 @@ public class PickPak {
                     newBestelregel.setInt(2, newPakbonID);
                     newBestelregel.setInt(3, i);
                     newBestelregel.setInt(4, 1); //<<<<<<<<<<<<<<<<<<<< Deze nog veranderen zodat twee dezelfde items in dezelfde regel komen met aantal 2
-                    newBestelregel.executeUpdate();             
+                    newBestelregel.executeUpdate();
                 } catch (Exception e) {
 
                 }
                 picks = voegToeAanPicks(i, picks);
                 k++;
             }
-            
+
             pakbon.maakPakbonBestand();
 
             System.out.println("Totaal: " + k + " items\n...");
@@ -263,22 +265,24 @@ public class PickPak {
 
         arduino.serialWrite(message);
 
-        String s;
+        char s = '.';
         do {
-            s = arduino.serialRead();
-        } while (s.equals("") || s == null);
+            try {
+                s = arduino.serialRead().charAt(0);
+            } catch (Exception ex) {
+
+            }
+        } while (s != 'q');
     }
 
     public void draaiSchijf(int next, Arduino arduino) {
-        char c = (char) (volgorde.get(next - 1) + 48);
+        String message = "c";
+        message += volgorde.get(next - 1);
 
+        //char c = (char) (volgorde.get(next - 1) + 48);
         doosPositie = volgorde.get(next - 1);
 
-        arduino.serialWrite(c);
-
-        while (arduino.serialRead().equals("") || arduino.serialRead() == null) {
-            //wait for incoming message
-        }
+        arduino.serialWrite(message);
     }
 
     public void kalibreerSchijf(Arduino arduino, boolean aanHetKalibreren) {
@@ -307,19 +311,33 @@ public class PickPak {
     }
 
     public void resetRobots(Arduino arduino, Arduino arduino2) {
-        arduino.serialWrite('h');
+        arduino.serialWrite("c00");
 
-        try {
-            Thread.sleep(2000);
-        } catch (Exception e) {
+        char s = '.';
+        do {
+            try {
+                s = arduino.serialRead().charAt(0);
+            } catch (Exception ex) {
 
-        }
-        arduino.serialWrite('z');
+            }
+        } while (s != 'q');
+        
+        kraanPositie = 0;
 
         arduino2.serialWrite((char) 49);
+        
+        s = '.';
+        do {
+            try {
+                s = arduino2.serialRead().charAt(0);
+            } catch (Exception ex) {
 
-        kraanPositie = 0;
+            }
+        } while (s != 'q');
+
         doosPositie = 1;
+        
+        arduino.serialWrite('z');
 
         for (int i = 0; i < AANTAL_DOZEN; i++) {
             doosInhoud[i] = 0;
@@ -327,6 +345,15 @@ public class PickPak {
 
         route = null;
         volgorde = null;
+        
+        arduino.closeConnection();
+        arduino2.closeConnection();
+        
+        try{
+            Thread.sleep(1000);
+        }catch(Exception ex){
+            
+        }
     }
 
     public void tekenTSP(Graphics g) {
