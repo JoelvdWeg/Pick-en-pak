@@ -318,7 +318,13 @@ public class PickPak {
     public void resetRobots(Arduino arduinoKraan, Arduino arduinoSchijf) {
 
         arduinoKraan.serialWrite("c00");
-        arduinoSchijf.serialWrite("c0");
+        arduinoSchijf.serialWrite("c1");
+        
+        try{
+            Thread.sleep(3000);
+        }catch(Exception ex){
+            
+        }
 
         kraanPositie = 0;
         doosPositie = 1;
