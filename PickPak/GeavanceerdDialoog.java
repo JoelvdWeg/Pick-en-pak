@@ -39,7 +39,7 @@ public class GeavanceerdDialoog extends JDialog implements ActionListener{
         tbArduino.setTitlePosition(TitledBorder.TOP);
         
         jpArduino = new JPanel(new BorderLayout());
-        jpArduino.setBackground(Color.RED);
+        //jpArduino.setBackground(Color.RED);
         jpArduino.setBorder(tbArduino);
         
    
