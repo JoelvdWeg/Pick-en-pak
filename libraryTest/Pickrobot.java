@@ -13,8 +13,8 @@ public class Pickrobot extends JFrame{
         setVisible(true);
         
     }
-DemoFrame df = new DemoFrame();
-df.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//DemoFrame df = new DemoFrame();
+//df.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     
 	public static void main(String[] args) {

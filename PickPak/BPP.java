@@ -7,17 +7,44 @@ public class BPP {
     private ArrayList<Doos> volgorde;
     private ArrayList<Item> items;
 
-    public BPP(ArrayList<Item> items) {
+    private static final int BEST_FIT = 0;
+    private static final int FIRST_FIT = 1;
+
+    public BPP(ArrayList<Item> items, int BPPalgoritme) {
+        //for(int i = 0; i < aantalDozen; i++){
+            
+        //}
+        
+        Doos.resetDozen();
+        
+        //System.out.println(Doos.getAantalDozen());
+        
+        
+        
         dozen = new ArrayList<>();
         dozen.add(new Doos(0.5));
+        
+        //for(Doos d: dozen){
+        //    System.out.println(d.getInhoud());
+        //}
+        
         volgorde = new ArrayList<>();
         this.items = items;
         
 
         try {
             // Algortiem kiezen
-            //bepaalVolgordeBestfit();
-            bepaalVolgordeFirstfit();
+            switch (BPPalgoritme) {
+                case FIRST_FIT:
+                    bepaalVolgordeFirstfit();
+                    break;
+                case BEST_FIT:
+                    bepaalVolgordeBestfit();
+                    break;
+                default:
+                    bepaalVolgordeBestfit();
+                    break;
+            }
         }
         catch (NullPointerException npe) {
             System.out.println("Geen items gegeven aan het BPP-algoritme.");
@@ -28,6 +55,7 @@ public class BPP {
         //System.out.println("BESTFIT --------------------\n");
 
         for (int i = 0; i < items.size(); i++) {
+            System.out.println("aantal dozen: "+dozen.size());
             Doos geselecteerd;
 
             // Mogelijke dozen zoeken
@@ -129,5 +157,9 @@ public class BPP {
             volgorde.add(doos.getDoosID());
         }
         return volgorde;
+    }
+    
+    public ArrayList<Doos> getDozen(){
+        return dozen;
     }
 }
