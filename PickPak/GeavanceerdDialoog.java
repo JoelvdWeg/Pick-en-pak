@@ -224,34 +224,34 @@ public class GeavanceerdDialoog extends JDialog implements ActionListener{
             arduinoSchijf.serialWrite('t');
         }
         else if (e.getSource() == jbUp) {
-            arduinoSchijf.serialWrite('u');
+            arduinoKraan.serialWrite('u');
         }
         else if (e.getSource() == jbDown) {
-            arduinoSchijf.serialWrite('d');
+            arduinoKraan.serialWrite('d');
         }
         else if (e.getSource() == jbLeft) {
-            arduinoSchijf.serialWrite('l');
+            arduinoKraan.serialWrite('l');
         }
         else if (e.getSource() == jbRight) {
-            arduinoSchijf.serialWrite('r');
+            arduinoKraan.serialWrite('r');
         }
         else if (e.getSource() == jbStop) {
-            arduinoSchijf.serialWrite('s');
+            arduinoKraan.serialWrite('s');
         }
         else if (e.getSource() == jbPush) {
-            arduinoSchijf.serialWrite('p');
+            arduinoKraan.serialWrite('p');
         }
         else if (e.getSource() == jbPull) {
-            arduinoSchijf.serialWrite('q');
+            arduinoKraan.serialWrite('q');
         }
         else if (e.getSource() == jbCoordinaat) {
-            arduinoSchijf.serialWrite("c" + jtfCoordinaat.getText());
+            arduinoKraan.serialWrite("c" + jtfCoordinaat.getText());
         }
         else if (e.getSource() == jbReset) {
-            arduinoSchijf.serialWrite('z');
+            arduinoKraan.serialWrite('z');
         }
         else if (e.getSource() == jbNoodstop) {
-            arduinoSchijf.serialWrite('f');
+            arduinoKraan.serialWrite('f');
         }
         else if (e.getSource() == jbApply) {
             BPPalgoritme = jcbBPP.getSelectedIndex();
