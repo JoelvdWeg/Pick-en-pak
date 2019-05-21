@@ -206,7 +206,7 @@ public class PickFrame extends JFrame implements ActionListener {
         arduinoKraan.serialWrite("c00");
         arduinoSchijf.serialWrite("c1");
         
-        jbbevestig.setEnabled(true);
+        jbbevestig.setEnabled(true); //hey x
         
     }
 }
