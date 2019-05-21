@@ -108,7 +108,7 @@ public class PickPak {
 
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            org.w3c.dom.Document document = documentBuilder.parse(new File(f));
+            org.w3c.dom.Document document = documentBuilder.parse(new File("bestelling.xml"));
 
             Element rootElement = (Element) document.getFirstChild();
 
