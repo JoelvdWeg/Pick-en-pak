@@ -19,7 +19,7 @@ public class PickFrame extends JFrame implements ActionListener {
     ArrayList<Item> bestelling;
 
     private PickPak pickpak;
-    
+
     private GeavanceerdDialoog jdGeavanceerd;
 
     private int BPPalgoritme;
@@ -63,16 +63,16 @@ public class PickFrame extends JFrame implements ActionListener {
 //            }
 //        });
         add(jbStop);
-        
+
         geavanceerd = new JButton("Geavanceerd");
         geavanceerd.addActionListener(this);
         add(geavanceerd);
 
         panel = new PickPanel(pickpak);
         add(panel);
-        
+
         setVisible(true);
-        
+
     }
 
     @Override
@@ -102,7 +102,7 @@ public class PickFrame extends JFrame implements ActionListener {
             arduinoSchijf = jdGeavanceerd.getArduinoSchijf();
             jdGeavanceerd.dispose();
         }
-        
+
         else if (e.getSource() == jbStop) { // aanpassen!
             System.out.println("STOP");
 
