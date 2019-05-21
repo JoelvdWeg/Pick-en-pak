@@ -55,7 +55,7 @@ public class PickPak {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://localhost/wideworldimporters";
-            connection = DriverManager.getConnection(url, "root", "");
+            connection = DriverManager.getConnection(url, "root", "root");
             System.out.println("Databaseconnectie succesvol\n...");
             return true;
         } catch (Exception e) {
@@ -315,34 +315,13 @@ public class PickPak {
         this.push = push;
     }
 
-    public void resetRobots(Arduino arduino, Arduino arduino2) {
-        arduino.serialWrite("c00");
+    public void resetRobots(Arduino arduinoKraan, Arduino arduinoSchijf) {
 
-        char s = '.';
-        do {
-            try {
-                s = arduino.serialRead().charAt(0);
-            } catch (Exception ex) {
+        arduinoKraan.serialWrite("c00");
+        arduinoSchijf.serialWrite("c0");
 
-            }
-        } while (s != 'q');
-        
         kraanPositie = 0;
-
-        arduino2.serialWrite((char) 49);
-        
-        s = '.';
-        do {
-            try {
-                s = arduino2.serialRead().charAt(0);
-            } catch (Exception ex) {
-
-            }
-        } while (s != 'q');
-
         doosPositie = 1;
-        
-        arduino.serialWrite('z');
 
         for (int i = 0; i < AANTAL_DOZEN; i++) {
             doosInhoud[i] = 0;
@@ -350,15 +329,6 @@ public class PickPak {
 
         route = null;
         volgorde = null;
-        
-        arduino.closeConnection();
-        arduino2.closeConnection();
-        
-        try{
-            Thread.sleep(1000);
-        }catch(Exception ex){
-            
-        }
     }
 
     public void tekenTSP(Graphics g) {

@@ -45,6 +45,7 @@ public class PickFrame extends JFrame implements ActionListener {
         add(jlFile);
 
         jtfFile = new JTextField(10);
+        jtfFile.setText("bestelling.xml");
         add(jtfFile);
 
         jbbevestig = new JButton("Start");
@@ -83,9 +84,9 @@ public class PickFrame extends JFrame implements ActionListener {
 
             aantalBestellingen++;
             if (aantalBestellingen > 1) { // aanpassen!
-                pickpak.resetRobots(arduinoKraan, arduinoSchijf);
+                //pickpak.resetRobots(arduinoKraan, arduinoSchijf);
 
-                reconnect();
+                //reconnect();
 
                 panel.paintImmediately(0, 0, 1920, 1080);
             }
@@ -113,7 +114,7 @@ public class PickFrame extends JFrame implements ActionListener {
     private void tekenRoute(String f) {
         try {
             bestelling = null;
-            bestelling = pickpak.leesBestelling("bestelling.xml");
+            bestelling = pickpak.leesBestelling(f);
 
             if (bestelling == null) {
                 System.out.println("hoi");
@@ -199,5 +200,6 @@ public class PickFrame extends JFrame implements ActionListener {
 
             panel.paintImmediately(0, 0, 1920, 1080);
         }
+        pickpak.resetRobots(arduinoKraan, arduinoSchijf);
     }
 }
