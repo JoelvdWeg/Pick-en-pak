@@ -19,10 +19,12 @@ public class PickFrame extends JFrame implements ActionListener {
     ArrayList<Item> bestelling;
 
     private PickPak pickpak;
+    
+    private GeavanceerdDialoog jdGeavanceerd;
 
     private JTextField jtfFile;
     private JLabel jlFile, jlCOMschijf, jlCOMkraan;
-    private JButton jbbevestig, jbRefresh, jbConnect, jbKalibreer, jbTekenRoute, jbReset, jbStop;
+    private JButton jbbevestig, jbRefresh, jbConnect, jbKalibreer, jbTekenRoute, jbReset, jbStop, geavanceerd;
 
     private PortDropdownMenu pdmCOMschijf, pdmCOMkraan;
 
@@ -102,6 +104,10 @@ public class PickFrame extends JFrame implements ActionListener {
 //            }
 //        });
         add(jbStop);
+        
+        geavanceerd = new JButton("Geavanceerd");
+        geavanceerd.addActionListener(this);
+        add(geavanceerd);
 
         panel = new PickPanel(pickpak);
         add(panel);
@@ -109,8 +115,15 @@ public class PickFrame extends JFrame implements ActionListener {
         if (pdmCOMschijf.getItemCount() == 0 || pdmCOMschijf.getItemCount() == 0) {
             jbConnect.setEnabled(false);
         }
-
+        
+        
+        
+        
+        
         setVisible(true);
+        
+        
+        
     }
 
     @Override
@@ -133,7 +146,13 @@ public class PickFrame extends JFrame implements ActionListener {
             jbReset.setEnabled(true);
             jbKalibreer.setEnabled(true);
 
-        } else if (e.getSource() == jbStop) {
+        } else if(e.getSource() == geavanceerd){
+            jdGeavanceerd = new GeavanceerdDialoog(this);
+            
+            jdGeavanceerd.dispose();
+        }
+        
+        else if (e.getSource() == jbStop) {
             System.out.println("STOP");
         } else if (e.getSource() == jbRefresh) {
 

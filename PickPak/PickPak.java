@@ -39,9 +39,7 @@ public class PickPak {
         doosPositie = 1;
 
         doosInhoud = new int[AANTAL_DOZEN];
-        for (int d : doosInhoud) {
-            doosInhoud[d] = 0;
-        }
+        
 
         if (maakDatabaseConnectie()) {
             haalItemsOp();
