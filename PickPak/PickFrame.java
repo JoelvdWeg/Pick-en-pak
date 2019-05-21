@@ -113,7 +113,7 @@ public class PickFrame extends JFrame implements ActionListener {
     private void tekenRoute(String f) {
         try {
             bestelling = null;
-            bestelling = pickpak.leesBestelling("bestelling.xml");
+            bestelling = pickpak.leesBestelling("bestelling8.xml");
 
             if (bestelling == null) {
                 System.out.println("hoi");

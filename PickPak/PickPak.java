@@ -148,7 +148,7 @@ public class PickPak {
 
             return bestelling;
         } catch (Exception ex) {
-            System.out.println("Error!");
+            System.out.println("Error in lees bestelling!");
             System.out.println(ex);
         }
         return null;
