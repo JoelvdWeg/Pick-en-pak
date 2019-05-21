@@ -51,7 +51,7 @@ public class PickPak {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://localhost/wideworldimporters";
-            connection = DriverManager.getConnection(url, "root", "");
+            connection = DriverManager.getConnection(url, "root", "root");
             System.out.println("Databaseconnectie succesvol\n...");
             return true;
         } catch (Exception e) {
@@ -236,7 +236,7 @@ public class PickPak {
         return route;
     }
 
-    public void voerBPPuit(ArrayList<Integer> pickRoute) {
+    public void voerBPPuit(ArrayList<Integer> pickRoute, int BPPalgoritme) {
         volgorde = null;
         BPP bpp = null;
 
@@ -246,7 +246,7 @@ public class PickPak {
             picks.add(items.get(pickRoute.get(i)));
         }
 
-        bpp = new BPP(picks);
+        bpp = new BPP(picks, BPPalgoritme);
         volgorde = bpp.getVolgorde();
         System.out.println("Doos volgorde bepaald:");
         System.out.println(volgorde + "\n...");

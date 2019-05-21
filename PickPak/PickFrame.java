@@ -22,6 +22,8 @@ public class PickFrame extends JFrame implements ActionListener {
     
     private GeavanceerdDialoog jdGeavanceerd;
 
+    private int BPPalgoritme;
+
     private JTextField jtfFile;
     private JLabel jlFile, jlCOMschijf, jlCOMkraan;
     private JButton jbbevestig, jbRefresh, jbConnect, jbKalibreer, jbTekenRoute, jbReset, jbStop, geavanceerd;
@@ -31,6 +33,7 @@ public class PickFrame extends JFrame implements ActionListener {
     private PickPanel panel;
 
     private Arduino arduino, arduino2;
+
 
     public PickFrame(PickPak pickpak) {
         setTitle("GUI");
@@ -116,13 +119,7 @@ public class PickFrame extends JFrame implements ActionListener {
             jbConnect.setEnabled(false);
         }
         
-        
-        
-        
-        
         setVisible(true);
-        
-        
         
     }
 
@@ -147,8 +144,8 @@ public class PickFrame extends JFrame implements ActionListener {
             jbKalibreer.setEnabled(true);
 
         } else if(e.getSource() == geavanceerd){
-            jdGeavanceerd = new GeavanceerdDialoog(this);
-            
+            jdGeavanceerd = new GeavanceerdDialoog(this, pickpak);
+            BPPalgoritme = jdGeavanceerd.getBPPalgoritme();
             jdGeavanceerd.dispose();
         }
         
@@ -228,7 +225,7 @@ public class PickFrame extends JFrame implements ActionListener {
 
                 ArrayList<Integer> route = pickpak.voerTSPuit(bestelling);
 
-                pickpak.voerBPPuit(route);
+                pickpak.voerBPPuit(route, BPPalgoritme);
 
                 if (jbConnect.getText().equals("Disconnect")) {
                     jbbevestig.setEnabled(true);
