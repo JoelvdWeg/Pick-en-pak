@@ -81,8 +81,9 @@ public class PickFrame extends JFrame implements ActionListener {
 
         
         t = new Thread() {
-                public void run() {
-                    jbbevestig.setEnabled(false);
+            @Override
+            public void run() {
+                jbbevestig.setEnabled(false);
 
                     aantalBestellingen++;
                     if (aantalBestellingen > 1) { // aanpassen!
@@ -97,8 +98,9 @@ public class PickFrame extends JFrame implements ActionListener {
                     pickBestelling();
 
                     return;
-                }
-            };
+            }
+        };
+        
     }
 
     @Override
