@@ -10,13 +10,17 @@ import java.sql.*;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import static javax.swing.JOptionPane.YES_NO_OPTION;
+
 public class PickPak {
+    private JFrame f;
 
     private Pakbon pakbon;
 
@@ -37,23 +41,29 @@ public class PickPak {
     public PickPak() {
         kraanPositie = 0;
         doosPositie = 1;
+        f = new JFrame();
 
         doosInhoud = new int[AANTAL_DOZEN];
 
-        if (maakDatabaseConnectie()) {
-            haalItemsOp();
-            sluitDatabaseConnectie();
-            PickFrame pf = new PickFrame(this);
-        } else {
-            System.exit(0);
+        while (!maakDatabaseConnectie()) {
+            int a = JOptionPane.showConfirmDialog(null, "Kon niet verbinden met de database. Opnieuw proberen?", "Select an Option...",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+            if (a != JOptionPane.YES_OPTION) {
+                System.exit(0);
+            }
         }
+
+        haalItemsOp();
+        sluitDatabaseConnectie();
+        PickFrame pf = new PickFrame(this);
+
     }
 
     private boolean maakDatabaseConnectie() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://localhost/wideworldimporters";
-            connection = DriverManager.getConnection(url, "root", "");
+            connection = DriverManager.getConnection(url, "root", "root");
             System.out.println("Databaseconnectie succesvol\n...");
             return true;
         } catch (Exception e) {
