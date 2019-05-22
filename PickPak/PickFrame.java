@@ -11,11 +11,14 @@ import arduino.*;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Scrollbar;
 import java.io.File;
 import java.util.ArrayList;
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.text.Document;
 import javax.xml.parsers.*;
@@ -30,7 +33,10 @@ public class PickFrame extends JFrame implements ActionListener {
     private JLabel jlStockItemName;
     private Arduino arduino;
     private JTabbedPane pane;
-    private JPanel main, advanced;
+    private JPanel main, advanced, order, grid, dozen;
+    private JSplitPane splitPane;
+    private JPanel inputPanel;
+    
 
 
     private int aantalBestellingen = 0;
@@ -39,7 +45,8 @@ public class PickFrame extends JFrame implements ActionListener {
     private int picknr = 0;
     ArrayList<Item> bestelling;
 
-
+    
+    
 
 
     private GeavanceerdDialoog jdGeavanceerd;
@@ -56,6 +63,21 @@ public class PickFrame extends JFrame implements ActionListener {
         setSize(1920, 1080);
         setLayout(new FlowLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        getContentPane().setLayout(new GridLayout());
+        getContentPane().add(splitPane);
+        
+        splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);  // we want it to split the window verticaly
+        splitPane.setDividerLocation(500);                    // the initial position of the divider is 200 (our window is 400 pixels high)
+        splitPane.setTopComponent(order);                  // at the top we want our "topPanel"
+        splitPane.setBottomComponent(grid);
+        splitPane.setBottomComponent(dozen); 
+        inputPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 75));     // we set the max height to 75 and the max width to (almost) unlimited
+        inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.X_AXIS));   // X_Axis will arrange the content horizontally
+        inputPanel = new JPanel();
+        order = new JPanel();
+        grid = new JPanel();
+        dozen = new JPanel();
         
         main = new JPanel();
         advanced = new JPanel();
@@ -146,7 +168,6 @@ public class PickFrame extends JFrame implements ActionListener {
                 public void run() {
                     jbbevestig.setEnabled(false);
 
-<<<<<<< HEAD
 
             try {
                 String naam = "...";
@@ -215,10 +236,10 @@ public class PickFrame extends JFrame implements ActionListener {
 //                        }
                     }
                 }
-=======
+
                     aantalBestellingen++;
                     if (aantalBestellingen > 1) { // aanpassen!
->>>>>>> Lukas
+
 
                         pickpak.resetRobots();
 
@@ -230,9 +251,9 @@ public class PickFrame extends JFrame implements ActionListener {
                     pickBestelling();
 
                     return;
-                }
+            }
             }.start();
-
+                
         } else if (e.getSource() == geavanceerd) {
             jdGeavanceerd = new GeavanceerdDialoog(this, pickpak);
             BPPalgoritme = jdGeavanceerd.getBPPalgoritme();

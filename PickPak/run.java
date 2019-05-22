@@ -1,12 +1,13 @@
 package PickPak;
 
+import java.awt.EventQueue;
 import java.awt.ScrollPane;
 import javax.swing.JFrame;
 
 public class run {
 
     public static void main(String[] args) {
-       PickPak pp = new PickPak();
+        PickPak pp = new PickPak();
         
 
        PickFrame pf = new PickFrame(pp);
