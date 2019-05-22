@@ -32,9 +32,6 @@ public class PickFrame extends JFrame implements ActionListener {
     private JTabbedPane pane;
     private JPanel main, advanced;
 
-import java.util.ArrayList;
-
-public class PickFrame extends JFrame implements ActionListener {
 
     private int aantalBestellingen = 0;
     private boolean aanHetKalibreren = false;
@@ -69,22 +66,6 @@ public class PickFrame extends JFrame implements ActionListener {
 
         this.pickpak = pickpak;
 
-        pdmCOM = new PortDropdownMenu();
-        main.add(pdmCOM, BorderLayout.NORTH);
-        pdmCOM.refreshMenu();
-        
-        jbRefresh = new JButton("Refresh");
-        jbRefresh.addActionListener(this);
-        main.add(jbRefresh,BorderLayout.NORTH);
-
-        jbConnect = new JButton("Connect");
-        jbConnect.addActionListener(this);
-        main.add(jbConnect, BorderLayout.NORTH);
-
-        jbKalibreer = new JButton("Kalibreer");
-        jbKalibreer.setEnabled(false);
-        jbKalibreer.addActionListener(this);
-        main.add(jbKalibreer, BorderLayout.NORTH);
 
         jlx = new JLabel("x-as");
         jlx.setEnabled(false);
