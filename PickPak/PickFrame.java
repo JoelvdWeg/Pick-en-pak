@@ -32,7 +32,6 @@ public class PickFrame extends JFrame implements ActionListener {
 
     private Arduino arduinoKraan, arduinoSchijf;
 
-
     public PickFrame(PickPak pickpak) {
         setTitle("GUI");
         setSize(1920, 1080);
@@ -78,35 +77,35 @@ public class PickFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbbevestig) {
-            jbbevestig.setEnabled(false);
+            System.out.println("Boven thread\n..");
+            new Thread() {
+                public void run() {
+                    System.out.println("Binnen thread\n..");
+                    jbbevestig.setEnabled(false);
 
-            
+                    aantalBestellingen++;
+                    if (aantalBestellingen > 1) { // aanpassen!
 
-            aantalBestellingen++;
-            if (aantalBestellingen > 1) { // aanpassen!
-                
-                pickpak.resetRobots(arduinoKraan, arduinoSchijf);
-                
-                //pickpak.resetRobots(arduinoKraan, arduinoSchijf);
+                        pickpak.resetRobots(arduinoKraan, arduinoSchijf);
 
-                //reconnect();
+                        //pickpak.resetRobots(arduinoKraan, arduinoSchijf);
+                        //reconnect();
+                        panel.paintImmediately(0, 0, 1920, 1080);
+                    }
 
-                panel.paintImmediately(0, 0, 1920, 1080);
-            }
+                    tekenRoute(jtfFile.getText());
 
-            tekenRoute(jtfFile.getText());
+                    pickBestelling();
+                }
+            }.start();
 
-            pickBestelling();
-
-        } else if(e.getSource() == geavanceerd){
+        } else if (e.getSource() == geavanceerd) {
             jdGeavanceerd = new GeavanceerdDialoog(this, pickpak);
             BPPalgoritme = jdGeavanceerd.getBPPalgoritme();
             arduinoKraan = jdGeavanceerd.getArduinoKraan();
             arduinoSchijf = jdGeavanceerd.getArduinoSchijf();
             jdGeavanceerd.dispose();
-        }
-
-        else if (e.getSource() == jbStop) { // aanpassen!
+        } else if (e.getSource() == jbStop) { // aanpassen!
             System.out.println("STOP");
 
         }
@@ -121,13 +120,11 @@ public class PickFrame extends JFrame implements ActionListener {
 
             if (bestelling == null) {
                 System.out.println("hoi");
-            }
-            else {
+            } else {
                 ArrayList<Integer> route = pickpak.voerTSPuit(bestelling);
 
                 pickpak.voerBPPuit(route, BPPalgoritme);
             }
-
 
         } catch (Exception ex) {
             System.out.println("Bestand niet gevonden\n...");
@@ -205,8 +202,8 @@ public class PickFrame extends JFrame implements ActionListener {
         }
         arduinoKraan.serialWrite("c00");
         arduinoSchijf.serialWrite("c1");
-        
+
         jbbevestig.setEnabled(true); //hey x
-        
+
     }
 }
