@@ -80,8 +80,6 @@ public class PickFrame extends JFrame implements ActionListener {
         if (e.getSource() == jbbevestig) {
             jbbevestig.setEnabled(false);
 
-            
-
             aantalBestellingen++;
             if (aantalBestellingen > 1) { // aanpassen!
                 
@@ -95,6 +93,7 @@ public class PickFrame extends JFrame implements ActionListener {
             }
 
             tekenRoute(jtfFile.getText());
+            System.out.println("bevestig");
 
             pickBestelling();
 
@@ -145,22 +144,27 @@ public class PickFrame extends JFrame implements ActionListener {
     }
 
     public void pickBestelling() {
+        System.out.println("Pick bestelling");
         for (int it = 1; it < pickpak.route.size() - 1; it++) {
-
+            System.out.println("Binnen for");
             if (stop) {
                 stop = false;
                 break;
             }
-
+            System.out.println("draaischijf");
             pickpak.draaiSchijf(it, arduinoSchijf);
 
             char s = '.';
             do {
+                System.out.println("do");
                 try {
                     s = arduinoSchijf.serialRead().charAt(0);
+                    System.out.println("dos");
                 } catch (Exception ex) {
-
+                    System.out.println(ex);
+                    System.out.println("doex");
                 }
+                System.out.println("do2");
             } while (s != 'd'); // schijf draaien
 
             System.out.println(s);
@@ -168,8 +172,9 @@ public class PickFrame extends JFrame implements ActionListener {
             // wacht op signaal
             // }
             panel.paintImmediately(0, 0, 1920, 1080);
-
+            System.out.println("beweeg kraan");
             pickpak.beweegKraan(it, arduinoKraan);
+
 
             panel.paintImmediately(0, 0, 1920, 1080);
 

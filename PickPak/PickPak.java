@@ -269,6 +269,7 @@ public class PickPak {
         message += items.get(route.get(next)).getLocatie().getCoord().getY();
 
         arduino.serialWrite(message);
+        System.out.println("------:"+message);
 
         char s = '.';
         do {
