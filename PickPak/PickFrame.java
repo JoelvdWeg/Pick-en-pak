@@ -147,11 +147,6 @@ public class PickFrame extends JFrame implements ActionListener {
             
             for (int it = 1; it < pickpak.route.size() - 1; it++) {
 
-                if (stop) {
-                    stop = false;
-                    break;
-                }
-
                 pickpak.draaiSchijf(it, arduinoSchijf);
 
                 char s = '.';
@@ -163,7 +158,7 @@ public class PickFrame extends JFrame implements ActionListener {
                     }
                 } while (s != 'd'); // schijf draaien
 
-                System.out.println(s);
+                //System.out.println(s);
                 //while(){
                 // wacht op signaal
                 // }

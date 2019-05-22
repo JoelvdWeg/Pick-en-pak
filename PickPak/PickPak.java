@@ -110,7 +110,7 @@ public class PickPak {
 
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            org.w3c.dom.Document document = documentBuilder.parse(new File(f));
+            org.w3c.dom.Document document = documentBuilder.parse(new File("bestelling.xml"));
 
             Element rootElement = (Element) document.getFirstChild();
 
@@ -271,6 +271,7 @@ public class PickPak {
         message += items.get(route.get(next)).getLocatie().getCoord().getY();
 
         arduino.serialWrite(message);
+        
         
         System.out.println(message);
 
