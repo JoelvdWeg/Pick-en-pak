@@ -8,7 +8,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import arduino.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.util.ArrayList;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 
 public class PickFrame extends JFrame implements ActionListener {
 
@@ -30,8 +37,11 @@ public class PickFrame extends JFrame implements ActionListener {
     private JLabel jlFile;
     private JButton jbbevestig, jbStop, geavanceerd;
 
-    private PickPanel panel;
-
+//    private PickPanel panel;
+    private DozenPanel dozenpanel;
+    private GridPanel gridpanel;
+   
+    
     private Arduino arduinoKraan, arduinoSchijf;
 
     public PickFrame(PickPak pickpak) {
@@ -39,7 +49,11 @@ public class PickFrame extends JFrame implements ActionListener {
         setSize(1920, 1080);
         setLayout(new FlowLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        JPanel p = new JPanel(new GridBagLayout());
+        
+        GridBagConstraints c = new GridBagConstraints();
+        GridBagConstraints d = new GridBagConstraints();
+               
         this.pickpak = pickpak;
 
         jlFile = new JLabel("Bestelling: ");
@@ -69,9 +83,21 @@ public class PickFrame extends JFrame implements ActionListener {
         geavanceerd.addActionListener(this);
         add(geavanceerd);
 
-        panel = new PickPanel(pickpak);
-        add(panel);
-
+        
+//        panel = new PickPanel(pickpak);
+//        add(panel);
+        
+        dozenpanel = new DozenPanel(pickpak);
+        c.gridx = 0;
+        c.gridy = 0;
+        
+        p.add(dozenpanel,c);
+        gridpanel = new GridPanel(pickpak);
+        
+        d.gridx = 300;
+        d.gridy = 0;
+        p.add(gridpanel,d);
+        add(p, BorderLayout.SOUTH);
         setVisible(true);
 
     }
@@ -88,7 +114,7 @@ public class PickFrame extends JFrame implements ActionListener {
 
                         pickpak.resetRobots();
 
-                        panel.paintImmediately(0, 0, 1920, 1080);
+                        gridpanel.paintImmediately(0, 0, 1920, 1080);
                     }
 
                     tekenRoute(jtfFile.getText());
@@ -171,13 +197,13 @@ public class PickFrame extends JFrame implements ActionListener {
                     //while(){
                     // wacht op signaal
                     // }
-                    panel.paintImmediately(0, 0, 1920, 1080);
+                    gridpanel.paintImmediately(0, 0, 1920, 1080);
 
                     pickpak.beweegKraan(it, arduinoKraan);
 
                     System.out.println("KRAAN BEWOGEN\n...");
 
-                    panel.paintImmediately(0, 0, 1920, 1080);
+                    gridpanel.paintImmediately(0, 0, 1920, 1080);
 
                     arduinoKraan.serialWrite('p'); //push
 
@@ -185,7 +211,7 @@ public class PickFrame extends JFrame implements ActionListener {
 
                     pickpak.setPush(true);
 
-                    panel.paintImmediately(0, 0, 1920, 1080);
+                    gridpanel.paintImmediately(0, 0, 1920, 1080);
 
                     char t = '.';
                     do {
@@ -204,11 +230,11 @@ public class PickFrame extends JFrame implements ActionListener {
 
                     pickpak.setPush(false);
 
-                    panel.paintImmediately(0, 0, 1920, 1080);
+                    gridpanel.paintImmediately(0, 0, 1920, 1080);
 
                     pickpak.werkDoosInhoudBij(it);
 
-                    panel.paintImmediately(0, 0, 1920, 1080);
+                    gridpanel.paintImmediately(0, 0, 1920, 1080);
                 }
             }
             arduinoKraan.serialWrite("c00");
