@@ -89,7 +89,7 @@ public class PickFrame extends JFrame implements ActionListener {
                         //panel.paintImmediately(0, 0, 1920, 1080);
                     }
 
-                    tekenRoute(jtfFile.getText());
+                    tekenRoute("...");
 
                     pickBestelling();
                 }
