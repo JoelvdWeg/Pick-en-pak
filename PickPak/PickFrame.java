@@ -164,10 +164,14 @@ public class PickFrame extends JFrame implements ActionListener {
             panel.paintImmediately(0, 0, 1920, 1080);
 
             pickpak.beweegKraan(it, arduinoKraan);
+            
+            System.out.println("KRAAN BEWOGEN\n...");
 
             panel.paintImmediately(0, 0, 1920, 1080);
 
             arduinoKraan.serialWrite('p'); //push
+            
+            System.out.println("GEPUSHT\n...");
 
             pickpak.setPush(true);
 
