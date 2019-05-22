@@ -20,7 +20,7 @@ public class PickFrame extends JFrame implements ActionListener {
 
     private PickPak pickpak;
 
-    private boolean running = true;
+    public static boolean running = true;
 
     private GeavanceerdDialoog jdGeavanceerd;
 

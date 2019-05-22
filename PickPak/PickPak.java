@@ -19,6 +19,8 @@ import org.w3c.dom.NodeList;
 public class PickPak {
 
     private Pakbon pakbon;
+    
+    
 
     private static final int AANTAL_DOZEN = 6;
 
@@ -39,14 +41,12 @@ public class PickPak {
         doosPositie = 1;
 
         doosInhoud = new int[AANTAL_DOZEN];
-        
 
         if (maakDatabaseConnectie()) {
             haalItemsOp();
             sluitDatabaseConnectie();
             PickFrame pf = new PickFrame(this);
-        }
-        else {
+        } else {
             System.exit(0);
         }
     }
@@ -105,8 +105,6 @@ public class PickPak {
 
             System.out.println("--" + f);
             ArrayList<Integer> besteldeItems = new ArrayList<>();
-            
-            
 
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -271,20 +269,21 @@ public class PickPak {
         message += items.get(route.get(next)).getLocatie().getCoord().getY();
 
         arduino.serialWrite(message);
-        
-        
+
         System.out.println(message);
 
         char s = '.';
         do {
             try {
-                s = arduino.serialRead().charAt(0);
+                if (PickFrame.running) {
+                    s = arduino.serialRead().charAt(0);
+                }
                 System.out.println(s);
             } catch (Exception ex) {
                 System.out.println("Geen bericht ontvangen\n...");
             }
         } while (s != 'q');
-        
+
         System.out.println(s);
     }
 
@@ -324,10 +323,6 @@ public class PickPak {
     }
 
     public void resetRobots() {
-
-       
-        
-        
 
         kraanPositie = 0;
         doosPositie = 1;
