@@ -122,39 +122,38 @@ public class PickPanel extends JPanel {
         g.drawString("2", 430, 1000);
         g.drawString("3", 530, 1000);
         g.drawString("4", 630, 1000);
-<<<<<<< HEAD
+
 //       TITELS 
         g.setFont(new Font("default", Font.BOLD, 30));
         g.drawString("DOZEN", 1350, 440);
         g.drawString("GRID", 430, 450);
-=======
+
 
         g.setFont(new Font("default", Font.BOLD, 30));
         g.drawString("DOZEN", 1350, 440);
 
->>>>>>> master
+
         g.drawString("1", 1045, 480);
         g.drawString("2", 1195, 480);
         g.drawString("3", 1345, 480);
         g.drawString("4", 1495, 480);
         g.drawString("5", 1645, 480);
         g.drawString("6", 1795, 480);
-<<<<<<< HEAD
+
 
         g.drawString("12/", 1017, 950);
         g.drawString("12/", 1167, 950);
         g.drawString("12/", 1317, 950);
         g.drawString("12/", 1467, 950);
         g.drawString("12/", 1617, 950);
-=======
->>>>>>> master
 
 
 
 
 
 
-        }
+
+        
 
         //pickpak.tekenDoos(g);
 

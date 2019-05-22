@@ -39,16 +39,13 @@ public class PickFrame extends JFrame implements ActionListener {
     private int picknr = 0;
     ArrayList<Item> bestelling;
 
-    private PickPak pickpak;
+
 
 
     private GeavanceerdDialoog jdGeavanceerd;
 
     private int BPPalgoritme;
 
-    private JTextField jtfFile;
-    private JLabel jlFile;
-    private JButton jbbevestig, jbStop, geavanceerd;
 
     private PickPanel panel;
 
@@ -66,6 +63,7 @@ public class PickFrame extends JFrame implements ActionListener {
 
         this.pickpak = pickpak;
 
+        
 
         jlx = new JLabel("x-as");
         jlx.setEnabled(false);
@@ -246,6 +244,7 @@ public class PickFrame extends JFrame implements ActionListener {
         }
 
         repaint();
+    }
     }
 
     private void tekenRoute(String f) {
