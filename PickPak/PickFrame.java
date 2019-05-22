@@ -77,10 +77,8 @@ public class PickFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbbevestig) {
-            System.out.println("Boven thread\n..");
             new Thread() {
-                public void run() {
-                    System.out.println("Binnen thread\n..");
+                public void run() {                   
                     jbbevestig.setEnabled(false);
 
                     aantalBestellingen++;
@@ -88,7 +86,7 @@ public class PickFrame extends JFrame implements ActionListener {
 
                         pickpak.resetRobots();
                         
-                        panel.paintImmediately(0, 0, 1920, 1080);
+                        //panel.paintImmediately(0, 0, 1920, 1080);
                     }
 
                     tekenRoute(jtfFile.getText());
@@ -104,8 +102,9 @@ public class PickFrame extends JFrame implements ActionListener {
             arduinoSchijf = jdGeavanceerd.getArduinoSchijf();
             jdGeavanceerd.dispose();
         } else if (e.getSource() == jbStop) { // aanpassen!
-            System.out.println("STOP");
-
+            arduinoKraan.serialWrite('f');
+            // misschien een noodstop dialoog maken?
+            // wat moet er moet de bestelling gebeuren wanneer de noodstop wordt ingedrukt?
         }
 
         repaint();
