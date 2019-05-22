@@ -69,7 +69,6 @@ public class PickPanel extends JPanel {
         g.drawRect(1600, 500, 50, 400);
 
 
-
         g.setColor(Color.GRAY);
         int x3 = 1030;
         for (int i = 0; i < 6; i++) {
@@ -77,7 +76,6 @@ public class PickPanel extends JPanel {
             g.fillRect(x3, 500, 50, 400);
             x3 = x3 + 150;
         }
-
 
 
 //      Titels
@@ -108,12 +106,6 @@ public class PickPanel extends JPanel {
         g.drawString("6", 1795, 480);
 
 
-
-
-
-
-        }
-
         //pickpak.tekenDoos(g);
 
         pickpak.tekenKraanPositie(g);
@@ -123,6 +115,6 @@ public class PickPanel extends JPanel {
         pickpak.tekenDoosInhoud(g);
 
         pickpak.tekenDoosPositie(g);
-
     }
 }
+
