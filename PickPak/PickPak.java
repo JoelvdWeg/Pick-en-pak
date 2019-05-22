@@ -10,7 +10,10 @@ import java.sql.*;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+import java.util.Arrays;
 import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -234,40 +237,64 @@ public class PickPak {
     }
 
     public JTable maakTabel() {
+        int numRow = items.size();
+        int numCol = 4;
 
         String[] columnNames = {"Id",
             "Product",
             "Grotte",
             "Coördinaten"};
 
-        //pakbon.items;
-        int numRow = 0;
-        int numCol = 4;
+        Object[][] array = new Object[items.size()][numCol];
 
-        if (pakbon != null) {
-            numRow = pakbon.getSize();
-
-        }
-
-        Object[][] array = new Object[numRow][numCol];
-
-        int i, j;
+        int i;
         for (i = 0; i < numRow; i++) {
-            array[0][i] = pakbon.items.get(i).getID();
-            array[1][i] = pakbon.items.get(i).getNaam();
-            array[2][i] = pakbon.items.get(i).getGrootte();
-            array[3][i] = pakbon.items.get(i).getLocatie().getCoord();
+            array[i][0] = items.get(i).getID();
+            array[i][1] = items.get(i).getNaam();
+            array[i][2] = items.get(i).getGrootte();
+            array[i][3] = items.get(i).getLocatie().getCoord();
         }
-        table = new JTable(array, columnNames);
-        System.out.println("array:" + array);
 
-        TableColumn column = null;
+        System.out.println(items.get(1).getNaam());
+
+        table = new JTable(array, columnNames);
+
+        //TableColumn column = null;
+        //try {
         for (int t = 0; t < 4; t++) {
-            column = table.getColumnModel().getColumn(t);
+            TableColumn column = table.getColumnModel().getColumn(t);
             column.setPreferredWidth(250);
         }
+        //} catch (Exception e) {
+        System.out.println("test");
+        // }
 
         return table;
+
+    }
+
+    public void vulTabel() {
+
+        int numRow = items.size();
+
+        numRow = pakbon.getSize();
+
+        int i;
+        for (i = 0; i < numRow; i++) {
+
+            if (i > pakbon.getSize()) {
+                //((DefaultTableModel) table.getModel()).removeRow(i);
+                table.getModel().setValueAt("a", i, 0);
+                table.getModel().setValueAt("a", i, 1);
+                table.getModel().setValueAt("a", i, 2);
+                table.getModel().setValueAt("a", i, 3);
+            } else {
+                table.getModel().setValueAt(pakbon.items.get(i).getID(), i, 0);
+                table.getModel().setValueAt(pakbon.items.get(i).getNaam(), i, 1);
+                table.getModel().setValueAt(pakbon.items.get(i).getGrootte(), i, 2);
+                table.getModel().setValueAt(pakbon.items.get(i).getLocatie().getCoord(), i, 3);
+            }
+        }
 
     }
 
@@ -415,7 +442,10 @@ public class PickPak {
         } else {
             g.setColor(Color.GREEN);
         }
-        g.drawRect(203 + 100 * items.get(kraanPositie).getLocatie().getCoord().getX(), 413 - 100 * items.get(kraanPositie).getLocatie().getCoord().getY(), 95, 95);
+        try {
+            g.drawRect(203 + 100 * items.get(kraanPositie).getLocatie().getCoord().getX(), 413 - 100 * items.get(kraanPositie).getLocatie().getCoord().getY(), 95, 95);
+        } catch (Exception e) {
+        }
     }
 
     public void tekenDoosPositie(Graphics g) {

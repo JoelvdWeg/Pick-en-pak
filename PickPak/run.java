@@ -7,6 +7,5 @@ public class run {
 
         PickFrame pf = new PickFrame(pp);
 
-        //pp.maakTabel();
     }
 }

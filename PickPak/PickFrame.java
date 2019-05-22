@@ -133,6 +133,7 @@ public class PickFrame extends JFrame implements ActionListener {
             if (aantalBestellingen > 1) {
                 reconnect();
             }
+            pickpak.vulTabel();
 
             pickBestelling();
 
@@ -210,12 +211,12 @@ public class PickFrame extends JFrame implements ActionListener {
         } else if (e.getSource() == jbTekenRoute) {
             try {
 
-                tabel = pickpak.maakTabel();
-
                 bestelling = null;
                 bestelling = pickpak.leesBestelling(jtfFile.getText());
 
                 ArrayList<Integer> route = pickpak.voerTSPuit(bestelling);
+
+                pickpak.vulTabel();
 
                 pickpak.voerBPPuit(route);
 
