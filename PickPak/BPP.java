@@ -1,3 +1,5 @@
+package PickPak;
+
 import java.util.ArrayList;
 
 public class BPP {
@@ -5,17 +7,44 @@ public class BPP {
     private ArrayList<Doos> volgorde;
     private ArrayList<Item> items;
 
-    public BPP(ArrayList<Item> items) {
+    private static final int BEST_FIT = 0;
+    private static final int FIRST_FIT = 1;
+
+    public BPP(ArrayList<Item> items, int BPPalgoritme) {
+        //for(int i = 0; i < aantalDozen; i++){
+            
+        //}
+        
+        Doos.resetDozen();
+        
+        //System.out.println(Doos.getAantalDozen());
+        
+        
+        
         dozen = new ArrayList<>();
-        dozen.add(new Doos(12));
+        dozen.add(new Doos(0.5));
+        
+        //for(Doos d: dozen){
+        //    System.out.println(d.getInhoud());
+        //}
+        
         volgorde = new ArrayList<>();
         this.items = items;
         
 
         try {
             // Algortiem kiezen
-            //bepaalVolgordeBestfit();
-            bepaalVolgordeFirstfit();
+            switch (BPPalgoritme) {
+                case FIRST_FIT:
+                    bepaalVolgordeFirstfit();
+                    break;
+                case BEST_FIT:
+                    bepaalVolgordeBestfit();
+                    break;
+                default:
+                    bepaalVolgordeBestfit();
+                    break;
+            }
         }
         catch (NullPointerException npe) {
             System.out.println("Geen items gegeven aan het BPP-algoritme.");
@@ -26,6 +55,7 @@ public class BPP {
         //System.out.println("BESTFIT --------------------\n");
 
         for (int i = 0; i < items.size(); i++) {
+            System.out.println("aantal dozen: "+dozen.size());
             Doos geselecteerd;
 
             // Mogelijke dozen zoeken
@@ -37,7 +67,7 @@ public class BPP {
             }
 
             if (mogelijkeDozen.size() == 0) { // Als het opject in geen enkele doos past
-                geselecteerd = new Doos(items.get(i),12);
+                geselecteerd = new Doos(items.get(i),0.5);
                 dozen.add(geselecteerd);
             }
             else { // Als het object wel in één of meerdere dozen past.
@@ -81,7 +111,7 @@ public class BPP {
 
             // Nieuwe doos maken als er nog geen een geselecteerd is.
             if (geselecteerd == null) {
-                geselecteerd = new Doos(items.get(i),12);
+                geselecteerd = new Doos(items.get(i),0.5);
                 dozen.add(geselecteerd);
             }
 
@@ -127,5 +157,9 @@ public class BPP {
             volgorde.add(doos.getDoosID());
         }
         return volgorde;
+    }
+    
+    public ArrayList<Doos> getDozen(){
+        return dozen;
     }
 }

@@ -1,20 +1,23 @@
+package PickPak;
+
 import java.util.ArrayList;
 
 public class Doos {
-    private static int aantalDozen = 1;
+    private static int aantalDozen = 0;
     private int doosID;
     //private static final int CAPACITEIT = 12;
-    private int capaciteit;
+    private double capaciteit;
     private ArrayList<Item> inhoud;
 
     public Doos() {
         inhoud = new ArrayList<>();
 
-        doosID = aantalDozen;
         aantalDozen++;
+        doosID = aantalDozen;
+        
     }
     
-    public Doos(int capaciteit){
+    public Doos(double capaciteit){
         this();
         
         //doosID = aantalDozen;
@@ -24,20 +27,36 @@ public class Doos {
         
     }
     
-    public Doos(Item item, int capaciteit) {
+    public Doos(Item item, double capaciteit) {
         this();
 
         this.capaciteit = capaciteit;
         
         inhoud.add(item);
     }
+
+    public static int getAantalDozen() {
+        return aantalDozen;
+    }
     
-    public int getRuimte() {
+    
+    
+    public static void resetDozen(){
+        
+        aantalDozen = 0;
+    }
+    
+    public double getRuimte() {
         return capaciteit - getInhoud();
     }
+    
+    public void resetInhoud(){
+        inhoud = new ArrayList<Item>();
+        //aantalDozen = 0;
+    }
 
-    public int getInhoud() {
-        int inhoudSum = 0;
+    public double getInhoud() {
+        double inhoudSum = 0;
 
         for (Item item : inhoud) {
             inhoudSum += item.getGrootte();
