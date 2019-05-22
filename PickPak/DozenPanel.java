@@ -36,22 +36,20 @@ public class DozenPanel extends JPanel{
         
         //            DOZEN 
         g2.setStroke(new BasicStroke(2));
-        g.drawRect(1100, 500, 50, 400);
-        g.drawRect(1200, 500, 50, 400);
-        g.drawRect(1300, 500, 50, 400);
-        g.drawRect(1400, 500, 50, 400);
-        g.drawRect(1500, 500, 50, 400);
-        g.drawRect(1600, 500, 50, 400);
-        
-
+        g.drawRect(1100, 110, 50, 400);
+        g.drawRect(1200, 110, 50, 400);
+        g.drawRect(1300, 110, 50, 400);
+        g.drawRect(1400, 110, 50, 400);
+        g.drawRect(1500, 110, 50, 400);
+        g.drawRect(1600, 110, 50, 400);
 
         g.setColor(Color.GRAY);
-        g.fillRect(1100, 500, 50, 400);
-        g.fillRect(1200, 500, 50, 400);
-        g.fillRect(1300, 500, 50, 400);
-        g.fillRect(1400, 500, 50, 400);
-        g.fillRect(1500, 500, 50, 400);
-        g.fillRect(1600, 500, 50, 400);
+        g.fillRect(1100, 110, 50, 400);
+        g.fillRect(1200, 110, 50, 400);
+        g.fillRect(1300, 110, 50, 400);
+        g.fillRect(1400, 110, 50, 400);
+        g.fillRect(1500, 110, 50, 400);
+        g.fillRect(1600, 110, 50, 400);
 
         g.setColor(Color.BLACK);
         g2.setStroke(new BasicStroke(4));
