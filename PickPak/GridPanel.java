@@ -37,11 +37,11 @@ public class GridPanel extends JPanel{
         int x = 300;
         for (int i = 0; i < 4; i++) {
 
-            g.drawLine(x, 450, x, 950);
+            g.drawLine(x, 10, x, 510);
             x = x + 100;
         }
 
-        int y = 550;
+        int y = 110;
         for (int i = 0; i < 4; i++) {
 
             g.drawLine(200, y, 700, y);
