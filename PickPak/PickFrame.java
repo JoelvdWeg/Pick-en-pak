@@ -3,10 +3,8 @@ package PickPak;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
+import javax.swing.*;
+
 import arduino.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -27,6 +25,11 @@ public class PickFrame extends JFrame implements ActionListener {
 
     private PickPak pickpak;
 
+    private static final class Lock{}
+    private final Object lock = new Lock();
+
+    private Thread t;
+
     public static boolean running = true;
 
     private GeavanceerdDialoog jdGeavanceerd;
@@ -41,8 +44,8 @@ public class PickFrame extends JFrame implements ActionListener {
     private GridPanel gridpanel;
     private DozenPanel dozenpanel;
 
-   
-    
+
+
     private Arduino arduinoKraan, arduinoSchijf;
 
     public PickFrame(PickPak pickpak) {
@@ -51,11 +54,11 @@ public class PickFrame extends JFrame implements ActionListener {
         setLayout(new FlowLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel p = new JPanel(new GridBagLayout());
-        
+
         GridBagConstraints d = new GridBagConstraints();
         GridBagConstraints c = new GridBagConstraints();
 
-               
+
         this.pickpak = pickpak;
 
         jlFile = new JLabel("Bestelling: ");
@@ -85,12 +88,12 @@ public class PickFrame extends JFrame implements ActionListener {
         geavanceerd.addActionListener(this);
         add(geavanceerd);
 
-        
+
 //        panel = new PickPanel(pickpak);
 //        add(panel);
-        
+
         gridpanel = new GridPanel(pickpak);
-        
+
         d.gridx = 0;
         d.gridy = 0;
         p.add(gridpanel,d);
@@ -98,20 +101,20 @@ public class PickFrame extends JFrame implements ActionListener {
         dozenpanel = new DozenPanel(pickpak);
         c.gridx = 300;
         c.gridy = 0;
-        
+
         p.add(dozenpanel,c);
 
         add(p, BorderLayout.SOUTH);
         setVisible(true);
 
-    }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == jbbevestig) {
-            new Thread() {
-                public void run() {
-                    jbbevestig.setEnabled(false);
+
+
+
+        t = new Thread() {
+            @Override
+            public void run() {
+                jbbevestig.setEnabled(false);
 
                     aantalBestellingen++;
                     if (aantalBestellingen > 1) { // aanpassen!
@@ -126,22 +129,54 @@ public class PickFrame extends JFrame implements ActionListener {
                     pickBestelling();
 
                     return;
-                }
-            }.start();
+            }
+        };
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == jbbevestig) {
+            if (checkRobotConnection()) {
+                t.start();
+            }
 
         } else if (e.getSource() == geavanceerd) {
-            jdGeavanceerd = new GeavanceerdDialoog(this, pickpak);
+            if (jdGeavanceerd == null) {
+                jdGeavanceerd = new GeavanceerdDialoog(this, pickpak);
+            }
+            else {
+                jdGeavanceerd.setVisible(true);
+            }
+            jdGeavanceerd.setVisible(false);
             BPPalgoritme = jdGeavanceerd.getBPPalgoritme();
             arduinoKraan = jdGeavanceerd.getArduinoKraan();
             arduinoSchijf = jdGeavanceerd.getArduinoSchijf();
-            jdGeavanceerd.dispose();
+            //jdGeavanceerd.dispose();
 
         } else if (e.getSource() == jbStop) {
             if (jbStop.getText().equals("Stop")) {
                 jbStop.setText("Hervatten");
 
+                synchronized (lock) {
+                    try {
+                        t.wait();
+                    } catch (Exception ex) {
+                        System.out.println(ex);
+                    }
+                }
+
             } else if (jbStop.getText().equals("Hervatten")) {
                 jbStop.setText("Stop");
+
+                synchronized (lock) {
+                    try {
+                        t.notify();
+                    } catch (Exception ex) {
+                        System.out.println(ex);
+                    }
+                }
+
             }
             arduinoKraan.serialWrite('f');
             running = !running;
@@ -165,6 +200,18 @@ public class PickFrame extends JFrame implements ActionListener {
 
         } catch (Exception ex) {
             System.out.println("Er ging iets mis\n...");
+        }
+    }
+
+    private boolean checkRobotConnection() {
+        try {
+            arduinoKraan.getSerialPort();
+            arduinoSchijf.getSerialPort();
+            return true;
+        }
+        catch (NullPointerException npe) {
+            JOptionPane.showMessageDialog(this, "Niet verbonden met de pick- of inpakrobot.");
+            return false;
         }
     }
 

@@ -10,18 +10,19 @@ import java.sql.*;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import static javax.swing.JOptionPane.YES_NO_OPTION;
+
 public class PickPak {
+    private JFrame f;
 
     private Pakbon pakbon;
-    
-    
 
 private static final int AANTAL_DOZEN = 6;
 
@@ -39,27 +40,32 @@ private static final int AANTAL_DOZEN = 6;
 
 
     private JTable table = null;
-    
+
     public PickPak() {
         kraanPositie = 0;
         doosPositie = 1;
 
         doosInhoud = new int[AANTAL_DOZEN];
 
-        if (maakDatabaseConnectie()) {
-            haalItemsOp();
-            sluitDatabaseConnectie();
-            PickFrame pf = new PickFrame(this);
-        } else {
-            System.exit(0);
+        while (!maakDatabaseConnectie()) {
+            int a = JOptionPane.showConfirmDialog(null, "Kon niet verbinden met de database. Opnieuw proberen?", "Select an Option...",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+            if (a != JOptionPane.YES_OPTION) {
+                System.exit(0);
+            }
         }
+
+        haalItemsOp(); // uit database
+        sluitDatabaseConnectie();
+        PickFrame pf = new PickFrame(this);
+
     }
 
     private boolean maakDatabaseConnectie() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://localhost/wideworldimporters";
-            connection = DriverManager.getConnection(url, "root", "");
+            connection = DriverManager.getConnection(url, "root", "root");
             System.out.println("Databaseconnectie succesvol\n...");
             return true;
         } catch (Exception e) {
@@ -236,7 +242,7 @@ private static final int AANTAL_DOZEN = 6;
         return picks;
     }
 
-    
+
     public JTable maakTabel() {
         int numRow = items.size();
         int numCol = 4;
@@ -301,7 +307,7 @@ private static final int AANTAL_DOZEN = 6;
         model.setColumnCount(aantalRows);
 
     }
-    
+
     public ArrayList<Integer> voerTSPuit(ArrayList<Item> picks) {
         route = null;
         TSP tsp = null;
@@ -313,8 +319,8 @@ private static final int AANTAL_DOZEN = 6;
         return route;
     }
 
-    
-    
+
+
     public void voerBPPuit(ArrayList<Integer> pickRoute, int BPPalgoritme) {
         volgorde = null;
         BPP bpp = null;
@@ -347,9 +353,9 @@ private static final int AANTAL_DOZEN = 6;
         char s = '.';
         do {
             try {
-                if (PickFrame.running) {
-                    s = arduino.serialRead().charAt(0);
-                }
+
+                s = arduino.serialRead().charAt(0);
+
                 System.out.println(s);
             } catch (Exception ex) {
                 System.out.println("Geen bericht ontvangen\n...");
@@ -424,7 +430,7 @@ private static final int AANTAL_DOZEN = 6;
                     Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
                     g2d.setStroke(dashed);
                     g2d.drawLine(250 + startx * 100, 900 - 100 * starty, 250 + eindx * 100, 900 - eindy * 100);
-                    g2d.setStroke(new BasicStroke(4));  
+                    g2d.setStroke(new BasicStroke(4));
                 } else {
                     g.drawLine(250 + startx * 100, 900 - 100 * starty, 250 + eindx * 100, 900 - eindy * 100);
                 }
