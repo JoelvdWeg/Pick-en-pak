@@ -22,7 +22,7 @@ public class GridPanel extends JPanel{
     PickPak pickpak;
     
     public GridPanel (PickPak pickpak) {
-        setPreferredSize(new Dimension(750, 500));
+        setPreferredSize(new Dimension(900, 600));
         this.pickpak = pickpak;
     }
     public void paintComponent(Graphics g) {
@@ -33,7 +33,7 @@ public class GridPanel extends JPanel{
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(5));
 
-        
+        g.drawRect(200, 10, 500, 500);
         int x = 300;
         for (int i = 0; i < 4; i++) {
 
