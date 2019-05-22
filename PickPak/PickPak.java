@@ -51,7 +51,7 @@ public class PickPak {
         }
     }
 
-    private static boolean maakDatabaseConnectie() {
+    private boolean maakDatabaseConnectie() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://localhost/wideworldimporters";
@@ -64,7 +64,7 @@ public class PickPak {
         }
     }
 
-    private static void sluitDatabaseConnectie() {
+    private void sluitDatabaseConnectie() {
         try {
             connection.close();
             System.out.println("Databaseconnectie succesvol gesloten\n...");
@@ -105,6 +105,8 @@ public class PickPak {
 
             System.out.println("--" + f);
             ArrayList<Integer> besteldeItems = new ArrayList<>();
+            
+            
 
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -148,13 +150,13 @@ public class PickPak {
 
             return bestelling;
         } catch (Exception ex) {
-            System.out.println("Error in lees bestelling!");
+            System.out.println("Error in lees bestelling: ");
             System.out.println(ex);
         }
         return null;
     }
 
-    public static ArrayList<Item> maakBestellingAan(String naam, String adres1, String adres2, String land, ArrayList<Integer> besteldeItems) {
+    public ArrayList<Item> maakBestellingAan(String naam, String adres1, String adres2, String land, ArrayList<Integer> besteldeItems) {
         if (maakDatabaseConnectie()) {
 
             ArrayList<Item> picks = new ArrayList<>();
@@ -221,7 +223,7 @@ public class PickPak {
         return null;
     }
 
-    private static ArrayList<Item> voegToeAanPicks(int besteldItem, ArrayList<Item> picks) {
+    private ArrayList<Item> voegToeAanPicks(int besteldItem, ArrayList<Item> picks) {
         for (Item item : items) {
             if (item.getLocatie().getID() == besteldItem) {
                 picks.add(item);
@@ -269,15 +271,21 @@ public class PickPak {
         message += items.get(route.get(next)).getLocatie().getCoord().getY();
 
         arduino.serialWrite(message);
+        
+        
+        System.out.println(message);
 
         char s = '.';
         do {
             try {
                 s = arduino.serialRead().charAt(0);
+                System.out.println(s);
             } catch (Exception ex) {
-
+                System.out.println("Geen bericht ontvangen\n...");
             }
         } while (s != 'q');
+        
+        System.out.println(s);
     }
 
     public void draaiSchijf(int next, Arduino arduino) {
@@ -315,7 +323,7 @@ public class PickPak {
         this.push = push;
     }
 
-    public void resetRobots(Arduino arduinoKraan, Arduino arduinoSchijf) {
+    public void resetRobots() {
 
        
         

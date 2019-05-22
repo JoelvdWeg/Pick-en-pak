@@ -32,7 +32,6 @@ public class PickFrame extends JFrame implements ActionListener {
 
     private Arduino arduinoKraan, arduinoSchijf;
 
-
     public PickFrame(PickPak pickpak) {
         setTitle("GUI");
         setSize(1920, 1080);
@@ -78,37 +77,36 @@ public class PickFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbbevestig) {
-            jbbevestig.setEnabled(false);
+            new Thread() {
+                public void run() {
+                    jbbevestig.setEnabled(false);
 
-            
+                    aantalBestellingen++;
+                    if (aantalBestellingen > 1) { // aanpassen!
 
-            aantalBestellingen++;
-            if (aantalBestellingen > 1) { // aanpassen!
-                
-                pickpak.resetRobots(arduinoKraan, arduinoSchijf);
-                
-                //pickpak.resetRobots(arduinoKraan, arduinoSchijf);
+                        pickpak.resetRobots();
 
-                //reconnect();
+                        panel.paintImmediately(0, 0, 1920, 1080);
+                    }
 
-                panel.paintImmediately(0, 0, 1920, 1080);
-            }
+                    tekenRoute(jtfFile.getText());
 
-            tekenRoute(jtfFile.getText());
+                    pickBestelling();
 
-            pickBestelling();
+                    return;
+                }
+            }.start();
 
-        } else if(e.getSource() == geavanceerd){
+        } else if (e.getSource() == geavanceerd) {
             jdGeavanceerd = new GeavanceerdDialoog(this, pickpak);
             BPPalgoritme = jdGeavanceerd.getBPPalgoritme();
             arduinoKraan = jdGeavanceerd.getArduinoKraan();
             arduinoSchijf = jdGeavanceerd.getArduinoSchijf();
             jdGeavanceerd.dispose();
-        }
-
-        else if (e.getSource() == jbStop) { // aanpassen!
-            System.out.println("STOP");
-
+        } else if (e.getSource() == jbStop) { // aanpassen!
+            arduinoKraan.serialWrite('f');
+            // misschien een noodstop dialoog maken?
+            // wat moet er moet de bestelling gebeuren wanneer de noodstop wordt ingedrukt?
         }
 
         repaint();
@@ -117,20 +115,18 @@ public class PickFrame extends JFrame implements ActionListener {
     private void tekenRoute(String f) {
         try {
             bestelling = null;
-            bestelling = pickpak.leesBestelling("bestelling.xml");
+            bestelling = pickpak.leesBestelling(f);
 
             if (bestelling == null) {
-                System.out.println("hoi");
-            }
-            else {
+                System.out.println("Bestelling is null\n...");
+            } else {
                 ArrayList<Integer> route = pickpak.voerTSPuit(bestelling);
 
                 pickpak.voerBPPuit(route, BPPalgoritme);
             }
 
-
         } catch (Exception ex) {
-            System.out.println("Bestand niet gevonden\n...");
+            System.out.println("Er ging iets mis\n...");
         }
     }
 
@@ -145,68 +141,70 @@ public class PickFrame extends JFrame implements ActionListener {
     }
 
     public void pickBestelling() {
-        for (int it = 1; it < pickpak.route.size() - 1; it++) {
+        if (pickpak.route == null) {
+            return;
+        } else {
+            
+            for (int it = 1; it < pickpak.route.size() - 1; it++) {
 
-            if (stop) {
-                stop = false;
-                break;
+                pickpak.draaiSchijf(it, arduinoSchijf);
+
+                char s = '.';
+                do {
+                    try {
+                        s = arduinoSchijf.serialRead().charAt(0);
+                    } catch (Exception ex) {
+
+                    }
+                } while (s != 'd'); // schijf draaien
+
+                //System.out.println(s);
+                //while(){
+                // wacht op signaal
+                // }
+                panel.paintImmediately(0, 0, 1920, 1080);
+
+                pickpak.beweegKraan(it, arduinoKraan);
+
+                System.out.println("KRAAN BEWOGEN\n...");
+
+                panel.paintImmediately(0, 0, 1920, 1080);
+
+                arduinoKraan.serialWrite('p'); //push
+
+                System.out.println("GEPUSHT\n...");
+
+                pickpak.setPush(true);
+
+                panel.paintImmediately(0, 0, 1920, 1080);
+
+                char t = '.';
+                do {
+                    try {
+                        t = arduinoSchijf.serialRead().charAt(0);
+                    } catch (Exception ex) {
+
+                    }
+                } while (t != 'p'); //sensor
+
+                //try {
+                //    Thread.sleep(1000);
+                //} catch (Exception ex) {
+                //}
+                System.out.println(t);
+
+                pickpak.setPush(false);
+
+                panel.paintImmediately(0, 0, 1920, 1080);
+
+                pickpak.werkDoosInhoudBij(it);
+
+                panel.paintImmediately(0, 0, 1920, 1080);
             }
+            arduinoKraan.serialWrite("c00");
+            arduinoSchijf.serialWrite("c1");
 
-            pickpak.draaiSchijf(it, arduinoSchijf);
-
-            char s = '.';
-            do {
-                try {
-                    s = arduinoSchijf.serialRead().charAt(0);
-                } catch (Exception ex) {
-
-                }
-            } while (s != 'd'); // schijf draaien
-
-            System.out.println(s);
-            //while(){
-            // wacht op signaal
-            // }
-            panel.paintImmediately(0, 0, 1920, 1080);
-
-            pickpak.beweegKraan(it, arduinoKraan);
-
-            panel.paintImmediately(0, 0, 1920, 1080);
-
-            arduinoKraan.serialWrite('p'); //push
-
-            pickpak.setPush(true);
-
-            panel.paintImmediately(0, 0, 1920, 1080);
-
-            char t = '.';
-            do {
-                try {
-                    t = arduinoSchijf.serialRead().charAt(0);
-                } catch (Exception ex) {
-
-                }
-            } while (t != 'p'); //sensor
-
-            try {
-                Thread.sleep(1000);
-            } catch (Exception ex) {
-            }
-
-            System.out.println(t);
-
-            pickpak.setPush(false);
-
-            panel.paintImmediately(0, 0, 1920, 1080);
-
-            pickpak.werkDoosInhoudBij(it);
-
-            panel.paintImmediately(0, 0, 1920, 1080);
+            jbbevestig.setEnabled(true);
         }
-        arduinoKraan.serialWrite("c00");
-        arduinoSchijf.serialWrite("c1");
-        
-        jbbevestig.setEnabled(true); //hey x
-        
     }
 }
