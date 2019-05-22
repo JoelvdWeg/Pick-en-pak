@@ -51,7 +51,7 @@ public class PickPak {
         }
     }
 
-    private static boolean maakDatabaseConnectie() {
+    private boolean maakDatabaseConnectie() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://localhost/wideworldimporters";
@@ -64,7 +64,7 @@ public class PickPak {
         }
     }
 
-    private static void sluitDatabaseConnectie() {
+    private void sluitDatabaseConnectie() {
         try {
             connection.close();
             System.out.println("Databaseconnectie succesvol gesloten\n...");
@@ -97,7 +97,7 @@ public class PickPak {
     }
 
     public ArrayList<Item> leesBestelling(String f) {
-        try {
+        ///try {
             String naam = "";
             String adres1 = "";
             String adres2 = "";
@@ -105,11 +105,16 @@ public class PickPak {
 
             System.out.println("--" + f);
             ArrayList<Integer> besteldeItems = new ArrayList<>();
+            
+            org.w3c.dom.Document document = null;
 
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            try{
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            org.w3c.dom.Document document = documentBuilder.parse(new File(f));
-
+            document = documentBuilder.parse(new File(f));
+            }catch(Exception ex){
+                
+            }
             Element rootElement = (Element) document.getFirstChild();
 
             NodeList nlist = rootElement.getChildNodes();
@@ -147,14 +152,14 @@ public class PickPak {
             ArrayList<Item> bestelling = maakBestellingAan(naam, adres1, adres2, land, besteldeItems);
 
             return bestelling;
-        } catch (Exception ex) {
-            System.out.println("Error in lees bestelling!");
-            System.out.println(ex);
-        }
-        return null;
+        ///} catch (Exception ex) {
+            ///System.out.println("Error in lees bestelling!");
+            ///System.out.println(ex);
+        ///}
+        ///return null;
     }
 
-    public static ArrayList<Item> maakBestellingAan(String naam, String adres1, String adres2, String land, ArrayList<Integer> besteldeItems) {
+    public ArrayList<Item> maakBestellingAan(String naam, String adres1, String adres2, String land, ArrayList<Integer> besteldeItems) {
         if (maakDatabaseConnectie()) {
 
             ArrayList<Item> picks = new ArrayList<>();
@@ -221,7 +226,7 @@ public class PickPak {
         return null;
     }
 
-    private static ArrayList<Item> voegToeAanPicks(int besteldItem, ArrayList<Item> picks) {
+    private ArrayList<Item> voegToeAanPicks(int besteldItem, ArrayList<Item> picks) {
         for (Item item : items) {
             if (item.getLocatie().getID() == besteldItem) {
                 picks.add(item);
