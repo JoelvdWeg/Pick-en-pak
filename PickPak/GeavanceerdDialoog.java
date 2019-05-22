@@ -22,8 +22,7 @@ public class GeavanceerdDialoog extends JDialog implements ActionListener{
     private JPanel jpArduino, jpSchijf, jpKraan, jpTSPBPP;
     private PortDropdownMenu pdmCOMkraan, pdmCOMschijf;
     private JComboBox jcbBPP;
-    private JButton jbConnect, jbRefresh, jbApply, jbUp, jbDown, jbLeft, jbRight, jbStop, jbReset, jbKalibreerSensor, jbKalibreerSchijf, jbPush, jbPull, jbCoordinaat, jbNoodstop;
-    private JLabel jlpdmCOMkraan, jlpdmCOMschijf, jlBPP;
+    private JButton jbConnect, jbRefresh, jbApply, jbUp, jbDown, jbLeft, jbRight, jbStop, jbReset, jbKalibreerSensor, jbKalibreerSchijf, jbPush, jbCoordinaat, jbNoodstop;
     private JTextField jtfCoordinaat;
     private Arduino arduinoKraan, arduinoSchijf;
     private boolean aanHetKalibreren;
@@ -122,10 +121,6 @@ public class GeavanceerdDialoog extends JDialog implements ActionListener{
         jbPush = new JButton("Push");
         jbPush.addActionListener(this);
         jpKraan.add(jbPush);
-        
-        jbPull = new JButton("Pull");
-        jbPull.addActionListener(this);
-        jpKraan.add(jbPull);
 
         jpKraan.add(new JLabel("Coorindaat: "));
         
@@ -240,9 +235,6 @@ public class GeavanceerdDialoog extends JDialog implements ActionListener{
         }
         else if (e.getSource() == jbPush) {
             arduinoKraan.serialWrite('p');
-        }
-        else if (e.getSource() == jbPull) {
-            arduinoKraan.serialWrite('q');
         }
         else if (e.getSource() == jbCoordinaat) {
             arduinoKraan.serialWrite("c" + jtfCoordinaat.getText());
