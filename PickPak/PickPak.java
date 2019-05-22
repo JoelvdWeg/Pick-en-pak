@@ -65,7 +65,7 @@ private static final int AANTAL_DOZEN = 6;
         try {
             Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://localhost/wideworldimporters";
-            connection = DriverManager.getConnection(url, "root", "root");
+            connection = DriverManager.getConnection(url, "root", "");
             System.out.println("Databaseconnectie succesvol\n...");
             return true;
         } catch (Exception e) {
@@ -243,70 +243,70 @@ private static final int AANTAL_DOZEN = 6;
     }
 
 
-    public JTable maakTabel() {
-        int numRow = items.size();
-        int numCol = 4;
-
-        String[] columnNames = {"Id",
-            "Product",
-            "Grotte",
-            "Coördinaten"};
-
-        aantalRows = items.size();
-
-        Object[][] array = new Object[aantalRows][numCol];
-
-        int i;
-        for (i = 0; i < numRow; i++) {
-            array[i][0] = items.get(i).getID();
-            array[i][1] = items.get(i).getNaam();
-            array[i][2] = items.get(i).getGrootte();
-            array[i][3] = items.get(i).getLocatie().getCoord();
-        }
-
-        System.out.println(items.get(1).getNaam());
-
-        table = new JTable(array, columnNames);
-
-        //TableColumn column = null;
-        //try {
-        for (int t = 0; t < 4; t++) {
-            TableColumn column = table.getColumnModel().getColumn(t);
-            column.setPreferredWidth(250);
-        }
-        //} catch (Exception e) {
-        System.out.println("test");
-        // }
-
-        return table;
-
-    }
-
-    public void vulTabel() {
-
-        int numRow = items.size();
-
-        numRow = pakbon.getSize();
-
-        aantalRows = pakbon.items.size();
-
-        int i;
-        for (i = 0; i < numRow; i++) {
-
-            if (i > pakbon.getSize()) {
-
-            } else {
-                table.getModel().setValueAt(pakbon.items.get(i).getID(), i, 0);
-                table.getModel().setValueAt(pakbon.items.get(i).getNaam(), i, 1);
-                table.getModel().setValueAt(pakbon.items.get(i).getGrootte(), i, 2);
-                table.getModel().setValueAt(pakbon.items.get(i).getLocatie().getCoord(), i, 3);
-            }
-        }
-
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.setColumnCount(aantalRows);
-
-    }
+//    public JTable maakTabel() {
+//        int numRow = items.size();
+//        int numCol = 4;
+//
+//        String[] columnNames = {"Id",
+//            "Product",
+//            "Grotte",
+//            "Coördinaten"};
+//
+//        aantalRows = items.size();
+//
+//        Object[][] array = new Object[aantalRows][numCol];
+//
+//        int i;
+//        for (i = 0; i < numRow; i++) {
+//            array[i][0] = items.get(i).getID();
+//            array[i][1] = items.get(i).getNaam();
+//            array[i][2] = items.get(i).getGrootte();
+//            array[i][3] = items.get(i).getLocatie().getCoord();
+//        }
+//
+//        System.out.println(items.get(1).getNaam());
+//
+//        table = new JTable(array, columnNames);
+//
+//        //TableColumn column = null;
+//        //try {
+//        for (int t = 0; t < 4; t++) {
+//            TableColumn column = table.getColumnModel().getColumn(t);
+//            column.setPreferredWidth(250);
+//        }
+//        //} catch (Exception e) {
+//        System.out.println("test");
+//        // }
+//
+//        return table;
+//
+//    }
+//
+//    public void vulTabel() {
+//
+//        int numRow = items.size();
+//
+//        numRow = pakbon.getSize();
+//
+//        aantalRows = pakbon.items.size();
+//
+//        int i;
+//        for (i = 0; i < numRow; i++) {
+//
+//            if (i > pakbon.getSize()) {
+//
+//            } else {
+//                table.getModel().setValueAt(pakbon.items.get(i).getID(), i, 0);
+//                table.getModel().setValueAt(pakbon.items.get(i).getNaam(), i, 1);
+//                table.getModel().setValueAt(pakbon.items.get(i).getGrootte(), i, 2);
+//                table.getModel().setValueAt(pakbon.items.get(i).getLocatie().getCoord(), i, 3);
+//            }
+//        }
+//
+//        DefaultTableModel model = (DefaultTableModel) table.getModel();
+//        model.setColumnCount(aantalRows);
+//
+//    }
 
     public ArrayList<Integer> voerTSPuit(ArrayList<Item> picks) {
         route = null;
