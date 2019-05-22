@@ -41,7 +41,6 @@ public class PickPak {
     public PickPak() {
         kraanPositie = 0;
         doosPositie = 1;
-        f = new JFrame();
 
         doosInhoud = new int[AANTAL_DOZEN];
 
@@ -53,7 +52,7 @@ public class PickPak {
             }
         }
 
-        haalItemsOp();
+        haalItemsOp(); // uit database
         sluitDatabaseConnectie();
         PickFrame pf = new PickFrame(this);
 

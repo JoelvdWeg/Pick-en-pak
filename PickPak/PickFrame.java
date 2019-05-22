@@ -3,10 +3,8 @@ package PickPak;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
+import javax.swing.*;
+
 import arduino.*;
 import java.util.ArrayList;
 
@@ -106,8 +104,9 @@ public class PickFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbbevestig) {
-            
-            t.start();
+            if (checkRobotConnection()) {
+                t.start();
+            }
 
         } else if (e.getSource() == geavanceerd) {
             jdGeavanceerd = new GeavanceerdDialoog(this, pickpak);
@@ -162,6 +161,18 @@ public class PickFrame extends JFrame implements ActionListener {
 
         } catch (Exception ex) {
             System.out.println("Er ging iets mis\n...");
+        }
+    }
+
+    private boolean checkRobotConnection() {
+        try {
+            arduinoKraan.getSerialPort();
+            arduinoSchijf.getSerialPort();
+            return true;
+        }
+        catch (NullPointerException npe) {
+            JOptionPane.showMessageDialog(this, "Niet verbonden met de pick- of inpakrobot.");
+            return false;
         }
     }
 
