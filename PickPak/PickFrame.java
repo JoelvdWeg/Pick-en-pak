@@ -103,10 +103,15 @@ public class PickFrame extends JFrame implements ActionListener {
             arduinoKraan = jdGeavanceerd.getArduinoKraan();
             arduinoSchijf = jdGeavanceerd.getArduinoSchijf();
             jdGeavanceerd.dispose();
-        } else if (e.getSource() == jbStop) { // aanpassen!
+        } else if (e.getSource() == jbStop) {
+            if (jbStop.getText().equals("Stop")) {
+                jbStop.setText("Hervatten");
+
+            } else if (jbStop.getText().equals("Hervatten")) {
+                jbStop.setText("Stop");
+            }
             arduinoKraan.serialWrite('f');
-            // misschien een noodstop dialoog maken?
-            // wat moet er moet de bestelling gebeuren wanneer de noodstop wordt ingedrukt?
+
         }
 
         repaint();
@@ -144,7 +149,7 @@ public class PickFrame extends JFrame implements ActionListener {
         if (pickpak.route == null) {
             return;
         } else {
-            
+
             for (int it = 1; it < pickpak.route.size() - 1; it++) {
 
                 pickpak.draaiSchijf(it, arduinoSchijf);
