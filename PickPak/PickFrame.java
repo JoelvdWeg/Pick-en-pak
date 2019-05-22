@@ -19,6 +19,9 @@ public class PickFrame extends JFrame implements ActionListener {
     ArrayList<Item> bestelling;
 
     private PickPak pickpak;
+    
+    private static final class Lock{}
+    private final Object lock = new Lock();
 
     private Thread t;
 
@@ -113,7 +116,7 @@ public class PickFrame extends JFrame implements ActionListener {
             if (jbStop.getText().equals("Stop")) {
                 jbStop.setText("Hervatten");
 
-                synchronized (t) {
+                synchronized (lock) {
                     try {
                         t.wait();
                     } catch (Exception ex) {
@@ -124,7 +127,7 @@ public class PickFrame extends JFrame implements ActionListener {
             } else if (jbStop.getText().equals("Hervatten")) {
                 jbStop.setText("Stop");
 
-                synchronized (t) {
+                synchronized (lock) {
                     try {
                         t.notify();
                     } catch (Exception ex) {
