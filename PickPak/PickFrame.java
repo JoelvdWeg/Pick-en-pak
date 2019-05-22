@@ -113,7 +113,7 @@ public class PickFrame extends JFrame implements ActionListener {
     }
 
     private void tekenRoute(String f) {
-        try {
+        //try {
             bestelling = null;
             bestelling = pickpak.leesBestelling(f);
 
@@ -125,9 +125,9 @@ public class PickFrame extends JFrame implements ActionListener {
                 pickpak.voerBPPuit(route, BPPalgoritme);
             }
 
-        } catch (Exception ex) {
-            System.out.println("Bestand niet gevonden\n...");
-        }
+        //} catch (Exception ex) {
+          //  System.out.println("Bestand niet gevonden\n...");
+        //}
     }
 
     private void reconnect() {
