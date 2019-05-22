@@ -19,8 +19,6 @@ import org.w3c.dom.NodeList;
 public class PickPak {
 
     private Pakbon pakbon;
-    
-    
 
     private static final int AANTAL_DOZEN = 6;
 
@@ -275,9 +273,9 @@ public class PickPak {
         char s = '.';
         do {
             try {
-                if (PickFrame.running) {
-                    s = arduino.serialRead().charAt(0);
-                }
+
+                s = arduino.serialRead().charAt(0);
+
                 System.out.println(s);
             } catch (Exception ex) {
                 System.out.println("Geen bericht ontvangen\n...");

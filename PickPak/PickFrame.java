@@ -20,6 +20,8 @@ public class PickFrame extends JFrame implements ActionListener {
 
     private PickPak pickpak;
 
+    private Thread t;
+
     public static boolean running = true;
 
     private GeavanceerdDialoog jdGeavanceerd;
@@ -79,7 +81,7 @@ public class PickFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbbevestig) {
-            new Thread() {
+            t = new Thread() {
                 public void run() {
                     jbbevestig.setEnabled(false);
 
@@ -97,7 +99,8 @@ public class PickFrame extends JFrame implements ActionListener {
 
                     return;
                 }
-            }.start();
+            };
+            t.start();
 
         } else if (e.getSource() == geavanceerd) {
             jdGeavanceerd = new GeavanceerdDialoog(this, pickpak);
@@ -110,8 +113,25 @@ public class PickFrame extends JFrame implements ActionListener {
             if (jbStop.getText().equals("Stop")) {
                 jbStop.setText("Hervatten");
 
+                synchronized (t) {
+                    try {
+                        t.wait();
+                    } catch (Exception ex) {
+
+                    }
+                }
+
             } else if (jbStop.getText().equals("Hervatten")) {
                 jbStop.setText("Stop");
+                
+                synchronized (t) {
+                    try {
+                        t.notify();
+                    } catch (Exception ex) {
+
+                    }
+                }
+                
             }
             arduinoKraan.serialWrite('f');
             running = !running;
