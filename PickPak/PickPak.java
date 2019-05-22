@@ -97,7 +97,7 @@ public class PickPak {
     }
 
     public ArrayList<Item> leesBestelling(String f) {
-        ///try {
+        try {
             String naam = "";
             String adres1 = "";
             String adres2 = "";
@@ -106,15 +106,12 @@ public class PickPak {
             System.out.println("--" + f);
             ArrayList<Integer> besteldeItems = new ArrayList<>();
             
-            org.w3c.dom.Document document = null;
+            
 
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            try{
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            document = documentBuilder.parse(new File(f));
-            }catch(Exception ex){
-                
-            }
+            org.w3c.dom.Document document = documentBuilder.parse(new File(f));
+
             Element rootElement = (Element) document.getFirstChild();
 
             NodeList nlist = rootElement.getChildNodes();
@@ -152,11 +149,11 @@ public class PickPak {
             ArrayList<Item> bestelling = maakBestellingAan(naam, adres1, adres2, land, besteldeItems);
 
             return bestelling;
-        ///} catch (Exception ex) {
-            ///System.out.println("Error in lees bestelling!");
-            ///System.out.println(ex);
-        ///}
-        ///return null;
+        } catch (Exception ex) {
+            System.out.println("Error in lees bestelling: ");
+            System.out.println(ex);
+        }
+        return null;
     }
 
     public ArrayList<Item> maakBestellingAan(String naam, String adres1, String adres2, String land, ArrayList<Integer> besteldeItems) {
