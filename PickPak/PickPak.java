@@ -269,6 +269,8 @@ public class PickPak {
         message += items.get(route.get(next)).getLocatie().getCoord().getY();
 
         arduino.serialWrite(message);
+        
+        System.out.println(message);
 
         char s = '.';
         do {
@@ -278,6 +280,8 @@ public class PickPak {
 
             }
         } while (s != 'q');
+        
+        System.out.println(s);
     }
 
     public void draaiSchijf(int next, Arduino arduino) {
