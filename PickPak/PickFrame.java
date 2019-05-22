@@ -79,12 +79,8 @@ public class PickFrame extends JFrame implements ActionListener {
 
         setVisible(true);
 
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == jbbevestig) {
-            t = new Thread() {
+        
+        t = new Thread() {
                 public void run() {
                     jbbevestig.setEnabled(false);
 
@@ -103,6 +99,12 @@ public class PickFrame extends JFrame implements ActionListener {
                     return;
                 }
             };
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == jbbevestig) {
+            
             t.start();
 
         } else if (e.getSource() == geavanceerd) {
