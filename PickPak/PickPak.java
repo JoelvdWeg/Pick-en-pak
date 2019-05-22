@@ -276,8 +276,9 @@ public class PickPak {
         do {
             try {
                 s = arduino.serialRead().charAt(0);
+                System.out.println(s);
             } catch (Exception ex) {
-
+                System.out.println("Geen bericht ontvangen\n...");
             }
         } while (s != 'q');
         
