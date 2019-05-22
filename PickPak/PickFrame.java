@@ -75,7 +75,13 @@ public class PickFrame extends JFrame implements ActionListener {
         panel = new PickPanel(pickpak);
         add(panel);
 
+
+
+
         setVisible(true);
+
+
+
 
         
         t = new Thread() {
@@ -109,11 +115,17 @@ public class PickFrame extends JFrame implements ActionListener {
             }
 
         } else if (e.getSource() == geavanceerd) {
-            jdGeavanceerd = new GeavanceerdDialoog(this, pickpak);
+            if (jdGeavanceerd == null) {
+                jdGeavanceerd = new GeavanceerdDialoog(this, pickpak);
+            }
+            else {
+                jdGeavanceerd.setVisible(true);
+            }
+            jdGeavanceerd.setVisible(false);
             BPPalgoritme = jdGeavanceerd.getBPPalgoritme();
             arduinoKraan = jdGeavanceerd.getArduinoKraan();
             arduinoSchijf = jdGeavanceerd.getArduinoSchijf();
-            jdGeavanceerd.dispose();
+            //jdGeavanceerd.dispose();
 
         } else if (e.getSource() == jbStop) {
             if (jbStop.getText().equals("Stop")) {
