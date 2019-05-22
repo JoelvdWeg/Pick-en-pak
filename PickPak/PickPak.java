@@ -315,7 +315,7 @@ public class PickPak {
         this.push = push;
     }
 
-    public void resetRobots(Arduino arduinoKraan, Arduino arduinoSchijf) {
+    public void resetRobots() {
 
        
         

@@ -86,10 +86,8 @@ public class PickFrame extends JFrame implements ActionListener {
                     aantalBestellingen++;
                     if (aantalBestellingen > 1) { // aanpassen!
 
-                        pickpak.resetRobots(arduinoKraan, arduinoSchijf);
-
-                        //pickpak.resetRobots(arduinoKraan, arduinoSchijf);
-                        //reconnect();
+                        pickpak.resetRobots();
+                        
                         panel.paintImmediately(0, 0, 1920, 1080);
                     }
 
@@ -98,7 +96,7 @@ public class PickFrame extends JFrame implements ActionListener {
                     pickBestelling();
                 }
             }.start();
-
+            
         } else if (e.getSource() == geavanceerd) {
             jdGeavanceerd = new GeavanceerdDialoog(this, pickpak);
             BPPalgoritme = jdGeavanceerd.getBPPalgoritme();
@@ -185,10 +183,10 @@ public class PickFrame extends JFrame implements ActionListener {
                 }
             } while (t != 'p'); //sensor
 
-            try {
-                Thread.sleep(1000);
-            } catch (Exception ex) {
-            }
+            //try {
+            //    Thread.sleep(1000);
+            //} catch (Exception ex) {
+            //}
 
             System.out.println(t);
 
@@ -203,7 +201,7 @@ public class PickFrame extends JFrame implements ActionListener {
         arduinoKraan.serialWrite("c00");
         arduinoSchijf.serialWrite("c1");
 
-        jbbevestig.setEnabled(true); //hey x
+        jbbevestig.setEnabled(true);
 
     }
 }
