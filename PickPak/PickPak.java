@@ -10,6 +10,7 @@ import java.sql.*;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+import javax.swing.JTable;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Element;
@@ -22,13 +23,13 @@ public class PickPak {
     
     
 
-    private static final int AANTAL_DOZEN = 6;
+private static final int AANTAL_DOZEN = 6;
 
     private int[] doosInhoud;
 
     private boolean push = false;
 
-    private int kraanPositie, doosPositie;
+    private int kraanPositie, doosPositie, aantalRows;
 
     public static ArrayList<Item> items;
 
@@ -36,6 +37,9 @@ public class PickPak {
 
     private static Connection connection;
 
+
+    private JTable table = null;
+    
     public PickPak() {
         kraanPositie = 0;
         doosPositie = 1;
@@ -232,6 +236,72 @@ public class PickPak {
         return picks;
     }
 
+    
+    public JTable maakTabel() {
+        int numRow = items.size();
+        int numCol = 4;
+
+        String[] columnNames = {"Id",
+            "Product",
+            "Grotte",
+            "Coördinaten"};
+
+        aantalRows = items.size();
+
+        Object[][] array = new Object[aantalRows][numCol];
+
+        int i;
+        for (i = 0; i < numRow; i++) {
+            array[i][0] = items.get(i).getID();
+            array[i][1] = items.get(i).getNaam();
+            array[i][2] = items.get(i).getGrootte();
+            array[i][3] = items.get(i).getLocatie().getCoord();
+        }
+
+        System.out.println(items.get(1).getNaam());
+
+        table = new JTable(array, columnNames);
+
+        //TableColumn column = null;
+        //try {
+        for (int t = 0; t < 4; t++) {
+            TableColumn column = table.getColumnModel().getColumn(t);
+            column.setPreferredWidth(250);
+        }
+        //} catch (Exception e) {
+        System.out.println("test");
+        // }
+
+        return table;
+
+    }
+
+    public void vulTabel() {
+
+        int numRow = items.size();
+
+        numRow = pakbon.getSize();
+
+        aantalRows = pakbon.items.size();
+
+        int i;
+        for (i = 0; i < numRow; i++) {
+
+            if (i > pakbon.getSize()) {
+
+            } else {
+                table.getModel().setValueAt(pakbon.items.get(i).getID(), i, 0);
+                table.getModel().setValueAt(pakbon.items.get(i).getNaam(), i, 1);
+                table.getModel().setValueAt(pakbon.items.get(i).getGrootte(), i, 2);
+                table.getModel().setValueAt(pakbon.items.get(i).getLocatie().getCoord(), i, 3);
+            }
+        }
+
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setColumnCount(aantalRows);
+
+    }
+    
     public ArrayList<Integer> voerTSPuit(ArrayList<Item> picks) {
         route = null;
         TSP tsp = null;
@@ -243,6 +313,8 @@ public class PickPak {
         return route;
     }
 
+    
+    
     public void voerBPPuit(ArrayList<Integer> pickRoute, int BPPalgoritme) {
         volgorde = null;
         BPP bpp = null;
@@ -352,7 +424,7 @@ public class PickPak {
                     Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
                     g2d.setStroke(dashed);
                     g2d.drawLine(250 + startx * 100, 900 - 100 * starty, 250 + eindx * 100, 900 - eindy * 100);
-                    g2d.setStroke(new BasicStroke(4));
+                    g2d.setStroke(new BasicStroke(4));  
                 } else {
                     g.drawLine(250 + startx * 100, 900 - 100 * starty, 250 + eindx * 100, 900 - eindy * 100);
                 }

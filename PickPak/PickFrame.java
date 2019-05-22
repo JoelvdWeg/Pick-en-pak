@@ -38,8 +38,9 @@ public class PickFrame extends JFrame implements ActionListener {
     private JButton jbbevestig, jbStop, geavanceerd;
 
 //    private PickPanel panel;
-    private DozenPanel dozenpanel;
     private GridPanel gridpanel;
+    private DozenPanel dozenpanel;
+
    
     
     private Arduino arduinoKraan, arduinoSchijf;
@@ -51,8 +52,9 @@ public class PickFrame extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel p = new JPanel(new GridBagLayout());
         
-        GridBagConstraints c = new GridBagConstraints();
         GridBagConstraints d = new GridBagConstraints();
+        GridBagConstraints c = new GridBagConstraints();
+
                
         this.pickpak = pickpak;
 
@@ -87,16 +89,18 @@ public class PickFrame extends JFrame implements ActionListener {
 //        panel = new PickPanel(pickpak);
 //        add(panel);
         
+        gridpanel = new GridPanel(pickpak);
+        
+        d.gridx = 0;
+        d.gridy = 0;
+        p.add(gridpanel,d);
+
         dozenpanel = new DozenPanel(pickpak);
-        c.gridx = 0;
+        c.gridx = 300;
         c.gridy = 0;
         
         p.add(dozenpanel,c);
-        gridpanel = new GridPanel(pickpak);
-        
-        d.gridx = 300;
-        d.gridy = 0;
-        p.add(gridpanel,d);
+
         add(p, BorderLayout.SOUTH);
         setVisible(true);
 
