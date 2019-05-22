@@ -117,21 +117,21 @@ public class PickFrame extends JFrame implements ActionListener {
                     try {
                         t.wait();
                     } catch (Exception ex) {
-
+                        System.out.println(ex);
                     }
                 }
 
             } else if (jbStop.getText().equals("Hervatten")) {
                 jbStop.setText("Stop");
-                
+
                 synchronized (t) {
                     try {
                         t.notify();
                     } catch (Exception ex) {
-
+                        System.out.println(ex);
                     }
                 }
-                
+
             }
             arduinoKraan.serialWrite('f');
             running = !running;
