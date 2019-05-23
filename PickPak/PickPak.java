@@ -132,7 +132,7 @@ public class PickPak {
         }
     }
 
-    public ArrayList<Item> leesBestelling(String f) {
+    public Bestelling leesBestelling(String f) {
         try {
             String naam = "";
             String adres1 = "";
@@ -140,7 +140,7 @@ public class PickPak {
             String land = "";
 
             System.out.println("--" + f);
-            ArrayList<Integer> besteldeItems = new ArrayList<>();
+            ArrayList<Item> besteldeItems = new ArrayList<>();
 
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             org.w3c.dom.Document document = null;
@@ -181,14 +181,12 @@ public class PickPak {
                     int aantal = Integer.parseInt(aantalNode.getTextContent());
 
                     for (int k = 0; k < aantal; k++) {
-                        besteldeItems.add(itemID);
+                        besteldeItems.add(items.get(itemID));
                     }
                 }
             }
 
-            ArrayList<Item> bestelling = maakBestellingAan(naam, adres1, adres2, land, besteldeItems);
-
-            return bestelling;
+            return new Bestelling(naam, adres1, adres2, land, besteldeItems);
         } catch (Exception ex) {
             System.out.println("ERROR: ");
             System.out.println(ex);
@@ -196,16 +194,32 @@ public class PickPak {
         }
     }
 
-    public ArrayList<Item> maakBestellingAan(String naam, String adres1, String adres2, String land, ArrayList<Integer> besteldeItems) {
-        
-        if (maakDatabaseConnectie()) {
-            System.out.println("CHECK");
-            
-
-            ArrayList<Item> picks = new ArrayList<>();
-
-            //Pakbon pakbon = null;
-            ArrayList<Pakbon> pakbonnen = new ArrayList<>();
+//    public ArrayList<Item> maakBestellingAan(ArrayList<Integer> besteldeItems) {
+//        
+//        if (maakDatabaseConnectie()) {
+//            System.out.println("CHECK");
+//            
+//
+//            ArrayList<Item> picks = new ArrayList<>();
+//            
+//            int k = 1;
+//            for(Integer i: besteldeItems){
+//            picks = voegToeAanPicks(i, picks);
+//             k++;
+//            }
+//            System.out.println("Totaal: " + k + " items\n...");
+// 
+//
+//            sluitDatabaseConnectie();
+//            return picks;
+//        } else {
+//
+//        }
+//        return null;
+//    }
+    
+    public void maakPakbonnen(Bestelling bestelling){
+        ArrayList<Pakbon> pakbonnen = new ArrayList<>();
 
             int newPakbonID = 0;
 
@@ -218,10 +232,10 @@ public class PickPak {
 
                 PreparedStatement newBestelling = connection.prepareStatement("INSERT INTO bestelling VALUES(?,?,?,?,?,?)");
                 newBestelling.setInt(1, newPakbonID);
-                newBestelling.setString(2, naam);
-                newBestelling.setString(3, adres1);
-                newBestelling.setString(4, adres2);
-                newBestelling.setString(5, land);
+                newBestelling.setString(2, bestelling.getNaam());
+                newBestelling.setString(3, bestelling.getAdres1());
+                newBestelling.setString(4, bestelling.getAdres2());
+                newBestelling.setString(5, bestelling.getLand());
                 newBestelling.setInt(6, newPakbonID);
                 newBestelling.executeUpdate();
 
@@ -230,18 +244,15 @@ public class PickPak {
                 System.out.println("Kon geen bestelling toevoegen aan de database\n...");
                 System.out.println(e);
             }
-
-            int k = 1;
-            System.out.println("sadbfkajshdbfljasdbfljasbfljashdbfljhsabfljhasbdfljahsdbfkjhasbfkjhsabdfkjhasbdfkjhsabdfkjhasbdfkjhasbdkjfhbasdkjfhbvsakjdhfbaskjhdfv");
-            System.out.println("DOZENSIZE: " + dozen.size());
+            
             for (Doos d : dozen) {
                 System.out.println(d);
-                Pakbon p = new Pakbon(newPakbonID, naam, adres1, adres2, land);
+                Pakbon p = new Pakbon(newPakbonID, bestelling.getNaam(), bestelling.getAdres1(), bestelling.getAdres2(), bestelling.getLand());
                 pakbonnen.add(p);
 
                 for (Item i : d.getItems()) {
                     p.voegItemToe(i);
-                    picks = voegToeAanPicks(i.getID(), picks);
+                    
                     try {
                         Statement bestelRegelIDstatement = connection.createStatement();
                         ResultSet bestelRegelIDresult = bestelRegelIDstatement.executeQuery("SELECT MAX(regelID) FROM bestelregel");
@@ -269,18 +280,9 @@ public class PickPak {
 
                 p.maakPakbonBestand();
 
-                k++;
+               
                 newPakbonID++;
             }
-
-            System.out.println("Totaal: " + k + " items\n...");
-
-            sluitDatabaseConnectie();
-            return picks;
-        } else {
-
-        }
-        return null;
     }
 
     private ArrayList<Item> voegToeAanPicks(int besteldItem, ArrayList<Item> picks) {

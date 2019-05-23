@@ -19,7 +19,7 @@ public class PickFrame extends JFrame implements ActionListener {
     private boolean aanHetKalibreren = false;
     private boolean stop = false;
     private int picknr = 0;
-    ArrayList<Item> bestelling;
+    private Bestelling bestelling;
 
     private PickPak pickpak;
 
@@ -154,6 +154,8 @@ public class PickFrame extends JFrame implements ActionListener {
                 tabel.setModel(pickpak.maakTabelModel(0)); 
 
                 pickBestelling();
+                
+                pickpak.maakPakbonnen(bestelling);
 
                 return;
             }
@@ -267,7 +269,7 @@ public class PickFrame extends JFrame implements ActionListener {
             if (bestelling == null) {
                 System.out.println("Bestelling is null\n...");
             } else {
-                ArrayList<Integer> route = pickpak.voerTSPuit(bestelling);
+                ArrayList<Integer> route = pickpak.voerTSPuit(bestelling.getBesteldeItems());
 
                 pickpak.voerBPPuit(route, BPPalgoritme);
             }
