@@ -95,7 +95,7 @@ public class PickFrame extends JFrame implements ActionListener {
         tabel.setFillsViewportHeight(true);
 
         tabel.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
-        TableColumnModel colModel=tabel.getColumnModel();
+        TableColumnModel colModel = tabel.getColumnModel();
         colModel.getColumn(0).setMaxWidth(40);
         colModel.getColumn(2).setMaxWidth(60);
         colModel.getColumn(3).setMaxWidth(100);
@@ -154,18 +154,15 @@ public class PickFrame extends JFrame implements ActionListener {
                 if (!jtfFile.getText().equals("")) {
                     if (!pickpak.checkBestrelling(jtfFile.getText())) {
                         JOptionPane.showMessageDialog(null, "Kan bestand niet lezen");
-                    }
-                    else {
+                    } else {
                         t.start();
                         jbStop.setEnabled(true);
                     }
-                }
-                else {
+                } else {
                     JOptionPane.showMessageDialog(null, "Geef een bestelling op.");
                 }
 
-            }
-            else {
+            } else {
                 JOptionPane.showMessageDialog(this, "Niet verbonden met de pick- of inpakrobot.");
             }
 
@@ -200,35 +197,26 @@ public class PickFrame extends JFrame implements ActionListener {
             } else if (jbStop.getText().equals("Reset")) {
                 jbStop.setText("Afbreken");
                 jbStop.setEnabled(false);
-                
+
                 arduinoKraan.serialWrite("c00");
                 arduinoSchijf.serialWrite("c1");
-                
-                char c = '.';
-                do{
-                    try{
-                    c = arduinoKraan.serialRead().charAt(0);
-                    }catch(Exception ex){
-                        
-                    }
-                }while(c != 'q');
-                
-                
+
                 try{
+                    Thread.sleep(4000);
+                }catch(Exception ex){
+                    
+                }
+
+                try {
                     arduinoKraan.serialWrite('l');
                     Thread.sleep(500);
                     arduinoKraan.serialWrite('s');
                     arduinoKraan.serialWrite('d');
                     Thread.sleep(500);
                     arduinoKraan.serialWrite('s');
-                }catch(Exception ex){
-                    
-                }
-                
-                
-                
+                } catch (Exception ex) {
 
-                
+                }
 
                 try {
                     Thread.sleep(3000);
@@ -289,7 +277,6 @@ public class PickFrame extends JFrame implements ActionListener {
         } else {
 
             for (int it = 1; it < pickpak.route.size() - 1; it++) {
-
 
                 pickpak.draaiSchijf(it, arduinoSchijf);
 
