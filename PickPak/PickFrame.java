@@ -138,7 +138,7 @@ public class PickFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbbevestig) {
-            //if (checkRobotConnection()) {
+            if (checkRobotConnection()) {
                 if (!jtfFile.getText().equals("")) {
                     if (!pickpak.checkBestrelling(jtfFile.getText())) {
                         JOptionPane.showMessageDialog(null, "Kan bestand niet lezen");
@@ -152,10 +152,10 @@ public class PickFrame extends JFrame implements ActionListener {
                     JOptionPane.showMessageDialog(null, "Geef een bestelling op.");
                 }
 
-            //}
-            //else {
-            //    JOptionPane.showMessageDialog(this, "Niet verbonden met de pick- of inpakrobot.");
-            //}
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "Niet verbonden met de pick- of inpakrobot.");
+            }
 
         } else if (e.getSource() == geavanceerd) {
             if (jdGeavanceerd == null) {
