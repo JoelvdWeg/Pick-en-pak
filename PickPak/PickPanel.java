@@ -42,20 +42,20 @@ public class PickPanel extends JPanel {
         g.drawLine(10, 400, 1920, 400);
         g.drawRect(200, 450, 500, 500);
 
-//        GRID 
-        int x = 300;
-        for (int i = 0; i < 4; i++) {
-
-            g.drawLine(x, 450, x, 950);
-            x = x + 100;
-        }
-
-        int y = 550;
-        for (int i = 0; i < 4; i++) {
-
-            g.drawLine(200, y, 700, y);
-            y = y + 100;
-        }
+////        GRID 
+//        int x = 300;
+//        for (int i = 0; i < 4; i++) {
+//
+//            g.drawLine(x, 450, x, 950);
+//            x = x + 100;
+//        }
+//
+//        int y = 550;
+//        for (int i = 0; i < 4; i++) {
+//
+//            g.drawLine(200, y, 700, y);
+//            y = y + 100;
+//        }
 
 //            DOZEN 
         g2.setStroke(new BasicStroke(2));
