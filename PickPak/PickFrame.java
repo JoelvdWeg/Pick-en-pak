@@ -214,44 +214,6 @@ public class PickFrame extends JFrame implements ActionListener {
                 jbStop.setText("Afbreken");
                 jbStop.setEnabled(false);
 
-                arduinoKraan.serialWrite("c00");
-                //arduinoSchijf.serialWrite("c1");
-                
-                try {
-                    Thread.sleep(1000);
-               
-                }
-                catch(Exception e1) {
-                    
-                }
-               char s = '.';
-               do{
-                   try{
-                       s = arduinoKraan.serialRead().charAt(0);
-                       System.out.println(s);
-                   }catch(Exception ex){
-                       System.out.println("Kut, geen q ontvangen\n..."); // hey x
-                   }
-               }while(s != 'q');
-               System.out.println(s);
-
-                try {
-                    arduinoKraan.serialWrite('l');
-                    Thread.sleep(500);
-                    arduinoKraan.serialWrite('s');
-                    arduinoKraan.serialWrite('d');
-                    Thread.sleep(500);
-                    arduinoKraan.serialWrite('s');
-                } catch (Exception ex) {
-
-                }
-
-                try {
-                    Thread.sleep(3000);
-                } catch (Exception ex) {
-
-                }
-
                 pickpak.resetRobots();
 
             }
@@ -307,7 +269,7 @@ public class PickFrame extends JFrame implements ActionListener {
 
             for (int it = 1; it < pickpak.route.size() - 1; it++) {
                 
-                p.paintImmediately(0, 0, 1920, 1080);
+                gridPanel.paintImmediately(0, 0, 1920, 1080);
                 
                 tabel.setModel(pickpak.maakTabelModel(it));
 
