@@ -212,7 +212,7 @@ public class GeavanceerdDialoog extends JDialog implements ActionListener {
                 arduinoKraan.closeConnection();
                 arduinoSchijf.closeConnection();
 
-                jbConnect.setText("Cconnect");
+                jbConnect.setText("Connect");
                 pdmCOMschijf.setEnabled(true);
                 pdmCOMkraan.setEnabled(true);
                 jbRefresh.setEnabled(true);

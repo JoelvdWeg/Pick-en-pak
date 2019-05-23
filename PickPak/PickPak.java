@@ -45,6 +45,8 @@ public class PickPak {
     private JTable table = null;
 
     private DefaultTableModel tableModel;
+    
+    //private TableModel tableModel1;
 
     private String dbUsername = "root";
     private String dbPassword = "";
@@ -291,8 +293,8 @@ public class PickPak {
     }
 
     public JTable maakTabel() {
-        int numRow = 20;
-        int numCol = 5;
+        int numRow = route.size() - 2;
+        int numCol = 6;
 
         String[] columnNames = {"ID",
             "Product",
@@ -303,26 +305,57 @@ public class PickPak {
 
         Object[][] array = new Object[numRow][numCol];
 
-        int i;
-        for (i = 0; i < numRow; i++) {
-            array[i][0] = items.get(i).getID();
-            array[i][1] = items.get(i).getNaam();
-            array[i][2] = items.get(i).getGrootte();
-            array[i][3] = items.get(i).getLocatie().getCoord();
-            array[i][4] = items.get(i).getVoorraad();
-        }
+       
+        
 
-        TableModel tableModel = new DefaultTableModel(array, columnNames);
+        tableModel = new DefaultTableModel(array, columnNames);
         table = new JTable(tableModel);
 
         for (int t = 0; t < 4; t++) {
             TableColumn column = table.getColumnModel().getColumn(t);
-            column.setPreferredWidth(250);
+            column.setWidth(250);
         }
         return table;
 
     }
+   
+    
+    public DefaultTableModel maakTabelModel(int huidigePick) {
+        int numRow = route.size() - 2;
+        int numCol = 6;
 
+        String[] columnNames = {"   ","ID",
+            "Product",
+            "Grootte",
+            "Coördinaten",
+            "voorraad"
+        };
+
+        Object[][] array = new Object[numRow][numCol];
+
+        int i;
+        for (i = 0; i < numRow; i++) {
+            if(i + 1 == huidigePick){
+                array[i][0] = "X";
+            } else {
+                array[i][0] = "";
+            }
+            array[i][1] = items.get(route.get(i+1)).getID();
+            array[i][2] = items.get(route.get(i+1)).getNaam();
+            array[i][3] = items.get(route.get(i+1)).getGrootte();
+            array[i][4] = items.get(route.get(i+1)).getLocatie().getCoord();
+            array[i][5] = items.get(route.get(i+1)).getVoorraad();
+        }
+        
+
+        tableModel = new DefaultTableModel(array, columnNames);
+        
+        return tableModel;
+
+    }
+    
+    
+/*
     public JTable maakTabel(boolean pick) {
         int numRow = route.size()-2;
         int numCol = 4;
@@ -351,7 +384,7 @@ public class PickPak {
         }
         return table;
 
-    }
+    }*/
     
 //    public JTable vulTabel() {
 //        for (int i = 1; i < route.size() - 1; i++) {
@@ -488,9 +521,9 @@ public class PickPak {
     }
 
     public void tekenDoosPositie(Graphics g) {
-        g.setColor(Color.GREEN);
+        g.setColor(Color.BLACK);
         Graphics2D g2 = (Graphics2D) g;
-        g2.setStroke(new BasicStroke(2));
+        g2.setStroke(new BasicStroke(3));
         g.drawRect(20 + 100 * doosPositie - 100, 110, 50, 400);
     }
 

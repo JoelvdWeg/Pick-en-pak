@@ -10,6 +10,8 @@ import javax.swing.table.TableColumnModel;
 import arduino.*;
 
 import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public class PickFrame extends JFrame implements ActionListener {
 
@@ -86,20 +88,32 @@ public class PickFrame extends JFrame implements ActionListener {
         geavanceerd = new JButton("Geavanceerd");
         geavanceerd.addActionListener(this);
         add(geavanceerd);
+        
+        Object[][] array = new Object[10][5];
+        
+        String[] columnNames = {"ID",
+            "Product",
+            "Grootte",
+            "Coördinaten",
+            "voorraad"
+        };
 
-        tabel = pickpak.maakTabel();
+        TableModel tableModel = new DefaultTableModel(array, columnNames);
+        tabel = new JTable(tableModel);
 
         add(tabel);
         add(new JScrollPane(tabel));
         tabel.setPreferredScrollableViewportSize(tabel.getPreferredSize());
         tabel.setFillsViewportHeight(true);
 
-        tabel.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
-        TableColumnModel colModel = tabel.getColumnModel();
-        colModel.getColumn(0).setMaxWidth(40);
-        colModel.getColumn(2).setMaxWidth(60);
-        colModel.getColumn(3).setMaxWidth(100);
-        colModel.getColumn(4).setMaxWidth(80);
+        //tabel.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
+        tabel.getColumnModel().getColumn(0).setMinWidth(40);
+        tabel.getColumnModel().getColumn(2).setMinWidth(60);
+        tabel.getColumnModel().getColumn(3).setMinWidth(100);
+        tabel.getColumnModel().getColumn(4).setMinWidth(80);
+        
+        
+        //tabel.setColumnModel(colModel);
 
         gridPanel = new GridPanel(pickpak);
 
@@ -136,8 +150,9 @@ public class PickFrame extends JFrame implements ActionListener {
                 }
 
                 tekenRoute(jtfFile.getText());
-
-                tabel = pickpak.maakTabel(true);
+                
+                
+                tabel.setModel(pickpak.maakTabelModel(0)); 
 
                 pickBestelling();
 
@@ -289,6 +304,8 @@ public class PickFrame extends JFrame implements ActionListener {
         } else {
 
             for (int it = 1; it < pickpak.route.size() - 1; it++) {
+                
+                tabel.setModel(pickpak.maakTabelModel(it));
 
                 pickpak.draaiSchijf(it, arduinoSchijf);
 
