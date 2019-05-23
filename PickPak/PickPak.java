@@ -388,7 +388,7 @@ public class PickPak {
             }
             array[i][1] = items.get(route.get(i + 1)).getID();
             array[i][2] = items.get(route.get(i + 1)).getNaam();
-            array[i][3] = items.get(route.get(i + 1)).getGrootte()*24;
+            array[i][3] = Math.round((items.get(route.get(i+1)).getGrootte()*24)*100)/100.0d;
             array[i][4] = items.get(route.get(i + 1)).getLocatie().getCoord();
             array[i][6] = items.get(route.get(i + 1)).getVoorraad();
             array[i][5] = volgorde.get(i);
