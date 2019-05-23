@@ -150,22 +150,21 @@ public class PickFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbbevestig) {
-            if (checkRobotConnection()) {
-                if (!jtfFile.getText().equals("")) {
-                    if (!pickpak.checkBestrelling(jtfFile.getText())) {
-                        JOptionPane.showMessageDialog(null, "Kan bestand niet lezen");
-                    } else {
-                        t.start();
-                        jbStop.setEnabled(true);
-                    }
+            // if (checkRobotConnection()) {
+            if (!jtfFile.getText().equals("")) {
+                if (!pickpak.checkBestrelling(jtfFile.getText())) {
+                    JOptionPane.showMessageDialog(null, "Kan bestand niet lezen");
                 } else {
-                    JOptionPane.showMessageDialog(null, "Geef een bestelling op.");
+                    t.start();
+                    jbStop.setEnabled(true);
                 }
-
             } else {
-                JOptionPane.showMessageDialog(this, "Niet verbonden met de pick- of inpakrobot.");
+                JOptionPane.showMessageDialog(null, "Geef een bestelling op.");
             }
 
+//            } else {
+//                JOptionPane.showMessageDialog(this, "Niet verbonden met de pick- of inpakrobot.");
+//            }
         } else if (e.getSource() == geavanceerd) {
             if (jdGeavanceerd == null) {
                 jdGeavanceerd = new GeavanceerdDialoog(this, pickpak);
@@ -200,24 +199,23 @@ public class PickFrame extends JFrame implements ActionListener {
 
                 arduinoKraan.serialWrite("c00");
                 //arduinoSchijf.serialWrite("c1");
-                
+
                 try {
                     Thread.sleep(1000);
-               
+
+                } catch (Exception e1) {
+
                 }
-                catch(Exception e1) {
-                    
-                }
-               char s = '.';
-               do{
-                   try{
-                       s = arduinoKraan.serialRead().charAt(0);
-                       System.out.println(s);
-                   }catch(Exception ex){
-                       System.out.println("Kut, geen q ontvangen\n..."); // hey x
-                   }
-               }while(s != 'q');
-               System.out.println(s);
+                char s = '.';
+                do {
+                    try {
+                        s = arduinoKraan.serialRead().charAt(0);
+                        System.out.println(s);
+                    } catch (Exception ex) {
+                        System.out.println("Kut, geen q ontvangen\n..."); // hey x
+                    }
+                } while (s != 'q');
+                System.out.println(s);
 
                 try {
                     arduinoKraan.serialWrite('l');
