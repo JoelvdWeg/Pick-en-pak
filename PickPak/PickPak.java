@@ -387,13 +387,13 @@ public class PickPak {
 
                 s = arduino.serialRead().charAt(0);
 
-                System.out.println(s);
+                //System.out.println(s);
             } catch (Exception ex) {
-                System.out.println("Geen bericht ontvangen\n...");
+                //System.out.println("Geen bericht ontvangen\n...");
             }
         } while (s != 'q');
 
-        System.out.println(s);
+        //System.out.println(s);
     }
 
     public void draaiSchijf(int next, Arduino arduino) {
@@ -511,7 +511,7 @@ public class PickPak {
         
         
         for(int i = 0; i < AANTAL_DOZEN; i++){
-            g.drawString(Integer.toString(doosInhoud[i]/400)+"/12", 5 + 100*1, 550);
+            g.drawString(Integer.toString(doosInhoud[i]/400)+"/12", 5 + 100*i, 550);
         }
         
 //        g.drawString("12/12", 5, 550);

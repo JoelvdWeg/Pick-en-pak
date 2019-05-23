@@ -305,13 +305,13 @@ public class PickFrame extends JFrame implements ActionListener {
                 //while(){
                 // wacht op signaal
                 // }
-                p.paintImmediately(0, 0, 1920, 1080);
+                dozenPanel.paintImmediately(0, 0, 1920, 1080);
 
                 pickpak.beweegKraan(it, arduinoKraan);
 
                 System.out.println("KRAAN BEWOGEN\n...");
 
-                p.paintImmediately(0, 0, 1920, 1080);
+                gridPanel.paintImmediately(0, 0, 1920, 1080);
 
                 arduinoKraan.serialWrite('p'); //push
 
@@ -319,7 +319,7 @@ public class PickFrame extends JFrame implements ActionListener {
 
                 pickpak.setPush(true);
 
-                p.paintImmediately(0, 0, 1920, 1080);
+                gridPanel.paintImmediately(0, 0, 1920, 1080);
 
                 char t = '.';
                 do {
@@ -338,18 +338,19 @@ public class PickFrame extends JFrame implements ActionListener {
 
                 pickpak.setPush(false);
 
-                p.paintImmediately(0, 0, 1920, 1080);
+                gridPanel.paintImmediately(0, 0, 1920, 1080);
 
                 pickpak.werkDoosInhoudBij(it);
 
-                p.paintImmediately(0, 0, 1920, 1080);
+                dozenPanel.paintImmediately(0, 0, 1920, 1080);
 
             }
             arduinoKraan.serialWrite("c00");
             arduinoSchijf.serialWrite("c1");
 
-            p.paintImmediately(0, 0, 1920, 1080);
-
+            gridPanel.paintImmediately(0, 0, 1920, 1080);
+            dozenPanel.paintImmediately(0, 0, 1920, 1080);
+            
             jbbevestig.setEnabled(true);
         }
     }
