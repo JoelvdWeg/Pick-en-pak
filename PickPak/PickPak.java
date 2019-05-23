@@ -232,7 +232,7 @@ public class PickPak {
             }
 
             int k = 1;
-            
+            System.out.println("sadbfkajshdbfljasdbfljasbfljashdbfljhsabfljhasbdfljahsdbfkjhasbfkjhsabdfkjhasbdfkjhsabdfkjhasbdfkjhasbdkjfhbasdkjfhbvsakjdhfbaskjhdfv");
             System.out.println("DOZENSIZE: " + dozen.size());
             for (Doos d : dozen) {
                 System.out.println(d);
