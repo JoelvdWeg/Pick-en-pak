@@ -390,8 +390,8 @@ public class PickPak {
             array[i][2] = items.get(route.get(i + 1)).getNaam();
             array[i][3] = items.get(route.get(i + 1)).getGrootte();
             array[i][4] = items.get(route.get(i + 1)).getLocatie().getCoord();
-            array[i][5] = items.get(route.get(i + 1)).getVoorraad();
-            array[i][6] = volgorde.get(i);
+            array[i][6] = items.get(route.get(i + 1)).getVoorraad();
+            array[i][5] = volgorde.get(i);
         }
 
         tableModel = new DefaultTableModel(array, columnNames);

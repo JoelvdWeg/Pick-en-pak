@@ -95,7 +95,7 @@ public class PickFrame extends JFrame implements ActionListener {
             "Product",
             "Grootte",
             "Coördinaten",
-            "voorraad"
+            "Voorraad"
         };
 
         TableModel tableModel = new DefaultTableModel(array, columnNames);
@@ -108,9 +108,12 @@ public class PickFrame extends JFrame implements ActionListener {
 
         //tabel.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
         tabel.getColumnModel().getColumn(0).setMinWidth(40);
-        tabel.getColumnModel().getColumn(2).setMinWidth(60);
+        tabel.getColumnModel().getColumn(1).setMinWidth(40);
+        tabel.getColumnModel().getColumn(2).setMinWidth(100);
         tabel.getColumnModel().getColumn(3).setMinWidth(100);
         tabel.getColumnModel().getColumn(4).setMinWidth(80);
+        tabel.getColumnModel().getColumn(5).setMinWidth(50);
+        tabel.getColumnModel().getColumn(6).setMinWidth(40);
         
         
         //tabel.setColumnModel(colModel);
