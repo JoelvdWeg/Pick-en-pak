@@ -114,6 +114,17 @@ public class PickPak {
         }
     }
 
+    public boolean checkBestrelling(String f) {
+        try {
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            org.w3c.dom.Document document = documentBuilder.parse(new File(f));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public ArrayList<Item> leesBestelling(String f) {
         try {
             String naam = "";
@@ -126,7 +137,7 @@ public class PickPak {
 
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            org.w3c.dom.Document document = documentBuilder.parse(new File("bestelling.xml"));
+            org.w3c.dom.Document document = documentBuilder.parse(new File(f));
 
             Element rootElement = (Element) document.getFirstChild();
 
@@ -166,10 +177,8 @@ public class PickPak {
 
             return bestelling;
         } catch (Exception ex) {
-            System.out.println("Error in lees bestelling: ");
-            System.out.println(ex);
+            return null;
         }
-        return null;
     }
 
     public ArrayList<Item> maakBestellingAan(String naam, String adres1, String adres2, String land, ArrayList<Integer> besteldeItems) {
