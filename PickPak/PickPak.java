@@ -323,22 +323,50 @@ public class PickPak {
 
     }
 
-    public void vulTabel() {
+    public JTable maakTabel(boolean pick) {
+        int numRow = route.size()-2;
+        int numCol = 4;
 
-        int i, r;
-        for (i = 0; i < pakbon.getSize(); i++) {
-            table.setValueAt(pakbon.items.get(i).getID(), i, 0);
-            table.setValueAt(pakbon.items.get(i).getNaam(), i, 1);
-            table.setValueAt(pakbon.items.get(i).getGrootte(), i, 2);
-            table.setValueAt(pakbon.items.get(i).getLocatie().getCoord(), i, 3);
+        String[] columnNames = {"Id",
+            "Product",
+            "Grotte",
+            "Coördinaten"};
+
+        Object[][] array = new Object[numRow][numCol];
+
+        int i;
+        for (i = 1; i < numRow; i++) {
+            array[i][0] = items.get(route.get(i)).getID();
+            array[i][1] = items.get(route.get(i)).getNaam();
+            array[i][2] = items.get(route.get(i)).getGrootte();
+            array[i][3] = items.get(route.get(i)).getLocatie().getCoord();
         }
 
-        for (r = pakbon.getSize(); r < items.size(); r++) {
-            tableModel.removeRow(r);
-            r--;
+        TableModel tableModel = new DefaultTableModel(array, columnNames);
+        table = new JTable(tableModel);
+
+        for (int t = 0; t < 4; t++) {
+            TableColumn column = table.getColumnModel().getColumn(t);
+            column.setPreferredWidth(250);
         }
+        return table;
 
     }
+    
+//    public JTable vulTabel() {
+//        for (int i = 1; i < route.size() - 1; i++) {
+//            table.setValueAt(items.get(route.get(i)).getID(), i, 0);
+//            table.setValueAt(items.get(route.get(i)).getNaam(), i, 1);
+//            table.setValueAt(items.get(route.get(i)).getGrootte(), i, 2);
+//            table.setValueAt(items.get(route.get(i)).getLocatie().getCoord(), i, 3);
+//        }
+//
+//        for (int r = route.size() - 1; r < items.size(); r++) {
+//            tableModel.removeRow(r);
+//        }
+//        
+//        return table;
+//    }
 
     public void beweegKraan(int next, Arduino arduino) {
         kraanPositie = route.get(next);
@@ -432,10 +460,10 @@ public class PickPak {
                     Graphics2D g2d = (Graphics2D) g;
                     Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
                     g2d.setStroke(dashed);
-                    g2d.drawLine(250 + startx * 100, 500 - 100 * starty, 250 + eindx * 100, 900 - eindy * 100);
+                    g2d.drawLine(250 + startx * 100, 500 - 100 * starty, 250 + eindx * 100, 500 - eindy * 100);
                     g2d.setStroke(new BasicStroke(4));
                 } else {
-                    g.drawLine(250 + startx * 100, 500 - 100 * starty, 250 + eindx * 100, 900 - eindy * 100);
+                    g.drawLine(250 + startx * 100, 500 - 100 * starty, 250 + eindx * 100, 500 - eindy * 100);
                 }
 
                 if (k == 0) {
@@ -443,7 +471,7 @@ public class PickPak {
                 } else if (k == route.size() - 2) {
                     g.setColor(Color.RED);
                 }
-                g.fillOval(startx * 100 + 243, 393 - starty * 100, 14, 14);
+                g.fillOval(startx * 100 + 243, 493 - starty * 100, 14, 14);
                 g.setColor(Color.BLUE);
                 k++;
             }
