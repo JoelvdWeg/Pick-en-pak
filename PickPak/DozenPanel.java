@@ -20,7 +20,7 @@ import javax.swing.JPanel;
  */
 public class DozenPanel extends JPanel{
     PickPak pickpak;
-    
+
     public DozenPanel (PickPak pickpak) {
         setPreferredSize(new Dimension(750, 700));
         this.pickpak = pickpak;
@@ -28,13 +28,13 @@ public class DozenPanel extends JPanel{
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         //setBackground(Color.BLUE);
-        
-        
-        
+
+
+
         g.setColor(Color.BLACK);
         Graphics2D g2 = (Graphics2D) g;
-        
-        //            DOZEN 
+
+        //            DOZEN
         //g2.setStroke(new BasicStroke(2));
         //g.drawRect(20, 110, 50, 400);
         //g.drawRect(120, 110, 50, 400);
@@ -54,16 +54,16 @@ public class DozenPanel extends JPanel{
         g.setColor(Color.BLACK);
         g.setFont(new Font("default", Font.BOLD, 30));
         g.drawString("DOZEN", 1350, 20);
-        
+
         g.drawString("1", 35, 90);
         g.drawString("2", 135, 90);
         g.drawString("3", 235, 90);
         g.drawString("4", 335, 90);
         g.drawString("5", 435, 90);
         g.drawString("6", 535, 90);
-        
-        
-        
+
+
+
 //        g.setColor(Color.BLACK);
 //        g2.setStroke(new BasicStroke(4));
 //        g.drawRect(1100, 75, 700, 300);
@@ -82,9 +82,9 @@ public class DozenPanel extends JPanel{
 //            y1 = y1 + 60;
 //
 //        }
-        
-        
-        
+
+
+
 
         pickpak.tekenDoosInhoud(g);
         pickpak.tekenDoosPositie(g);

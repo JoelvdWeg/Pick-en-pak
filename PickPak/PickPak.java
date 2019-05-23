@@ -25,7 +25,7 @@ import javax.swing.table.TableModel;
 public class PickPak {
 
     private JFrame f;
-    
+
     private ArrayList<Doos> dozen;
 
     private Pakbon pakbon;
@@ -43,11 +43,11 @@ public class PickPak {
     public static ArrayList<Integer> route, volgorde;
 
     private static Connection connection;
-    
+
     private JTable table = null;
 
     private DefaultTableModel tableModel;
-    
+
     //private TableModel tableModel1;
 
     private String dbUsername = "root";
@@ -235,7 +235,7 @@ public class PickPak {
                         ResultSet bestelRegelIDresult = bestelRegelIDstatement.executeQuery("SELECT MAX(regelID) FROM bestelregel");
                         bestelRegelIDresult.next();
                         int newBestelregelID = bestelRegelIDresult.getInt(1) + 1;
-                        
+
                         PreparedStatement updateVoorraad = connection.prepareStatement(
                                 "UPDATE stockitemholdings "
                                 + "SET QuantityOnHand = QuantityOnHand - 1 "
@@ -321,8 +321,8 @@ public class PickPak {
 
         Object[][] array = new Object[numRow][numCol];
 
-       
-        
+
+
 
         tableModel = new DefaultTableModel(array, columnNames);
         table = new JTable(tableModel);
@@ -334,8 +334,8 @@ public class PickPak {
         return table;
 
     }
-   
-    
+
+
     public DefaultTableModel maakTabelModel(int huidigePick) {
         int numRow = route.size() - 2;
         int numCol = 6;
@@ -362,15 +362,15 @@ public class PickPak {
             array[i][4] = items.get(route.get(i+1)).getLocatie().getCoord();
             array[i][5] = items.get(route.get(i+1)).getVoorraad();
         }
-        
+
 
         tableModel = new DefaultTableModel(array, columnNames);
-        
+
         return tableModel;
 
     }
-    
-    
+
+
 /*
     public JTable maakTabel(boolean pick) {
         int numRow = route.size()-2;
@@ -401,7 +401,7 @@ public class PickPak {
         return table;
 
     }*/
-    
+
 //    public JTable vulTabel() {
 //        for (int i = 1; i < route.size() - 1; i++) {
 //            table.setValueAt(items.get(route.get(i)).getID(), i, 0);
@@ -413,7 +413,7 @@ public class PickPak {
 //        for (int r = route.size() - 1; r < items.size(); r++) {
 //            tableModel.removeRow(r);
 //        }
-//        
+//
 //        return table;
 //    }
 
@@ -436,13 +436,13 @@ public class PickPak {
 
                 s = arduino.serialRead().charAt(0);
 
-                System.out.println(s);
+                //System.out.println(s);
             } catch (Exception ex) {
-                System.out.println("Geen bericht ontvangen\n...");
+                //System.out.println("Geen bericht ontvangen\n...");
             }
         } while (s != 'q');
 
-        System.out.println(s);
+        //System.out.println(s);
     }
 
     public void draaiSchijf(int next, Arduino arduino) {
@@ -555,29 +555,29 @@ public class PickPak {
     public void tekenDoosInhoud(Graphics g) {
         g.setColor(new Color(255, 100, 100));
         Graphics2D g2 = (Graphics2D) g;
-                
-        
+
+
         for (int i = 0; i < AANTAL_DOZEN; i++) {
             g.setColor(Color.BLUE);
             g.fillRect(20 + 100 * i, 510 - doosInhoud[i], 50, doosInhoud[i]);
-           
+
             g.setColor(Color.BLACK);
             if (doosInhoud[i] == 0) {
                 g.drawString("leeg", 20+100*i, 550);
             }
             else {
-                                
+
                 if (doosInhoud[i]/33 == 12) {
                     g.drawString("vol", 20+100*i, 550);
                 }
                 else {
                     g.drawString(doosInhoud[i]/33+"/12", 20+100*i, 550);
                 }
-                
+
             }
-            
+
         }
-        
-        
+
+
     }
 }
