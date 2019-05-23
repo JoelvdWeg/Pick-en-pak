@@ -133,64 +133,66 @@ public class PickPak {
     }
 
     public ArrayList<Item> leesBestelling(String f) {
-        //try {
-        String naam = "";
-        String adres1 = "";
-        String adres2 = "";
-        String land = "";
-
-        System.out.println("--" + f);
-        ArrayList<Integer> besteldeItems = new ArrayList<>();
-
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        org.w3c.dom.Document document = null;
         try {
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            document = documentBuilder.parse(new File(f));
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        Element rootElement = (Element) document.getFirstChild();
+            String naam = "";
+            String adres1 = "";
+            String adres2 = "";
+            String land = "";
 
-        NodeList nlist = rootElement.getChildNodes();
+            System.out.println("--" + f);
+            ArrayList<Integer> besteldeItems = new ArrayList<>();
 
-        for (int i = 0; i < nlist.getLength(); i++) {
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            org.w3c.dom.Document document = null;
+            try {
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                document = documentBuilder.parse(new File(f));
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+            Element rootElement = (Element) document.getFirstChild();
 
-            Node child = nlist.item(i);
+            NodeList nlist = rootElement.getChildNodes();
 
-            String nodeName = (String) child.getNodeName();
+            for (int i = 0; i < nlist.getLength(); i++) {
+                System.out.println("NODENAME: "+nlist.item(i).getNodeName());
 
-            if (nodeName.equals("naam")) {
-                naam = child.getTextContent();
-            } else if (nodeName.equals("adres1")) {
-                adres1 = child.getTextContent();
-            } else if (nodeName.equals("adres2")) {
-                adres2 = child.getTextContent();
-            } else if (nodeName.equals("land")) {
-                land = child.getTextContent();
-            } else if (nodeName.equals("item")) {
+                Node child = nlist.item(i);
 
-                NodeList itemList = child.getChildNodes();
+                String nodeName = (String) child.getNodeName();
 
-                Node idNode = itemList.item(0);
-                Node aantalNode = itemList.item(1);
+                if (nodeName.equals("naam")) {
+                    naam = child.getTextContent();
+                } else if (nodeName.equals("adres1")) {
+                    adres1 = child.getTextContent();
+                } else if (nodeName.equals("adres2")) {
+                    adres2 = child.getTextContent();
+                } else if (nodeName.equals("land")) {
+                    land = child.getTextContent();
+                } else if (nodeName.equals("item")) {
 
-                int itemID = Integer.parseInt(idNode.getTextContent());
-                int aantal = Integer.parseInt(aantalNode.getTextContent());
+                    NodeList itemList = child.getChildNodes();
 
-                for (int k = 0; k < aantal; k++) {
-                    besteldeItems.add(itemID);
+                    Node idNode = itemList.item(0);
+                    Node aantalNode = itemList.item(1);
+
+                    int itemID = Integer.parseInt(idNode.getTextContent());
+                    int aantal = Integer.parseInt(aantalNode.getTextContent());
+
+                    for (int k = 0; k < aantal; k++) {
+                        besteldeItems.add(itemID);
+                    }
                 }
             }
+
+            ArrayList<Item> bestelling = maakBestellingAan(naam, adres1, adres2, land, besteldeItems);
+
+            return bestelling;
+        } catch (Exception ex) {
+            System.out.println("ERROR: ");
+            System.out.println(ex);
+            return null;
         }
-
-        ArrayList<Item> bestelling = maakBestellingAan(naam, adres1, adres2, land, besteldeItems);
-
-        return bestelling;
-        //} catch (Exception ex) {
-        //System.out.println(ex);
-        //return null;
-        // }
     }
 
     public ArrayList<Item> maakBestellingAan(String naam, String adres1, String adres2, String land, ArrayList<Integer> besteldeItems) {
@@ -226,6 +228,7 @@ public class PickPak {
             }
 
             int k = 1;
+            System.out.println("DOZENSIZE: " + dozen.size());
             for (Doos d : dozen) {
                 System.out.println(d);
                 Pakbon p = new Pakbon(newPakbonID, naam, adres1, adres2, land);
@@ -269,8 +272,8 @@ public class PickPak {
 
             sluitDatabaseConnectie();
             return picks;
-        } else  {
-            
+        } else {
+
         }
         return null;
     }
