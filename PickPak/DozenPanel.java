@@ -27,7 +27,7 @@ public class DozenPanel extends JPanel{
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        setBackground(Color.BLUE);
+        //setBackground(Color.BLUE);
         
         
         
