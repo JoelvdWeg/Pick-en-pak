@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import arduino.*;
 import java.util.ArrayList;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 public class PickFrame extends JFrame implements ActionListener {
@@ -108,6 +109,9 @@ public class PickFrame extends JFrame implements ActionListener {
         tabel = pickpak.maakTabel();
 
         add(tabel);
+        add(new JScrollPane(tabel));
+        tabel.setPreferredScrollableViewportSize(tabel.getPreferredSize());
+        tabel.setFillsViewportHeight(true);
 
         panel = new PickPanel(pickpak);
         add(panel);

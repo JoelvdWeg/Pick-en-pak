@@ -15,6 +15,7 @@ import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Element;
@@ -29,7 +30,7 @@ public class PickPak {
 
     private boolean push = false;
 
-    private int kraanPositie, doosPositie;
+    private int kraanPositie, doosPositie, aantalRows;
 
     public static ArrayList<Item> items;
 
@@ -40,6 +41,8 @@ public class PickPak {
     private Pakbon pakbon;
 
     private JTable table = null;
+
+    private DefaultTableModel tableModel;
 
     public PickPak() {
         kraanPositie = 0;
@@ -245,7 +248,9 @@ public class PickPak {
             "Grotte",
             "Coördinaten"};
 
-        Object[][] array = new Object[items.size()][numCol];
+        aantalRows = items.size();
+
+        Object[][] array = new Object[aantalRows][numCol];
 
         int i;
         for (i = 0; i < numRow; i++) {
@@ -255,45 +260,30 @@ public class PickPak {
             array[i][3] = items.get(i).getLocatie().getCoord();
         }
 
-        System.out.println(items.get(1).getNaam());
+        tableModel = new DefaultTableModel(array, columnNames);
+        table = new JTable(tableModel);
 
-        table = new JTable(array, columnNames);
-
-        //TableColumn column = null;
-        //try {
         for (int t = 0; t < 4; t++) {
             TableColumn column = table.getColumnModel().getColumn(t);
             column.setPreferredWidth(250);
         }
-        //} catch (Exception e) {
-        System.out.println("test");
-        // }
-
         return table;
 
     }
 
     public void vulTabel() {
 
-        int numRow = items.size();
+        int i, r;
+        for (i = 0; i < pakbon.getSize(); i++) {
+            table.setValueAt(pakbon.items.get(i).getID(), i, 0);
+            table.setValueAt(pakbon.items.get(i).getNaam(), i, 1);
+            table.setValueAt(pakbon.items.get(i).getGrootte(), i, 2);
+            table.setValueAt(pakbon.items.get(i).getLocatie().getCoord(), i, 3);
+        }
 
-        numRow = pakbon.getSize();
-
-        int i;
-        for (i = 0; i < numRow; i++) {
-
-            if (i > pakbon.getSize()) {
-                //((DefaultTableModel) table.getModel()).removeRow(i);
-                table.getModel().setValueAt("a", i, 0);
-                table.getModel().setValueAt("a", i, 1);
-                table.getModel().setValueAt("a", i, 2);
-                table.getModel().setValueAt("a", i, 3);
-            } else {
-                table.getModel().setValueAt(pakbon.items.get(i).getID(), i, 0);
-                table.getModel().setValueAt(pakbon.items.get(i).getNaam(), i, 1);
-                table.getModel().setValueAt(pakbon.items.get(i).getGrootte(), i, 2);
-                table.getModel().setValueAt(pakbon.items.get(i).getLocatie().getCoord(), i, 3);
-            }
+        for (r = pakbon.getSize(); r < items.size(); r++) {
+            tableModel.removeRow(r);
+            r--;
         }
 
     }
