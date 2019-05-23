@@ -187,7 +187,7 @@ public class PickFrame extends JFrame implements ActionListener {
                 jbStop.setText("Reset");
 
                 
-                t.interrupt();
+                t.stop();
                 
 
                 
