@@ -182,7 +182,7 @@ public class PickFrame extends JFrame implements ActionListener {
         } else if (e.getSource() == jbStop) {
             if (jbStop.getText().equals("Afbreken")) {
                 jbStop.setText("Reset");
-                
+
                 arduinoKraan.serialWrite('f');
 
                 t.stop();
@@ -190,9 +190,15 @@ public class PickFrame extends JFrame implements ActionListener {
             } else if (jbStop.getText().equals("Reset")) {
                 jbStop.setText("Afbreken");
                 jbStop.setEnabled(false);
-                
+
                 arduinoKraan.serialWrite("c00");
                 arduinoSchijf.serialWrite("c1");
+
+                try {
+                    Thread.sleep(3000);
+                } catch (Exception ex) {
+
+                }
 
                 pickpak.resetRobots();
 
@@ -247,8 +253,6 @@ public class PickFrame extends JFrame implements ActionListener {
         } else {
 
             for (int it = 1; it < pickpak.route.size() - 1; it++) {
-
-                
 
                 pickpak.draaiSchijf(it, arduinoSchijf);
 
