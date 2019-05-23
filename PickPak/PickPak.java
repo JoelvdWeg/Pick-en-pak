@@ -197,9 +197,9 @@ public class PickPak {
     }
 
     public ArrayList<Item> maakBestellingAan(String naam, String adres1, String adres2, String land, ArrayList<Integer> besteldeItems) {
-        System.out.println("CHECK");
+        
         if (maakDatabaseConnectie()) {
-            
+            System.out.println("CHECK");
             
 
             ArrayList<Item> picks = new ArrayList<>();
@@ -232,6 +232,7 @@ public class PickPak {
             }
 
             int k = 1;
+            
             System.out.println("DOZENSIZE: " + dozen.size());
             for (Doos d : dozen) {
                 System.out.println(d);
