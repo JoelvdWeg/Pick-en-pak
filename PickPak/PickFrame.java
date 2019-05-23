@@ -94,19 +94,19 @@ public class PickFrame extends JFrame implements ActionListener {
             public void run() {
                 jbbevestig.setEnabled(false);
 
-                    aantalBestellingen++;
-                    if (aantalBestellingen > 1) { // aanpassen!
+                aantalBestellingen++;
+                if (aantalBestellingen > 1) { // aanpassen!
 
-                        pickpak.resetRobots();
+                    pickpak.resetRobots();
 
-                        panel.paintImmediately(0, 0, 1920, 1080);
-                    }
+                    panel.paintImmediately(0, 0, 1920, 1080);
+                }
 
-                    tekenRoute(jtfFile.getText());
+                tekenRoute(jtfFile.getText());
 
-                    pickBestelling();
+                pickBestelling();
 
-                    return;
+                return;
             }
         };
         
@@ -116,8 +116,14 @@ public class PickFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbbevestig) {
             if (checkRobotConnection()) {
-                t.start();
-                jbStop.setEnabled(true);
+                if (!jtfFile.getText().equals("")) {
+                    t.start();
+                    jbStop.setEnabled(true);
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "Geef een bestelling op.");
+                }
+
             }
             else {
                 JOptionPane.showMessageDialog(this, "Niet verbonden met de pick- of inpakrobot.");
