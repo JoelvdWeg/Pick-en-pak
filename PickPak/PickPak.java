@@ -47,7 +47,7 @@ public class PickPak {
     private DefaultTableModel tableModel;
 
     private String dbUsername = "root";
-    private String dbPassword = "root";
+    private String dbPassword = "";
 
     public PickPak() {
         kraanPositie = 0;

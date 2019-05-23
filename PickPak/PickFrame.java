@@ -200,6 +200,21 @@ public class PickFrame extends JFrame implements ActionListener {
             } else if (jbStop.getText().equals("Reset")) {
                 jbStop.setText("Afbreken");
                 jbStop.setEnabled(false);
+                
+                
+                try{
+                    arduinoKraan.serialWrite('l');
+                    Thread.sleep(500);
+                    arduinoKraan.serialWrite('s');
+                    arduinoKraan.serialWrite('d');
+                    Thread.sleep(500);
+                    arduinoKraan.serialWrite('s');
+                }catch(Exception ex){
+                    
+                }
+                
+                arduinoKraan.serialWrite('l');
+                
 
                 arduinoKraan.serialWrite("c00");
                 arduinoSchijf.serialWrite("c1");
