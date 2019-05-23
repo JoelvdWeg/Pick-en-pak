@@ -507,5 +507,18 @@ public class PickPak {
         for (int i = 0; i < AANTAL_DOZEN; i++) {
             g.fillRect(1100 + 100 * i, 400 - doosInhoud[i], 50, doosInhoud[i]);
         }
+        
+        
+        
+        for(int i = 0; i < AANTAL_DOZEN; i++){
+            g.drawString(Integer.toString(doosInhoud[i]/400)+"/12", 5 + 100*1, 550);
+        }
+        
+//        g.drawString("12/12", 5, 550);
+//        g.drawString("12/12", 105, 550);
+//        g.drawString("12/12", 205, 550);
+//        g.drawString("12/12", 305, 550);
+//        g.drawString("12/12", 405, 550);
+//        g.drawString("12/12", 505, 550);
     }
 }
