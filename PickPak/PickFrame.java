@@ -214,7 +214,7 @@ public class PickFrame extends JFrame implements ActionListener {
                        s = arduinoKraan.serialRead().charAt(0);
                        System.out.println(s);
                    }catch(Exception ex){
-                       System.out.println("Geen q ontvangen\n...");
+                       System.out.println("Kut, geen q ontvangen\n..."); // hey x
                    }
                }while(s != 'q');
                System.out.println(s);
