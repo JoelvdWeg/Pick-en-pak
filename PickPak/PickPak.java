@@ -316,7 +316,7 @@ public class PickPak {
 
     }
 
-    public void vulTabel() {
+    public JTable vulTabel() {
         for (int i = 1; i < route.size() - 1; i++) {
             table.setValueAt(items.get(route.get(i)).getID(), i, 0);
             table.setValueAt(items.get(route.get(i)).getNaam(), i, 1);
@@ -327,7 +327,7 @@ public class PickPak {
         for (int r = route.size() - 1; r < items.size(); r++) {
             tableModel.removeRow(r);
         }
-
+        return table;
     }
 
     public void beweegKraan(int next, Arduino arduino) {
