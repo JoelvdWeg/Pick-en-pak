@@ -137,7 +137,7 @@ public class PickFrame extends JFrame implements ActionListener {
             if (aantalBestellingen > 1) {
                 reconnect();
             }
-            pickpak.vulTabel();
+            //pickpak.vulTabel();
 
             pickBestelling();
 

@@ -286,6 +286,8 @@ public class PickPak {
             r--;
         }
 
+        table.setBackground(Color.red);
+
     }
 
     public ArrayList<Integer> voerTSPuit(ArrayList<Item> picks) {
