@@ -46,6 +46,9 @@ public class PickPak {
 
     private DefaultTableModel tableModel;
 
+    private String dbUsername = "root";
+    private String dbPassword = "root";
+
     public PickPak() {
         kraanPositie = 0;
         doosPositie = 1;
@@ -70,7 +73,7 @@ public class PickPak {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://localhost/wideworldimporters";
-            connection = DriverManager.getConnection(url, "root", "");
+            connection = DriverManager.getConnection(url, dbUsername, dbPassword);
             System.out.println("Databaseconnectie succesvol\n...");
             return true;
         } catch (Exception e) {

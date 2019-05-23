@@ -46,8 +46,6 @@ public class PickFrame extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.pickpak = pickpak;
-        
-        
 
         jlFile = new JLabel("Bestelling: ");
         add(jlFile);
@@ -86,13 +84,9 @@ public class PickFrame extends JFrame implements ActionListener {
         panel = new PickPanel(pickpak);
         add(panel);
 
-
-
+        jbStop.setEnabled(false);
 
         setVisible(true);
-
-
-
 
         
         t = new Thread() {
@@ -100,19 +94,19 @@ public class PickFrame extends JFrame implements ActionListener {
             public void run() {
                 jbbevestig.setEnabled(false);
 
-                    aantalBestellingen++;
-                    if (aantalBestellingen > 1) { // aanpassen!
+                aantalBestellingen++;
+                if (aantalBestellingen > 1) { // aanpassen!
 
-                        pickpak.resetRobots();
+                    pickpak.resetRobots();
 
-                        panel.paintImmediately(0, 0, 1920, 1080);
-                    }
+                    panel.paintImmediately(0, 0, 1920, 1080);
+                }
 
-                    tekenRoute(jtfFile.getText());
+                tekenRoute(jtfFile.getText());
 
-                    pickBestelling();
+                pickBestelling();
 
-                    return;
+                return;
             }
         };
         
@@ -122,7 +116,17 @@ public class PickFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbbevestig) {
             if (checkRobotConnection()) {
-                t.start();
+                if (!jtfFile.getText().equals("")) {
+                    t.start();
+                    jbStop.setEnabled(true);
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "Geef een bestelling op.");
+                }
+
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "Niet verbonden met de pick- of inpakrobot.");
             }
 
         } else if (e.getSource() == geavanceerd) {
@@ -187,14 +191,13 @@ public class PickFrame extends JFrame implements ActionListener {
         }
     }
 
-    private boolean checkRobotConnection() {
+    public boolean checkRobotConnection() {
         try {
             arduinoKraan.getSerialPort();
             arduinoSchijf.getSerialPort();
             return true;
         }
         catch (NullPointerException npe) {
-            JOptionPane.showMessageDialog(this, "Niet verbonden met de pick- of inpakrobot.");
             return false;
         }
     }
