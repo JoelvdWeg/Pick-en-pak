@@ -4,12 +4,14 @@ public class Item {
     private String naam;
     private double grootte;
     private Locatie locatie;
+    private int voorraad;
     private int id;
 
-    public Item(Locatie locatie, double grootte, int id, String naam) {
+    public Item(Locatie locatie, double grootte, int id, String naam, int voorraad) {
         this.naam = naam;
         this.grootte = grootte;
         this.locatie = locatie;
+        this.voorraad = voorraad;
         this.id = id;
     }
         
@@ -17,6 +19,7 @@ public class Item {
         this.locatie = locatie;
         this.naam = "NONAME";
         this.grootte = -1;
+        this.voorraad = -1;
         this.id = id;
     }
     
@@ -24,9 +27,14 @@ public class Item {
         this.locatie = locatie;
         this.naam = "NONAME";
         this.grootte = grootte;
+        this.voorraad = -1;
         this.id = id;
     }
-    
+
+    public int getVoorraad() {
+        return voorraad;
+    }
+
     public Locatie getLocatie(){
         return locatie;
     }
