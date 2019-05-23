@@ -197,7 +197,10 @@ public class PickPak {
     }
 
     public ArrayList<Item> maakBestellingAan(String naam, String adres1, String adres2, String land, ArrayList<Integer> besteldeItems) {
+        System.out.println("CHECK");
         if (maakDatabaseConnectie()) {
+            
+            
 
             ArrayList<Item> picks = new ArrayList<>();
 
