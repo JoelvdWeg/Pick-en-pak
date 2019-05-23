@@ -425,10 +425,10 @@ public class PickPak {
                     Graphics2D g2d = (Graphics2D) g;
                     Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
                     g2d.setStroke(dashed);
-                    g2d.drawLine(250 + startx * 100, 500 - 100 * starty, 250 + eindx * 100, 900 - eindy * 100);
+                    g2d.drawLine(250 + startx * 100, 500 - 100 * starty, 250 + eindx * 100, 500 - eindy * 100);
                     g2d.setStroke(new BasicStroke(4));
                 } else {
-                    g.drawLine(250 + startx * 100, 500 - 100 * starty, 250 + eindx * 100, 900 - eindy * 100);
+                    g.drawLine(250 + startx * 100, 500 - 100 * starty, 250 + eindx * 100, 500 - eindy * 100);
                 }
 
                 if (k == 0) {
@@ -436,7 +436,7 @@ public class PickPak {
                 } else if (k == route.size() - 2) {
                     g.setColor(Color.RED);
                 }
-                g.fillOval(startx * 100 + 243, 393 - starty * 100, 14, 14);
+                g.fillOval(startx * 100 + 243, 493 - starty * 100, 14, 14);
                 g.setColor(Color.BLUE);
                 k++;
             }
