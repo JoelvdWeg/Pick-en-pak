@@ -47,7 +47,7 @@ public class PickPak {
     private DefaultTableModel tableModel;
 
     private String dbUsername = "root";
-    private String dbPassword = "root";
+    private String dbPassword = "";
 
     public PickPak() {
         kraanPositie = 0;
@@ -278,7 +278,7 @@ public class PickPak {
     }
 
     public JTable maakTabel() {
-        int numRow = items.size();
+        int numRow = 20;
         int numCol = 4;
 
         String[] columnNames = {"Id",
@@ -286,9 +286,7 @@ public class PickPak {
             "Grotte",
             "Coördinaten"};
 
-        int aantalRows = items.size();
-
-        Object[][] array = new Object[aantalRows][numCol];
+        Object[][] array = new Object[numRow][numCol];
 
         int i;
         for (i = 0; i < numRow; i++) {
