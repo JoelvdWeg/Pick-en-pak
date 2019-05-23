@@ -174,7 +174,6 @@ public class GeavanceerdDialoog extends JDialog implements ActionListener {
             pdmCOMschijf.refreshMenu();
         } else if (e.getSource() == jbConnect) {
             if (jbConnect.getText().equals("Connect")) {
-                if (jbConnect.getText().equals("Disconnect")) {
                     String kraanPort = (String) pdmCOMkraan.getSelectedItem();
                     String schijfPort = (String) pdmCOMschijf.getSelectedItem();
 
@@ -188,7 +187,7 @@ public class GeavanceerdDialoog extends JDialog implements ActionListener {
                             pdmCOMschijf.setEnabled(false);
                             pdmCOMkraan.setEnabled(false);
                             jbRefresh.setEnabled(false);
-                            
+
                             jbKalibreerSchijf.setEnabled(true);
                             jbKalibreerSensor.setEnabled(true);
                             jbUp.setEnabled(true);
@@ -200,77 +199,72 @@ public class GeavanceerdDialoog extends JDialog implements ActionListener {
                             jbCoordinaat.setEnabled(true);
                             jbReset.setEnabled(true);
                             jbNoodstop.setEnabled(true);
-                                    
+
                         }
                     }
-                } else {
+                } else if(jbConnect.getText().equals("Disconnect")){
                     arduinoKraan.closeConnection();
                     arduinoSchijf.closeConnection();
-                    
+
                     jbConnect.setText("Cconnect");
-                            pdmCOMschijf.setEnabled(true);
-                            pdmCOMkraan.setEnabled(true);
-                            jbRefresh.setEnabled(true);
-                            
-                            jbKalibreerSchijf.setEnabled(false);
-                            jbKalibreerSensor.setEnabled(false);
-                            jbUp.setEnabled(false);
-                            jbDown.setEnabled(false);
-                            jbLeft.setEnabled(false);
-                            jbRight.setEnabled(false);
-                            jbStop.setEnabled(false);
-                            jbPush.setEnabled(false);
-                            jbCoordinaat.setEnabled(false);
-                            jbReset.setEnabled(false);
-                            jbNoodstop.setEnabled(false);
+                    pdmCOMschijf.setEnabled(true);
+                    pdmCOMkraan.setEnabled(true);
+                    jbRefresh.setEnabled(true);
+
+                    jbKalibreerSchijf.setEnabled(false);
+                    jbKalibreerSensor.setEnabled(false);
+                    jbUp.setEnabled(false);
+                    jbDown.setEnabled(false);
+                    jbLeft.setEnabled(false);
+                    jbRight.setEnabled(false);
+                    jbStop.setEnabled(false);
+                    jbPush.setEnabled(false);
+                    jbCoordinaat.setEnabled(false);
+                    jbReset.setEnabled(false);
+                    jbNoodstop.setEnabled(false);
                 }
-            } else {
-                arduinoKraan.closeConnection();
-                arduinoSchijf.closeConnection();
-                jbConnect.setText("Connect");
-                pdmCOMschijf.setEnabled(true);
-                pdmCOMkraan.setEnabled(true);
-                jbRefresh.setEnabled(true);
+
+            } else if (e.getSource() == jbKalibreerSchijf) {
+                if (aanHetKalibreren) {
+                    jbKalibreerSchijf.setText("Kalibreer");
+                    jbConnect.setEnabled(true);
+                    jbReset.setEnabled(true);
+
+                } else {
+                    jbKalibreerSchijf.setText("Stop");
+
+                    jbConnect.setEnabled(false);
+                    jbReset.setEnabled(false);
+                }
+
+                pickpak.kalibreerSchijf(arduinoSchijf, aanHetKalibreren);
+                aanHetKalibreren = !aanHetKalibreren;
+            } else if (e.getSource() == jbKalibreerSensor) {
+                arduinoSchijf.serialWrite('t');
+            } else if (e.getSource() == jbUp) {
+                arduinoKraan.serialWrite('u');
+            } else if (e.getSource() == jbDown) {
+                arduinoKraan.serialWrite('d');
+            } else if (e.getSource() == jbLeft) {
+                arduinoKraan.serialWrite('l');
+            } else if (e.getSource() == jbRight) {
+                arduinoKraan.serialWrite('r');
+            } else if (e.getSource() == jbStop) {
+                arduinoKraan.serialWrite('s');
+            } else if (e.getSource() == jbPush) {
+                arduinoKraan.serialWrite('p');
+            } else if (e.getSource() == jbCoordinaat) {
+                arduinoKraan.serialWrite("c" + jtfCoordinaat.getText());
+            } else if (e.getSource() == jbReset) {
+                arduinoKraan.serialWrite('z');
+            } else if (e.getSource() == jbNoodstop) {
+                arduinoKraan.serialWrite('f');
+            } else if (e.getSource() == jbApply) {
+                BPPalgoritme = jcbBPP.getSelectedIndex();
             }
-        } else if (e.getSource() == jbKalibreerSchijf) {
-            if (aanHetKalibreren) {
-                jbKalibreerSchijf.setText("Kalibreer");
-                jbConnect.setEnabled(true);
-                jbReset.setEnabled(true);
-
-            } else {
-                jbKalibreerSchijf.setText("Stop");
-
-                jbConnect.setEnabled(false);
-                jbReset.setEnabled(false);
-            }
-
-            pickpak.kalibreerSchijf(arduinoSchijf, aanHetKalibreren);
-            aanHetKalibreren = !aanHetKalibreren;
-        } else if (e.getSource() == jbKalibreerSensor) {
-            arduinoSchijf.serialWrite('t');
-        } else if (e.getSource() == jbUp) {
-            arduinoKraan.serialWrite('u');
-        } else if (e.getSource() == jbDown) {
-            arduinoKraan.serialWrite('d');
-        } else if (e.getSource() == jbLeft) {
-            arduinoKraan.serialWrite('l');
-        } else if (e.getSource() == jbRight) {
-            arduinoKraan.serialWrite('r');
-        } else if (e.getSource() == jbStop) {
-            arduinoKraan.serialWrite('s');
-        } else if (e.getSource() == jbPush) {
-            arduinoKraan.serialWrite('p');
-        } else if (e.getSource() == jbCoordinaat) {
-            arduinoKraan.serialWrite("c" + jtfCoordinaat.getText());
-        } else if (e.getSource() == jbReset) {
-            arduinoKraan.serialWrite('z');
-        } else if (e.getSource() == jbNoodstop) {
-            arduinoKraan.serialWrite('f');
-        } else if (e.getSource() == jbApply) {
-            BPPalgoritme = jcbBPP.getSelectedIndex();
         }
-    }
+
+    
 
     public int getBPPalgoritme() {
         return BPPalgoritme;
