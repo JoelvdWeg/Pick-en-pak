@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class Bestelling {
     private String naam, adres1, adres2, land;
     private ArrayList<Item> besteldeItems;
+    private ArrayList<Pakbon> pakbonnen;
 
     public Bestelling(String naam, String adres1, String adres2, String land, ArrayList<Item> besteldeItems) {
         this.naam = naam;
@@ -14,6 +15,12 @@ public class Bestelling {
         this.adres2 = adres2;
         this.land = land;
         this.besteldeItems = besteldeItems;
+        
+        pakbonnen = new ArrayList<>();
+    }
+    
+    public void voegPakbonToe(Pakbon pakbon){
+        pakbonnen.add(pakbon);
     }
 
     public String getNaam() {

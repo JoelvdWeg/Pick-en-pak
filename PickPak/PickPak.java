@@ -225,7 +225,7 @@ public class PickPak {
 
             try {
                 Statement bestellingIDstatement = connection.createStatement();
-                ResultSet bestellingIDresult = bestellingIDstatement.executeQuery("SELECT MAX(id) FROM bestelling");
+                ResultSet bestellingIDresult = bestellingIDstatement.executeQuery("SELECT MAX(PakbonID) FROM bestelregel");
                 bestellingIDresult.next();
                 newPakbonID = bestellingIDresult.getInt(1) + 1;
                 bestellingIDresult.close();
@@ -245,10 +245,11 @@ public class PickPak {
                 System.out.println(e);
             }
 
+            int doosnr = 1;
             for (Doos d : dozen) {
                 System.out.println(d);
-                Pakbon p = new Pakbon(newPakbonID, bestelling.getNaam(), bestelling.getAdres1(), bestelling.getAdres2(), bestelling.getLand());
-                pakbonnen.add(p);
+                Pakbon p = new Pakbon(newPakbonID, bestelling.getNaam(), bestelling.getAdres1(), bestelling.getAdres2(), bestelling.getLand(), doosnr);
+                
 
                 int[] aantallen = new int[25];
                 for (int i = 0; i < 25; i++) {
@@ -290,10 +291,14 @@ public class PickPak {
                         newBestelregelID++;
                     }
                 }
+                
+                bestelling.voegPakbonToe(p);
 
                 p.maakPakbonBestand();
 
                 newPakbonID++;
+                
+                doosnr++;
             }
         }
     }
@@ -362,12 +367,13 @@ public class PickPak {
 //    }
     public DefaultTableModel maakTabelModel(int huidigePick) {
         int numRow = route.size() - 2;
-        int numCol = 6;
+        int numCol = 7;
 
         String[] columnNames = {"Te picken item", "ID",
             "Product",
             "Grootte",
             "Coördinaten",
+            "Doosnr.",
             "Voorraad"
         };
 
@@ -385,6 +391,7 @@ public class PickPak {
             array[i][3] = items.get(route.get(i + 1)).getGrootte();
             array[i][4] = items.get(route.get(i + 1)).getLocatie().getCoord();
             array[i][5] = items.get(route.get(i + 1)).getVoorraad();
+            array[i][6] = volgorde.get(i);
         }
 
         tableModel = new DefaultTableModel(array, columnNames);

@@ -12,17 +12,19 @@ public class Pakbon {
     private String adres1;
     private String adres2;
     private String land;
+    private int doosnr;
     public ArrayList<Item> items = new ArrayList<>();
     public int[] aantallen = new int[25];
     public static String newline = System.getProperty("line.separator");
 
     
-    public Pakbon(int id, String naam, String adres1, String adres2, String land) {
+    public Pakbon(int id, String naam, String adres1, String adres2, String land, int doosnr) {
         this.id = id;
         this.naam = naam;
         this.adres1 = adres1;
         this.adres2 = adres2;
         this.land = land;
+        this.doosnr = doosnr;
         
         for(int i = 0; i < 25; i++){
             aantallen[i] = 0;
@@ -52,6 +54,7 @@ public class Pakbon {
 
         String s = "";
         s += "PAKBON" + newline;
+        s += "DOOS "+doosnr;
         s += "----------------------------" + newline;
         s += naam + newline;
         s += adres1 + newline;
@@ -63,7 +66,9 @@ public class Pakbon {
         for (Item item : items) {
             
             
-            s += item + "     aantal: " + aantallen[item.getID()] +  "    Totaalprijs:    €" + item.getPrijs()*aantallen[item.getID()] +"\n";
+            s += item + "     aantal: " + aantallen[item.getID()] +  "    Totaalprijs:    €" + item.getPrijs()*aantallen[item.getID()];
+            
+            s += newline;
         }
 
         s += "----------------------------" + newline + newline;
