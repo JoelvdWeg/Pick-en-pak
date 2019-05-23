@@ -489,6 +489,8 @@ public class PickPak {
 
     public void tekenDoosPositie(Graphics g) {
         g.setColor(Color.GREEN);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setStroke(new BasicStroke(2));
         g.drawRect(20 + 100 * doosPositie - 100, 110, 50, 400);
     }
 
@@ -513,13 +515,16 @@ public class PickPak {
             g.setColor(Color.BLACK);
             if (doosInhoud[i] == 0) {
                 g.drawString("leeg", 20+100*i, 550);
-                
-                g2.setStroke(new BasicStroke(3));
-                g.drawRect(20 + 100 * doosPositie - 100, 110, 50, 400);
-                g2.setStroke(new BasicStroke());
             }
             else {
-                g.drawString(doosInhoud[i]/33+"/12", 20+100*i, 550);
+                                
+                if (doosInhoud[i]/33 == 12) {
+                    g.drawString("vol", 20+100*i, 550);
+                }
+                else {
+                    g.drawString(doosInhoud[i]/33+"/12", 20+100*i, 550);
+                }
+                
             }
             
         }

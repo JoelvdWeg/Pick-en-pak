@@ -27,8 +27,7 @@ public class GridPanel extends JPanel{
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        setBackground(Color.WHITE);
-   
+           
         g.setColor(Color.BLACK);
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(5));
@@ -67,9 +66,10 @@ public class GridPanel extends JPanel{
         
 
         
-        pickpak.tekenKraanPositie(g);
+        
         
         pickpak.tekenTSP(g);
+        pickpak.tekenKraanPositie(g);
 
     }
 }
