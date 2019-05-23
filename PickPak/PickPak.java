@@ -369,7 +369,7 @@ public class PickPak {
         int numRow = route.size() - 2;
         int numCol = 7;
 
-        String[] columnNames = {"Te picken item", "ID",
+        String[] columnNames = {"Te picken", "ID",
             "Product",
             "Grootte",
             "Coördinaten",
@@ -388,7 +388,7 @@ public class PickPak {
             }
             array[i][1] = items.get(route.get(i + 1)).getID();
             array[i][2] = items.get(route.get(i + 1)).getNaam();
-            array[i][3] = items.get(route.get(i + 1)).getGrootte();
+            array[i][3] = items.get(route.get(i + 1)).getGrootte()*24;
             array[i][4] = items.get(route.get(i + 1)).getLocatie().getCoord();
             array[i][6] = items.get(route.get(i + 1)).getVoorraad();
             array[i][5] = volgorde.get(i);

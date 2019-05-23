@@ -89,12 +89,13 @@ public class PickFrame extends JFrame implements ActionListener {
         geavanceerd.addActionListener(this);
         add(geavanceerd);
         
-        Object[][] array = new Object[10][5];
+        Object[][] array = new Object[10][7];
         
-        String[] columnNames = {"ID",
+        String[] columnNames = {"Te picken","ID",
             "Product",
             "Grootte",
             "Coördinaten",
+            "Doosnr.",
             "Voorraad"
         };
 
