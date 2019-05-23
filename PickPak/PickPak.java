@@ -324,29 +324,29 @@ public class PickPak {
         System.out.println(volgorde + "\n...");
     }
 
-    public JTable maakTabel() {
-        int numRow = route.size() - 2;
-        int numCol = 6;
-
-        String[] columnNames = {"ID",
-            "Product",
-            "Grootte",
-            "Coördinaten",
-            "voorraad"
-        };
-
-        Object[][] array = new Object[numRow][numCol];
-
-        tableModel = new DefaultTableModel(array, columnNames);
-        table = new JTable(tableModel);
-
-        for (int t = 0; t < 4; t++) {
-            TableColumn column = table.getColumnModel().getColumn(t);
-            column.setWidth(250);
-        }
-        return table;
-
-    }
+//    public JTable maakTabel() {
+//        int numRow = route.size() - 2;
+//        int numCol = 6;
+//
+//        String[] columnNames = {"ID",
+//            "Product",
+//            "Grootte",
+//            "Coördinaten",
+//            "voorraad"
+//        };
+//
+//        Object[][] array = new Object[numRow][numCol];
+//
+//        tableModel = new DefaultTableModel(array, columnNames);
+//        table = new JTable(tableModel);
+//
+//        for (int t = 0; t < 4; t++) {
+//            TableColumn column = table.getColumnModel().getColumn(t);
+//            column.setWidth(250);
+//        }
+//        return table;
+//
+//    }
 
     public DefaultTableModel maakTabelModel(int huidigePick) {
         int numRow = route.size() - 2;
