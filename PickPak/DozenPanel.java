@@ -27,7 +27,7 @@ public class DozenPanel extends JPanel{
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        setBackground(Color.WHITE);
+        setBackground(Color.BLUE);
         
         
         
@@ -61,18 +61,6 @@ public class DozenPanel extends JPanel{
         g.drawString("4", 335, 90);
         g.drawString("5", 435, 90);
         g.drawString("6", 535, 90);
-        
-        g.drawString("12/12", 5, 550);
-        g.drawString("12/12", 105, 550);
-        g.drawString("12/12", 205, 550);
-        g.drawString("12/12", 305, 550);
-        g.drawString("12/12", 405, 550);
-        g.drawString("12/12", 505, 550);
-        
-        
-        
-        
-        
         
         
         
