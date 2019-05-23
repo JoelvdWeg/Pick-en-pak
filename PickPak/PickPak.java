@@ -316,19 +316,50 @@ public class PickPak {
 
     }
 
-    public JTable vulTabel() {
-        for (int i = 1; i < route.size() - 1; i++) {
-            table.setValueAt(items.get(route.get(i)).getID(), i, 0);
-            table.setValueAt(items.get(route.get(i)).getNaam(), i, 1);
-            table.setValueAt(items.get(route.get(i)).getGrootte(), i, 2);
-            table.setValueAt(items.get(route.get(i)).getLocatie().getCoord(), i, 3);
+    public JTable maakTabel(boolean pick) {
+        int numRow = route.size()-2;
+        int numCol = 4;
+
+        String[] columnNames = {"Id",
+            "Product",
+            "Grotte",
+            "Coördinaten"};
+
+        Object[][] array = new Object[numRow][numCol];
+
+        int i;
+        for (i = 1; i < numRow; i++) {
+            array[i][0] = items.get(route.get(i)).getID();
+            array[i][1] = items.get(route.get(i)).getNaam();
+            array[i][2] = items.get(route.get(i)).getGrootte();
+            array[i][3] = items.get(route.get(i)).getLocatie().getCoord();
         }
 
-        for (int r = route.size() - 1; r < items.size(); r++) {
-            tableModel.removeRow(r);
+        TableModel tableModel = new DefaultTableModel(array, columnNames);
+        table = new JTable(tableModel);
+
+        for (int t = 0; t < 4; t++) {
+            TableColumn column = table.getColumnModel().getColumn(t);
+            column.setPreferredWidth(250);
         }
         return table;
+
     }
+    
+//    public JTable vulTabel() {
+//        for (int i = 1; i < route.size() - 1; i++) {
+//            table.setValueAt(items.get(route.get(i)).getID(), i, 0);
+//            table.setValueAt(items.get(route.get(i)).getNaam(), i, 1);
+//            table.setValueAt(items.get(route.get(i)).getGrootte(), i, 2);
+//            table.setValueAt(items.get(route.get(i)).getLocatie().getCoord(), i, 3);
+//        }
+//
+//        for (int r = route.size() - 1; r < items.size(); r++) {
+//            tableModel.removeRow(r);
+//        }
+//        
+//        return table;
+//    }
 
     public void beweegKraan(int next, Arduino arduino) {
         kraanPositie = route.get(next);
