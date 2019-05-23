@@ -230,13 +230,13 @@ public class PickPak {
                 newPakbonID = bestellingIDresult.getInt(1) + 1;
                 bestellingIDresult.close();
 
-                PreparedStatement newBestelling = connection.prepareStatement("INSERT INTO bestelling VALUES(?,?,?,?,?,?)");
+                PreparedStatement newBestelling = connection.prepareStatement("INSERT INTO bestelling VALUES(?,?,?,?,?)");
                 newBestelling.setInt(1, newPakbonID);
                 newBestelling.setString(2, bestelling.getNaam());
                 newBestelling.setString(3, bestelling.getAdres1());
                 newBestelling.setString(4, bestelling.getAdres2());
                 newBestelling.setString(5, bestelling.getLand());
-                newBestelling.setInt(6, newPakbonID);
+                //newBestelling.setInt(6, newPakbonID);
                 newBestelling.executeUpdate();
 
                 System.out.println("Bestelling toegevoegd aan database\n...");
@@ -250,32 +250,45 @@ public class PickPak {
                 Pakbon p = new Pakbon(newPakbonID, bestelling.getNaam(), bestelling.getAdres1(), bestelling.getAdres2(), bestelling.getLand());
                 pakbonnen.add(p);
 
+                int[] aantallen = new int[25];
+                for (int i = 0; i < 25; i++) {
+                    aantallen[i] = 0;
+                }
+
                 for (Item i : d.getItems()) {
                     p.voegItemToe(i);
+                    aantallen[i.getID()]++;
+                }
 
-                    try {
-                        Statement bestelRegelIDstatement = connection.createStatement();
-                        ResultSet bestelRegelIDresult = bestelRegelIDstatement.executeQuery("SELECT MAX(regelID) FROM bestelregel");
-                        bestelRegelIDresult.next();
-                        int newBestelregelID = bestelRegelIDresult.getInt(1) + 1;
+                
+                for (int i = 1; i < 26; i++) {
+                    if (aantallen[i-1] != 0) {
+                        int newBestelregelID = -1;
+                        try {
+                            Statement bestelRegelIDstatement = connection.createStatement();
+                            ResultSet bestelRegelIDresult = bestelRegelIDstatement.executeQuery("SELECT MAX(regelID) FROM bestelregel");
+                            bestelRegelIDresult.next();
+                            newBestelregelID = bestelRegelIDresult.getInt(1) + 1;
 
-                        PreparedStatement updateVoorraad = connection.prepareStatement(
-                                "UPDATE stockitemholdings "
-                                + "SET QuantityOnHand = QuantityOnHand - 1 "
-                                + "WHERE StockItemID = ?");
-                        updateVoorraad.setInt(1, i.getID());
-                        updateVoorraad.executeUpdate();
+                            PreparedStatement updateVoorraad = connection.prepareStatement(
+                                    "UPDATE stockitemholdings "
+                                    + "SET QuantityOnHand = QuantityOnHand - 1 "
+                                    + "WHERE StockItemID = ?");
+                            updateVoorraad.setInt(1, i);
+                            updateVoorraad.executeUpdate();
 
-                        PreparedStatement newBestelregel = connection.prepareStatement("INSERT INTO bestelregel VALUES(?,?,?,?)");
-                        newBestelregel.setInt(1, newBestelregelID);
-                        newBestelregel.setInt(2, newPakbonID);
-                        newBestelregel.setInt(3, i.getID());
-                        newBestelregel.setInt(4, 1); //<<<<<<<<<<<<<<<<<<<< Deze nog veranderen zodat twee dezelfde items in dezelfde regel komen met aantal 2
-                        newBestelregel.executeUpdate();
-                    } catch (Exception e) {
+                            PreparedStatement newBestelregel = connection.prepareStatement("INSERT INTO bestelregel VALUES(?,?,?,?,?)");
+                            newBestelregel.setInt(1, newBestelregelID);
+                            newBestelregel.setInt(2, newPakbonID);
+                            newBestelregel.setInt(3, i);
+                            newBestelregel.setInt(4, aantallen[i-1]); //<<<<<<<<<<<<<<<<<<<< Deze nog veranderen zodat twee dezelfde items in dezelfde regel komen met aantal 2
+                            newBestelregel.setInt(5, newPakbonID);
+                            newBestelregel.executeUpdate();
+                        } catch (Exception e) {
 
+                        }
+                        newBestelregelID++;
                     }
-
                 }
 
                 p.maakPakbonBestand();
@@ -347,16 +360,15 @@ public class PickPak {
 //        return table;
 //
 //    }
-
     public DefaultTableModel maakTabelModel(int huidigePick) {
         int numRow = route.size() - 2;
         int numCol = 6;
 
-        String[] columnNames = {"   ", "ID",
+        String[] columnNames = {"Te picken item", "ID",
             "Product",
             "Grootte",
             "Coördinaten",
-            "voorraad"
+            "Voorraad"
         };
 
         Object[][] array = new Object[numRow][numCol];

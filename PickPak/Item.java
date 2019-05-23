@@ -60,9 +60,13 @@ public class Item {
     public String getNaam(){
         return naam;
     }
+    
+    public double getPrijs(){
+        return prijs;
+    }
 
     @Override
     public String toString() {
-        return id + ": " + naam + "     €" + prijs;
+        return id + ": " + naam;
     }
 }

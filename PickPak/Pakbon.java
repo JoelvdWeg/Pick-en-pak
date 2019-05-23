@@ -61,7 +61,9 @@ public class Pakbon {
         s += "Producten:" + newline;
 
         for (Item item : items) {
-            s += item + newline;
+            
+            
+            s += item + "     aantal: " + aantallen[item.getID()] +  "    Totaalprijs:    €" + item.getPrijs()*aantallen[item.getID()] +"\n";
         }
 
         s += "----------------------------" + newline + newline;
@@ -115,6 +117,10 @@ public class Pakbon {
         
        
         
+    }
+    
+    public int[] getAantallen(){
+        return aantallen;
     }
 
 //    public String toString() {
