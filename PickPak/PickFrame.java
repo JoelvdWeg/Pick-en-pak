@@ -40,6 +40,8 @@ public class PickFrame extends JFrame implements ActionListener {
 
     private GridPanel gridPanel;
     private DozenPanel dozenPanel;
+    
+    private JPanel p;
 
     private Arduino arduinoKraan, arduinoSchijf;
 
@@ -49,7 +51,7 @@ public class PickFrame extends JFrame implements ActionListener {
         setLayout(new FlowLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        JPanel p = new JPanel(new GridBagLayout());
+        p = new JPanel(new GridBagLayout());
         
         GridBagConstraints d = new GridBagConstraints();
         GridBagConstraints c = new GridBagConstraints();
@@ -271,13 +273,13 @@ public class PickFrame extends JFrame implements ActionListener {
                     //while(){
                     // wacht op signaal
                     // }
-                    dozenPanel.paintImmediately(0, 0, 1920, 1080);
+                    p.paintImmediately(0, 0, 1920, 1080);
 
                     pickpak.beweegKraan(it, arduinoKraan);
 
                     System.out.println("KRAAN BEWOGEN\n...");
 
-                    gridPanel.paintImmediately(0, 0, 1920, 1080);
+                    p.paintImmediately(0, 0, 1920, 1080);
 
                     arduinoKraan.serialWrite('p'); //push
 
@@ -285,7 +287,7 @@ public class PickFrame extends JFrame implements ActionListener {
 
                     pickpak.setPush(true);
 
-                    gridPanel.paintImmediately(0, 0, 1920, 1080);
+                    p.paintImmediately(0, 0, 1920, 1080);
 
                     char t = '.';
                     do {
@@ -304,11 +306,11 @@ public class PickFrame extends JFrame implements ActionListener {
 
                     pickpak.setPush(false);
 
-                    gridPanel.paintImmediately(0, 0, 1920, 1080);
+                    p.paintImmediately(0, 0, 1920, 1080);
 
                     pickpak.werkDoosInhoudBij(it);
 
-                    dozenPanel.paintImmediately(0, 0, 1920, 1080);
+                    p.paintImmediately(0, 0, 1920, 1080);
                 }
             }
             arduinoKraan.serialWrite("c00");
