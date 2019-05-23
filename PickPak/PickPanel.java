@@ -46,7 +46,7 @@ public class PickPanel extends JPanel {
         int x = 300;
         for (int i = 0; i < 4; i++) {
 
-            g.drawLine(x, 50, x, 950);
+            g.drawLine(x, 50, x, 550);
             x = x + 100;
         }
 
