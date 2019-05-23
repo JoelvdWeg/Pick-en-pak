@@ -316,14 +316,14 @@ public class PickPak {
 
     }
 
-    public void vulTabel() {
+    public void vulTabel(ArrayList<Item> picks) {
 
         int i, r;
-        for (i = 0; i < pakbon.getSize(); i++) {
-            table.setValueAt(pakbon.items.get(i).getID(), i, 0);
-            table.setValueAt(pakbon.items.get(i).getNaam(), i, 1);
-            table.setValueAt(pakbon.items.get(i).getGrootte(), i, 2);
-            table.setValueAt(pakbon.items.get(i).getLocatie().getCoord(), i, 3);
+        for (i = 0; i < picks.size(); i++) {
+            table.setValueAt(picks.get(i).getID(), i, 0);
+            table.setValueAt(picks.get(i).getNaam(), i, 1);
+            table.setValueAt(picks.get(i).getGrootte(), i, 2);
+            table.setValueAt(picks.get(i).getLocatie().getCoord(), i, 3);
         }
 
         for (r = pakbon.getSize(); r < items.size(); r++) {

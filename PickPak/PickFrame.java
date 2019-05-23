@@ -128,7 +128,7 @@ public class PickFrame extends JFrame implements ActionListener {
 
                 tekenRoute(jtfFile.getText());
                 
-                pickpak.vulTabel();
+                pickpak.vulTabel(bestelling);
 
                 pickBestelling();
 
