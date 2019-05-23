@@ -29,7 +29,7 @@ public class Pakbon {
     }
 
     public void maakPakbonBestand() {
-        String fileName = "pakbonnen/" + naam + ".txt";
+        String fileName = "pakbonnen/" + naam + "_" + id + ".txt";
 
         try {
 
@@ -37,10 +37,10 @@ public class Pakbon {
             fw.write(toString());
             fw.close();
             
-            Thread.sleep(1000);
+            //Thread.sleep(1000);
             
             System.out.println(toString());
-            Desktop.getDesktop().open(new File(fileName));
+            //Desktop.getDesktop().open(new File(fileName));
         } catch (Exception ex) {
             System.err.println("Kon het bestand niet openen\n...");
             //System.out.println(ex);

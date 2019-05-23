@@ -72,6 +72,10 @@ public class Doos {
     public void aanvullen(Item item) {
         inhoud.add(item);
     }
+    
+    public ArrayList<Item> getItems(){
+        return inhoud;
+    }
 
     @Override
     public String toString() {

@@ -25,6 +25,8 @@ import javax.swing.table.TableModel;
 public class PickPak {
 
     private JFrame f;
+    
+    private ArrayList<Doos> dozen;
 
     private Pakbon pakbon;
 
@@ -190,7 +192,8 @@ public class PickPak {
 
             ArrayList<Item> picks = new ArrayList<>();
 
-            Pakbon pakbon = null;
+            //Pakbon pakbon = null;
+            ArrayList<Pakbon> pakbonnen = new ArrayList<>();
 
             int newPakbonID = 0;
 
@@ -200,8 +203,6 @@ public class PickPak {
                 bestellingIDresult.next();
                 newPakbonID = bestellingIDresult.getInt(1) + 1;
                 bestellingIDresult.close();
-
-                pakbon = new Pakbon(newPakbonID, naam, adres1, adres2, land);
 
                 PreparedStatement newBestelling = connection.prepareStatement("INSERT INTO bestelling VALUES(?,?,?,?,?,?)");
                 newBestelling.setInt(1, newPakbonID);
@@ -219,30 +220,44 @@ public class PickPak {
             }
 
             int k = 1;
-            for (int i : besteldeItems) {
 
-                pakbon.voegItemToe(items.get(i));
+            for (Doos d : dozen) {
+                Pakbon p = new Pakbon(newPakbonID, naam, adres1, adres2, land);
+                //pakbonnen.add(p);
 
-                try {
-                    Statement bestelRegelIDstatement = connection.createStatement();
-                    ResultSet bestelRegelIDresult = bestelRegelIDstatement.executeQuery("SELECT MAX(regelID) FROM bestelregel");
-                    bestelRegelIDresult.next();
-                    int newBestelregelID = bestelRegelIDresult.getInt(1) + 1;
+                for (Item i : d.getItems()) {
+                    p.voegItemToe(i);
+                    picks = voegToeAanPicks(i.getID(), picks);
+                    try {
+                        Statement bestelRegelIDstatement = connection.createStatement();
+                        ResultSet bestelRegelIDresult = bestelRegelIDstatement.executeQuery("SELECT MAX(regelID) FROM bestelregel");
+                        bestelRegelIDresult.next();
+                        int newBestelregelID = bestelRegelIDresult.getInt(1) + 1;
+                        
+                        PreparedStatement updateVoorraad = connection.prepareStatement(
+                                "UPDATE stockitemholdings "
+                                + "SET QuantityOnHand = QuantityOnHand - 1 "
+                                + "WHERE StockItemID = ?");
+                        updateVoorraad.setInt(1, i.getID());
+                        updateVoorraad.executeUpdate();
 
-                    PreparedStatement newBestelregel = connection.prepareStatement("INSERT INTO bestelregel VALUES(?,?,?,?)");
-                    newBestelregel.setInt(1, newBestelregelID);
-                    newBestelregel.setInt(2, newPakbonID);
-                    newBestelregel.setInt(3, i);
-                    newBestelregel.setInt(4, 1); //<<<<<<<<<<<<<<<<<<<< Deze nog veranderen zodat twee dezelfde items in dezelfde regel komen met aantal 2
-                    newBestelregel.executeUpdate();
-                } catch (Exception e) {
+                        PreparedStatement newBestelregel = connection.prepareStatement("INSERT INTO bestelregel VALUES(?,?,?,?)");
+                        newBestelregel.setInt(1, newBestelregelID);
+                        newBestelregel.setInt(2, newPakbonID);
+                        newBestelregel.setInt(3, i.getID());
+                        newBestelregel.setInt(4, 1); //<<<<<<<<<<<<<<<<<<<< Deze nog veranderen zodat twee dezelfde items in dezelfde regel komen met aantal 2
+                        newBestelregel.executeUpdate();
+                    } catch (Exception e) {
+
+                    }
 
                 }
-                picks = voegToeAanPicks(i, picks);
-                k++;
-            }
 
-            pakbon.maakPakbonBestand();
+                p.maakPakbonBestand();
+
+                k++;
+                newPakbonID++;
+            }
 
             System.out.println("Totaal: " + k + " items\n...");
 
@@ -286,6 +301,7 @@ public class PickPak {
 
         bpp = new BPP(picks, BPPalgoritme);
         volgorde = bpp.getVolgorde();
+        dozen = bpp.getDozen();
         System.out.println("Doos volgorde bepaald:");
         System.out.println(volgorde + "\n...");
     }
