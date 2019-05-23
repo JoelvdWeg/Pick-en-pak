@@ -35,13 +35,13 @@ public class DozenPanel extends JPanel{
         Graphics2D g2 = (Graphics2D) g;
         
         //            DOZEN 
-        g2.setStroke(new BasicStroke(2));
-        g.drawRect(20, 110, 50, 400);
-        g.drawRect(120, 110, 50, 400);
-        g.drawRect(220, 110, 50, 400);
-        g.drawRect(320, 110, 50, 400);
-        g.drawRect(420, 110, 50, 400);
-        g.drawRect(520, 110, 50, 400);
+        //g2.setStroke(new BasicStroke(2));
+        //g.drawRect(20, 110, 50, 400);
+        //g.drawRect(120, 110, 50, 400);
+        //g.drawRect(220, 110, 50, 400);
+        //g.drawRect(320, 110, 50, 400);
+        //g.drawRect(420, 110, 50, 400);
+        //g.drawRect(520, 110, 50, 400);
 
         g.setColor(Color.GRAY);
         g.fillRect(20, 110, 50, 400);
@@ -83,8 +83,10 @@ public class DozenPanel extends JPanel{
 //
 //        }
         
-        pickpak.tekenDoosInhoud(g);
         
+        
+
+        pickpak.tekenDoosInhoud(g);
         pickpak.tekenDoosPositie(g);
 
 

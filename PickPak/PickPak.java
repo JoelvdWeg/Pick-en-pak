@@ -503,14 +503,20 @@ public class PickPak {
 
     public void tekenDoosInhoud(Graphics g) {
         g.setColor(new Color(255, 100, 100));
-
+        Graphics2D g2 = (Graphics2D) g;
+                
+        
         for (int i = 0; i < AANTAL_DOZEN; i++) {
+            g.setColor(Color.BLUE);
             g.fillRect(20 + 100 * i, 510 - doosInhoud[i], 50, doosInhoud[i]);
-            
+           
             g.setColor(Color.BLACK);
-            
             if (doosInhoud[i] == 0) {
                 g.drawString("leeg", 20+100*i, 550);
+                
+                g2.setStroke(new BasicStroke(3));
+                g.drawRect(20 + 100 * doosPositie - 100, 110, 50, 400);
+                g2.setStroke(new BasicStroke());
             }
             else {
                 g.drawString(doosInhoud[i]/33+"/12", 20+100*i, 550);
