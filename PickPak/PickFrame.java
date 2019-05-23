@@ -71,7 +71,7 @@ public class PickFrame extends JFrame implements ActionListener {
         add(jbbevestig);
         jbbevestig.setEnabled(true);
 
-        jbStop = new JButton("Stop");
+        jbStop = new JButton("Afbreken");
         jbStop.setEnabled(false);
         jbStop.addActionListener(this);
 
