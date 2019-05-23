@@ -201,6 +201,14 @@ public class PickFrame extends JFrame implements ActionListener {
                 jbStop.setText("Afbreken");
                 jbStop.setEnabled(false);
                 
+                arduinoKraan.serialWrite("c00");
+                arduinoSchijf.serialWrite("c1");
+                
+                char c = '.';
+                do{
+                    c = arduinoKraan.serialRead().charAt(0);
+                }while(c != 'q');
+                
                 
                 try{
                     arduinoKraan.serialWrite('l');
@@ -213,11 +221,10 @@ public class PickFrame extends JFrame implements ActionListener {
                     
                 }
                 
-                arduinoKraan.serialWrite('l');
+                
                 
 
-                arduinoKraan.serialWrite("c00");
-                arduinoSchijf.serialWrite("c1");
+                
 
                 try {
                     Thread.sleep(3000);
