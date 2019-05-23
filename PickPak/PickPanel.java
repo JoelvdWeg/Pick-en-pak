@@ -36,11 +36,11 @@ public class PickPanel extends JPanel {
         g2.setStroke(new BasicStroke(5));
 
 //        grote vierkant
-        g.drawRect(10, 10, 1900, 990);
-        g.drawLine(950, 10, 950, 1000);
+        g.drawRect(10, 400, 1900, 990);
+        //g.drawLine(950, 10, 950, 1000);
 //          lijn op de horizontale helft
-        g.drawLine(10, 400, 1920, 400);
-        g.drawRect(200, 450, 500, 500);
+        //g.drawLine(10, 400, 1920, 400);
+        //g.drawRect(200, 450, 500, 500);
 
 //        GRID 
         int x = 300;
@@ -78,7 +78,7 @@ public class PickPanel extends JPanel {
 
         g.setColor(Color.BLACK);
         g2.setStroke(new BasicStroke(4));
-        g.drawRect(1100, 75, 700, 300);
+        //g.drawRect(1100, 75, 700, 300);
 
 //        int x1 = 1250;
 //        for (int i = 0; i < 4; i++) {
