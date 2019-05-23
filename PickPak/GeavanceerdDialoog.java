@@ -123,7 +123,7 @@ public class GeavanceerdDialoog extends JDialog implements ActionListener {
         jpKraan.add(jbPush);
         jbPush.setEnabled(false);
 
-        jpKraan.add(new JLabel("Coorindaat: "));
+        jpKraan.add(new JLabel("Coördinaat: "));
 
         jtfCoordinaat = new JTextField(4);
         jpKraan.add(jtfCoordinaat);

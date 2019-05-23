@@ -115,19 +115,24 @@ public class PickFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbbevestig) {
-            if (checkRobotConnection()) {
+            //if (checkRobotConnection()) {
                 if (!jtfFile.getText().equals("")) {
-                    t.start();
-                    jbStop.setEnabled(true);
+                    if (!pickpak.checkBestrelling(jtfFile.getText())) {
+                        JOptionPane.showMessageDialog(null, "Kan bestand niet lezen");
+                    }
+                    else {
+                        t.start();
+                        jbStop.setEnabled(true);
+                    }
                 }
                 else {
                     JOptionPane.showMessageDialog(null, "Geef een bestelling op.");
                 }
 
-            }
-            else {
-                JOptionPane.showMessageDialog(this, "Niet verbonden met de pick- of inpakrobot.");
-            }
+            //}
+            //else {
+            //    JOptionPane.showMessageDialog(this, "Niet verbonden met de pick- of inpakrobot.");
+            //}
 
         } else if (e.getSource() == geavanceerd) {
             if (jdGeavanceerd == null) {
