@@ -202,7 +202,7 @@ public class PickFrame extends JFrame implements ActionListener {
                 //arduinoSchijf.serialWrite("c1");
                 
                 try {
-                    Tread.sleep(1000);
+                    Thread.sleep(1000);
                
                 }
                 catch(Exception e1) {
