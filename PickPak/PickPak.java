@@ -505,7 +505,7 @@ public class PickPak {
         g.setColor(new Color(255, 100, 100));
 
         for (int i = 0; i < AANTAL_DOZEN; i++) {
-            g.fillRect(1100 + 100 * i, 400 - doosInhoud[i], 50, doosInhoud[i]);
+            g.fillRect(1100 + 100 * i, 100 - doosInhoud[i], 50, doosInhoud[i]);
         }
         
         
