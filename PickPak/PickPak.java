@@ -148,6 +148,7 @@ public class PickPak {
                 DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
                 document = documentBuilder.parse(new File(f));
             } catch (Exception e) {
+                System.out.println("ASDF");
                 System.out.println(e);
             }
             Element rootElement = (Element) document.getFirstChild();
