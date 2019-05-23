@@ -18,8 +18,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import static javax.swing.JOptionPane.YES_NO_OPTION;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 public class PickPak {
+
     private JFrame f;
 
     private Pakbon pakbon;
@@ -37,6 +41,10 @@ public class PickPak {
     public static ArrayList<Integer> route, volgorde;
 
     private static Connection connection;
+    
+    private JTable table = null;
+
+    private DefaultTableModel tableModel;
 
     public PickPak() {
         kraanPositie = 0;
@@ -62,7 +70,7 @@ public class PickPak {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://localhost/wideworldimporters";
-            connection = DriverManager.getConnection(url, "root", "root");
+            connection = DriverManager.getConnection(url, "root", "");
             System.out.println("Databaseconnectie succesvol\n...");
             return true;
         } catch (Exception e) {
@@ -264,6 +272,55 @@ public class PickPak {
         volgorde = bpp.getVolgorde();
         System.out.println("Doos volgorde bepaald:");
         System.out.println(volgorde + "\n...");
+    }
+
+    public JTable maakTabel() {
+        int numRow = items.size();
+        int numCol = 4;
+
+        String[] columnNames = {"Id",
+            "Product",
+            "Grotte",
+            "Coördinaten"};
+
+        int aantalRows = items.size();
+
+        Object[][] array = new Object[aantalRows][numCol];
+
+        int i;
+        for (i = 0; i < numRow; i++) {
+            array[i][0] = items.get(i).getID();
+            array[i][1] = items.get(i).getNaam();
+            array[i][2] = items.get(i).getGrootte();
+            array[i][3] = items.get(i).getLocatie().getCoord();
+        }
+
+        TableModel tableModel = new DefaultTableModel(array, columnNames);
+        table = new JTable(tableModel);
+
+        for (int t = 0; t < 4; t++) {
+            TableColumn column = table.getColumnModel().getColumn(t);
+            column.setPreferredWidth(250);
+        }
+        return table;
+
+    }
+
+    public void vulTabel() {
+
+        int i, r;
+        for (i = 0; i < pakbon.getSize(); i++) {
+            table.setValueAt(pakbon.items.get(i).getID(), i, 0);
+            table.setValueAt(pakbon.items.get(i).getNaam(), i, 1);
+            table.setValueAt(pakbon.items.get(i).getGrootte(), i, 2);
+            table.setValueAt(pakbon.items.get(i).getLocatie().getCoord(), i, 3);
+        }
+
+        for (r = pakbon.getSize(); r < items.size(); r++) {
+            tableModel.removeRow(r);
+            r--;
+        }
+
     }
 
     public void beweegKraan(int next, Arduino arduino) {

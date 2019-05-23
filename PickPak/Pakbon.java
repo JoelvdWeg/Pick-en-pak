@@ -12,7 +12,7 @@ public class Pakbon {
     private String adres1;
     private String adres2;
     private String land;
-    private ArrayList<Item> items;
+    public ArrayList<Item> items;
     public static String newline = System.getProperty("line.separator");
 
     public Pakbon(int id) {
@@ -102,6 +102,10 @@ public class Pakbon {
 
     public ArrayList<Item> getItems() {
         return items;
+    }
+    
+    public int getSize(){
+        return items.size();
     }
 
     public void voegItemToe(Item item) {

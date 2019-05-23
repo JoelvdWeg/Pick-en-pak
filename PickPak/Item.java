@@ -46,6 +46,10 @@ public class Item {
     public int getID(){
         return id;
     }
+    
+    public String getNaam(){
+        return naam;
+    }
 
     @Override
     public String toString() {

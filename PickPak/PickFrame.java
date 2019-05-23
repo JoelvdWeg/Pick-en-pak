@@ -18,6 +18,8 @@ public class PickFrame extends JFrame implements ActionListener {
 
     private PickPak pickpak;
     
+    private JTable tabel;
+    
     private static final class Lock{}
     private final Object lock = new Lock();
 
@@ -44,6 +46,8 @@ public class PickFrame extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.pickpak = pickpak;
+        
+        
 
         jlFile = new JLabel("Bestelling: ");
         add(jlFile);
@@ -71,6 +75,13 @@ public class PickFrame extends JFrame implements ActionListener {
         geavanceerd = new JButton("Geavanceerd");
         geavanceerd.addActionListener(this);
         add(geavanceerd);
+        
+        tabel = pickpak.maakTabel();
+
+        add(tabel);
+        add(new JScrollPane(tabel));
+        tabel.setPreferredScrollableViewportSize(tabel.getPreferredSize());
+        tabel.setFillsViewportHeight(true);
 
         panel = new PickPanel(pickpak);
         add(panel);
