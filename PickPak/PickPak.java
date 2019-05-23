@@ -99,13 +99,13 @@ public class PickPak {
 
         try {
             PreparedStatement itemsStatement = connection.prepareStatement(
-                    "SELECT stockitems.StockItemID, stockitems.StockItemName, stockitems.TypicalWeightPerUnit, stockitemholdings.QuantityOnHand FROM stockitems"
+                    "SELECT stockitems.StockItemID, stockitems.StockItemName, stockitems.TypicalWeightPerUnit, stockitemholdings.QuantityOnHand, RecommendedRetailPrice FROM stockitems"
                     + " JOIN stockitemholdings ON stockitems.StockItemID = stockitemholdings.StockItemID"
                     + " WHERE stockitems.StockItemID < 26");
             ResultSet itemsResultSet = itemsStatement.executeQuery();
             int i = 0, j = 0;
             while (itemsResultSet.next()) {
-                items.add(new Item(new Locatie(itemsResultSet.getInt(1) - 1, new Coordinate(j, i)), itemsResultSet.getDouble(3), itemsResultSet.getInt(1) - 1, itemsResultSet.getString(2), itemsResultSet.getInt(4)));
+                items.add(new Item(new Locatie(itemsResultSet.getInt(1) - 1, new Coordinate(j, i)), itemsResultSet.getDouble(3), itemsResultSet.getInt(1) - 1, itemsResultSet.getString(2), itemsResultSet.getInt(4), itemsResultSet.getDouble(5)));
                 if (j != 4) {
                     j++;
                 } else {
@@ -113,7 +113,7 @@ public class PickPak {
                     j = 0;
                 }
             }
-            items.add(new Item(new Locatie(25, new Coordinate(0, 0)), 0, 25, "LOSPUNT", 1));
+            items.add(new Item(new Locatie(25, new Coordinate(0, 0)), 0, 25, "LOSPUNT", 1, 0));
             System.out.println("Items succesvol opgehaald uit database\n..");
         } catch (Exception e) {
             System.out.println("Kon items niet ophalen uit de database\n...");

@@ -13,19 +13,20 @@ public class Pakbon {
     private String adres2;
     private String land;
     public ArrayList<Item> items;
+    public int[] aantallen = new int[25];
     public static String newline = System.getProperty("line.separator");
 
-    public Pakbon(int id) {
-        items = new ArrayList<>();
-        this.id = id;
-    }
-
+    
     public Pakbon(int id, String naam, String adres1, String adres2, String land) {
-        this(id);
+        this.id = id;
         this.naam = naam;
         this.adres1 = adres1;
         this.adres2 = adres2;
         this.land = land;
+        
+        for(int i = 0; i < 25; i++){
+            aantallen[i] = 0;
+        }
     }
 
     public void maakPakbonBestand() {
@@ -37,10 +38,10 @@ public class Pakbon {
             fw.write(toString());
             fw.close();
             
-            //Thread.sleep(1000);
+            Thread.sleep(2000);
             
             System.out.println(toString());
-            //Desktop.getDesktop().open(new File(fileName));
+            Desktop.getDesktop().open(new File(fileName));
         } catch (Exception ex) {
             System.err.println("Kon het bestand niet openen\n...");
             //System.out.println(ex);
@@ -109,7 +110,11 @@ public class Pakbon {
     }
 
     public void voegItemToe(Item item) {
+        aantallen[item.getID()]++;
         items.add(item);
+        
+       
+        
     }
 
 //    public String toString() {

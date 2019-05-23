@@ -6,13 +6,15 @@ public class Item {
     private Locatie locatie;
     private int voorraad;
     private int id;
+    private double prijs;
 
-    public Item(Locatie locatie, double grootte, int id, String naam, int voorraad) {
+    public Item(Locatie locatie, double grootte, int id, String naam, int voorraad, double prijs) {
         this.naam = naam;
         this.grootte = grootte;
         this.locatie = locatie;
         this.voorraad = voorraad;
         this.id = id;
+        this.prijs = prijs;
     }
         
     public Item(Locatie locatie, int id){
@@ -61,6 +63,6 @@ public class Item {
 
     @Override
     public String toString() {
-        return id + ": " + naam + " (grootte: "+grootte+")" + "coordinaten:  "+locatie.getCoord().getX()+"      "+locatie.getCoord().getY(); 
+        return id + ": " + naam + "     €" + prijs;
     }
 }
