@@ -12,7 +12,7 @@ public class Pakbon {
     private String adres1;
     private String adres2;
     private String land;
-    public ArrayList<Item> items;
+    public ArrayList<Item> items = new ArrayList<>();
     public int[] aantallen = new int[25];
     public static String newline = System.getProperty("line.separator");
 
