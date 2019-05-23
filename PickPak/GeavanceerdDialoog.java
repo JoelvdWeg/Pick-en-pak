@@ -28,6 +28,7 @@ public class GeavanceerdDialoog extends JDialog implements ActionListener {
     private Arduino arduinoKraan, arduinoSchijf;
     private boolean aanHetKalibreren;
     private int BPPalgoritme;
+    private boolean connected = false;
 
     public GeavanceerdDialoog(JFrame frame, PickPak pickpak) {
         super(frame, true);
@@ -174,9 +175,10 @@ public class GeavanceerdDialoog extends JDialog implements ActionListener {
             pdmCOMschijf.refreshMenu();
         } else if (e.getSource() == jbConnect) {
             if (jbConnect.getText().equals("Connect")) {
-                if (jbConnect.getText().equals("Disconnect")) {
-                    String kraanPort = (String) pdmCOMkraan.getSelectedItem();
-                    String schijfPort = (String) pdmCOMschijf.getSelectedItem();
+                String kraanPort = (String) pdmCOMkraan.getSelectedItem();
+                String schijfPort = (String) pdmCOMschijf.getSelectedItem();
+
+                if (kraanPort != null & schijfPort != null) {
 
                     if (!kraanPort.equals(schijfPort)) {
 
@@ -189,6 +191,8 @@ public class GeavanceerdDialoog extends JDialog implements ActionListener {
                             pdmCOMkraan.setEnabled(false);
                             jbRefresh.setEnabled(false);
                             
+                            connected = true;
+
                             jbKalibreerSchijf.setEnabled(true);
                             jbKalibreerSensor.setEnabled(true);
                             jbUp.setEnabled(true);
@@ -200,38 +204,34 @@ public class GeavanceerdDialoog extends JDialog implements ActionListener {
                             jbCoordinaat.setEnabled(true);
                             jbReset.setEnabled(true);
                             jbNoodstop.setEnabled(true);
-                                    
+
                         }
                     }
-                } else {
-                    arduinoKraan.closeConnection();
-                    arduinoSchijf.closeConnection();
-                    
-                    jbConnect.setText("Cconnect");
-                            pdmCOMschijf.setEnabled(true);
-                            pdmCOMkraan.setEnabled(true);
-                            jbRefresh.setEnabled(true);
-                            
-                            jbKalibreerSchijf.setEnabled(false);
-                            jbKalibreerSensor.setEnabled(false);
-                            jbUp.setEnabled(false);
-                            jbDown.setEnabled(false);
-                            jbLeft.setEnabled(false);
-                            jbRight.setEnabled(false);
-                            jbStop.setEnabled(false);
-                            jbPush.setEnabled(false);
-                            jbCoordinaat.setEnabled(false);
-                            jbReset.setEnabled(false);
-                            jbNoodstop.setEnabled(false);
                 }
-            } else {
+            } else if (jbConnect.getText().equals("Disconnect")) {
                 arduinoKraan.closeConnection();
                 arduinoSchijf.closeConnection();
-                jbConnect.setText("Connect");
+
+                jbConnect.setText("Cconnect");
                 pdmCOMschijf.setEnabled(true);
                 pdmCOMkraan.setEnabled(true);
                 jbRefresh.setEnabled(true);
+                
+                connected = false;
+
+                jbKalibreerSchijf.setEnabled(false);
+                jbKalibreerSensor.setEnabled(false);
+                jbUp.setEnabled(false);
+                jbDown.setEnabled(false);
+                jbLeft.setEnabled(false);
+                jbRight.setEnabled(false);
+                jbStop.setEnabled(false);
+                jbPush.setEnabled(false);
+                jbCoordinaat.setEnabled(false);
+                jbReset.setEnabled(false);
+                jbNoodstop.setEnabled(false);
             }
+
         } else if (e.getSource() == jbKalibreerSchijf) {
             if (aanHetKalibreren) {
                 jbKalibreerSchijf.setText("Kalibreer");
@@ -282,5 +282,9 @@ public class GeavanceerdDialoog extends JDialog implements ActionListener {
 
     public Arduino getArduinoSchijf() {
         return arduinoSchijf;
+    }
+    
+    public boolean connected(){
+        return connected;
     }
 }
