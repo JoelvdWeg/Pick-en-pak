@@ -47,7 +47,7 @@ public class PickPak {
     private DefaultTableModel tableModel;
 
     private String dbUsername = "root";
-    private String dbPassword = "";
+    private String dbPassword = "root";
 
     public PickPak() {
         kraanPositie = 0;
@@ -95,11 +95,14 @@ public class PickPak {
         items = new ArrayList<>();
 
         try {
-            PreparedStatement itemsStatement = connection.prepareStatement("SELECT StockItemID, StockItemName, TypicalWeightPerUnit FROM stockitems WHERE StockItemID < 26");
+            PreparedStatement itemsStatement = connection.prepareStatement(
+                    "SELECT stockitems.StockItemID, stockitems.StockItemName, stockitems.TypicalWeightPerUnit, stockitemholdings.QuantityOnHand FROM stockitems" +
+                    " JOIN stockitemholdings ON stockitems.StockItemID = stockitemholdings.StockItemID" +
+                    " WHERE stockitems.StockItemID < 26");
             ResultSet itemsResultSet = itemsStatement.executeQuery();
             int i = 0, j = 0;
             while (itemsResultSet.next()) {
-                items.add(new Item(new Locatie(itemsResultSet.getInt(1) - 1, new Coordinate(j, i)), itemsResultSet.getDouble(3), itemsResultSet.getInt(1) - 1, itemsResultSet.getString(2)));
+                items.add(new Item(new Locatie(itemsResultSet.getInt(1) - 1, new Coordinate(j, i)), itemsResultSet.getDouble(3), itemsResultSet.getInt(1) - 1, itemsResultSet.getString(2), itemsResultSet.getInt(4)));
                 if (j != 4) {
                     j++;
                 } else {
@@ -107,10 +110,11 @@ public class PickPak {
                     j = 0;
                 }
             }
-            items.add(new Item(new Locatie(25, new Coordinate(0, 0)), 0, 25, "LOSPUNT"));
+            items.add(new Item(new Locatie(25, new Coordinate(0, 0)), 0, 25, "LOSPUNT", 1));
             System.out.println("Items succesvol opgehaald uit database\n..");
         } catch (Exception e) {
             System.out.println("Kon items niet ophalen uit de database\n...");
+            System.out.println(e);
         }
     }
 
@@ -288,12 +292,14 @@ public class PickPak {
 
     public JTable maakTabel() {
         int numRow = 20;
-        int numCol = 4;
+        int numCol = 5;
 
-        String[] columnNames = {"Id",
+        String[] columnNames = {"ID",
             "Product",
-            "Grotte",
-            "Coördinaten"};
+            "Grootte",
+            "Coördinaten",
+            "voorraad"
+        };
 
         Object[][] array = new Object[numRow][numCol];
 
@@ -303,6 +309,7 @@ public class PickPak {
             array[i][1] = items.get(i).getNaam();
             array[i][2] = items.get(i).getGrootte();
             array[i][3] = items.get(i).getLocatie().getCoord();
+            array[i][4] = items.get(i).getVoorraad();
         }
 
         TableModel tableModel = new DefaultTableModel(array, columnNames);

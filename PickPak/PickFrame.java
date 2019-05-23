@@ -1,14 +1,14 @@
 package PickPak;
 
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 import arduino.*;
-import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+
 import java.util.ArrayList;
 
 public class PickFrame extends JFrame implements ActionListener {
@@ -94,6 +94,13 @@ public class PickFrame extends JFrame implements ActionListener {
         tabel.setPreferredScrollableViewportSize(tabel.getPreferredSize());
         tabel.setFillsViewportHeight(true);
 
+        tabel.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
+        TableColumnModel colModel=tabel.getColumnModel();
+        colModel.getColumn(0).setMaxWidth(40);
+        colModel.getColumn(2).setMaxWidth(60);
+        colModel.getColumn(3).setMaxWidth(100);
+        colModel.getColumn(4).setMaxWidth(80);
+
         gridPanel = new GridPanel(pickpak);
 
         d.gridx = 0;
@@ -143,22 +150,25 @@ public class PickFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbbevestig) {
-            //if (checkRobotConnection()) {
-            if (!jtfFile.getText().equals("")) {
-                if (!pickpak.checkBestrelling(jtfFile.getText())) {
-                    JOptionPane.showMessageDialog(null, "Kan bestand niet lezen");
-                } else {
-                    t.start();
-                    jbStop.setEnabled(true);
+            if (checkRobotConnection()) {
+                if (!jtfFile.getText().equals("")) {
+                    if (!pickpak.checkBestrelling(jtfFile.getText())) {
+                        JOptionPane.showMessageDialog(null, "Kan bestand niet lezen");
+                    }
+                    else {
+                        t.start();
+                        jbStop.setEnabled(true);
+                    }
                 }
-            } else {
-                JOptionPane.showMessageDialog(null, "Geef een bestelling op.");
+                else {
+                    JOptionPane.showMessageDialog(null, "Geef een bestelling op.");
+                }
+
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "Niet verbonden met de pick- of inpakrobot.");
             }
 
-            //}
-            //else {
-            //    JOptionPane.showMessageDialog(this, "Niet verbonden met de pick- of inpakrobot.");
-            //}
         } else if (e.getSource() == geavanceerd) {
             if (jdGeavanceerd == null) {
                 jdGeavanceerd = new GeavanceerdDialoog(this, pickpak);
@@ -253,6 +263,7 @@ public class PickFrame extends JFrame implements ActionListener {
         } else {
 
             for (int it = 1; it < pickpak.route.size() - 1; it++) {
+
 
                 pickpak.draaiSchijf(it, arduinoSchijf);
 
