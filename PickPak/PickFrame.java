@@ -201,11 +201,14 @@ public class PickFrame extends JFrame implements ActionListener {
                 arduinoKraan.serialWrite("c00");
                 arduinoSchijf.serialWrite("c1");
 
-                try{
-                    Thread.sleep(4000);
-                }catch(Exception ex){
-                    
-                }
+               char s = '.';
+               do{
+                   try{
+                       s = arduinoKraan.serialRead().charAt(0);
+                   }catch(Exception ex){
+                       
+                   }
+               }while(s != 'q');
 
                 try {
                     arduinoKraan.serialWrite('l');
