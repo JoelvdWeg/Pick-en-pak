@@ -307,6 +307,8 @@ public class PickFrame extends JFrame implements ActionListener {
 
             for (int it = 1; it < pickpak.route.size() - 1; it++) {
                 
+                p.paintImmediately(0, 0, 1920, 1080);
+                
                 tabel.setModel(pickpak.maakTabelModel(it));
 
                 pickpak.draaiSchijf(it, arduinoSchijf);
