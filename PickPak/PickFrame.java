@@ -57,9 +57,10 @@ public class PickFrame extends JFrame implements ActionListener {
         jbbevestig = new JButton("Start");
         jbbevestig.addActionListener(this);
         add(jbbevestig);
+        jbbevestig.setEnabled(true);
 
         jbStop = new JButton("Stop");
-
+        jbStop.setEnabled(false);
         jbStop.addActionListener(this);
 
 //        jbStop.addActionListener(new ActionListener() {
@@ -140,6 +141,14 @@ public class PickFrame extends JFrame implements ActionListener {
             BPPalgoritme = jdGeavanceerd.getBPPalgoritme();
             arduinoKraan = jdGeavanceerd.getArduinoKraan();
             arduinoSchijf = jdGeavanceerd.getArduinoSchijf();
+            
+            if(jdGeavanceerd.connected()){
+                jbbevestig.setEnabled(true);
+                jbStop.setEnabled(true);
+            } else {
+                jbbevestig.setEnabled(false);
+                jbStop.setEnabled(false);
+            }
             //jdGeavanceerd.dispose();
 
         } else if (e.getSource() == jbStop) {

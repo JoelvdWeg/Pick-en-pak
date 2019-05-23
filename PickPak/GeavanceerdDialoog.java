@@ -28,6 +28,7 @@ public class GeavanceerdDialoog extends JDialog implements ActionListener {
     private Arduino arduinoKraan, arduinoSchijf;
     private boolean aanHetKalibreren;
     private int BPPalgoritme;
+    private boolean connected = false;
 
     public GeavanceerdDialoog(JFrame frame, PickPak pickpak) {
         super(frame, true);
@@ -189,6 +190,8 @@ public class GeavanceerdDialoog extends JDialog implements ActionListener {
                             pdmCOMschijf.setEnabled(false);
                             pdmCOMkraan.setEnabled(false);
                             jbRefresh.setEnabled(false);
+                            
+                            connected = true;
 
                             jbKalibreerSchijf.setEnabled(true);
                             jbKalibreerSensor.setEnabled(true);
@@ -213,6 +216,8 @@ public class GeavanceerdDialoog extends JDialog implements ActionListener {
                 pdmCOMschijf.setEnabled(true);
                 pdmCOMkraan.setEnabled(true);
                 jbRefresh.setEnabled(true);
+                
+                connected = false;
 
                 jbKalibreerSchijf.setEnabled(false);
                 jbKalibreerSensor.setEnabled(false);
@@ -277,5 +282,9 @@ public class GeavanceerdDialoog extends JDialog implements ActionListener {
 
     public Arduino getArduinoSchijf() {
         return arduinoSchijf;
+    }
+    
+    public boolean connected(){
+        return connected;
     }
 }
