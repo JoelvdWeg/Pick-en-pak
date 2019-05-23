@@ -17,7 +17,6 @@ public class Pakbon {
     public int[] aantallen = new int[25];
     public static String newline = System.getProperty("line.separator");
 
-    
     public Pakbon(int id, String naam, String adres1, String adres2, String land, int doosnr) {
         this.id = id;
         this.naam = naam;
@@ -25,8 +24,8 @@ public class Pakbon {
         this.adres2 = adres2;
         this.land = land;
         this.doosnr = doosnr;
-        
-        for(int i = 0; i < 25; i++){
+
+        for (int i = 0; i < 25; i++) {
             aantallen[i] = 0;
         }
     }
@@ -39,9 +38,9 @@ public class Pakbon {
             FileWriter fw = new FileWriter(fileName);
             fw.write(toString());
             fw.close();
-            
+
             Thread.sleep(2000);
-            
+
             System.out.println(toString());
             Desktop.getDesktop().open(new File(fileName));
         } catch (Exception ex) {
@@ -54,7 +53,7 @@ public class Pakbon {
 
         String s = "";
         s += "PAKBON" + newline;
-        s += "DOOS "+doosnr;
+        s += "DOOS " + doosnr;
         s += "----------------------------" + newline;
         s += naam + newline;
         s += adres1 + newline;
@@ -63,12 +62,17 @@ public class Pakbon {
         s += "----------------------------" + newline + newline;
         s += "Producten:" + newline;
 
+        ArrayList<Item> itemsAlGehad = new ArrayList<>();
         for (Item item : items) {
-            
-            
-            s += item + "     aantal: " + aantallen[item.getID()] +  "    Totaalprijs:    €" + item.getPrijs()*aantallen[item.getID()];
-            
-            s += newline;
+
+            if (!itemsAlGehad.contains(item)) {
+
+                itemsAlGehad.add(item);
+
+                s += item + "     aantal: " + aantallen[item.getID()] + "    Totaalprijs:    €" + item.getPrijs() * aantallen[item.getID()];
+
+                s += newline;
+            }
         }
 
         s += "----------------------------" + newline + newline;
@@ -111,20 +115,18 @@ public class Pakbon {
     public ArrayList<Item> getItems() {
         return items;
     }
-    
-    public int getSize(){
+
+    public int getSize() {
         return items.size();
     }
 
     public void voegItemToe(Item item) {
         aantallen[item.getID()]++;
         items.add(item);
-        
-       
-        
+
     }
-    
-    public int[] getAantallen(){
+
+    public int[] getAantallen() {
         return aantallen;
     }
 
