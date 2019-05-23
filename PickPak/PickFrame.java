@@ -188,7 +188,7 @@ public class PickFrame extends JFrame implements ActionListener {
                     try {
                         t.wait();
                     } catch (Exception ex) {
-                        System.out.println(ex);
+                        System.out.println("WAIT: "+ex);
                     }
                 }
 
@@ -199,7 +199,7 @@ public class PickFrame extends JFrame implements ActionListener {
                     try {
                         t.notify();
                     } catch (Exception ex) {
-                        System.out.println(ex);
+                        System.out.println("NOTIFT: "+ex);
                     }
                 }
 
