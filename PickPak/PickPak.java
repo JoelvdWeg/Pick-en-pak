@@ -156,7 +156,7 @@ public class PickPak {
             NodeList nlist = rootElement.getChildNodes();
 
             for (int i = 0; i < nlist.getLength(); i++) {
-                System.out.println("NODENAME: "+nlist.item(i).getNodeName());
+                System.out.println("NODENAME: " + nlist.item(i).getNodeName());
 
                 Node child = nlist.item(i);
 
@@ -217,9 +217,9 @@ public class PickPak {
 //        }
 //        return null;
 //    }
-    
-    public void maakPakbonnen(Bestelling bestelling){
-        ArrayList<Pakbon> pakbonnen = new ArrayList<>();
+    public void maakPakbonnen(Bestelling bestelling) {
+        if (maakDatabaseConnectie()) {
+            ArrayList<Pakbon> pakbonnen = new ArrayList<>();
 
             int newPakbonID = 0;
 
@@ -244,7 +244,7 @@ public class PickPak {
                 System.out.println("Kon geen bestelling toevoegen aan de database\n...");
                 System.out.println(e);
             }
-            
+
             for (Doos d : dozen) {
                 System.out.println(d);
                 Pakbon p = new Pakbon(newPakbonID, bestelling.getNaam(), bestelling.getAdres1(), bestelling.getAdres2(), bestelling.getLand());
@@ -252,7 +252,7 @@ public class PickPak {
 
                 for (Item i : d.getItems()) {
                     p.voegItemToe(i);
-                    
+
                     try {
                         Statement bestelRegelIDstatement = connection.createStatement();
                         ResultSet bestelRegelIDresult = bestelRegelIDstatement.executeQuery("SELECT MAX(regelID) FROM bestelregel");
@@ -280,9 +280,9 @@ public class PickPak {
 
                 p.maakPakbonBestand();
 
-               
                 newPakbonID++;
             }
+        }
     }
 
     private ArrayList<Item> voegToeAanPicks(int besteldItem, ArrayList<Item> picks) {
