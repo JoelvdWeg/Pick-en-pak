@@ -113,8 +113,13 @@ public class PickFrame extends JFrame implements ActionListener {
         setVisible(true);
 
         t = new Thread() {
+            
+            
+            
             @Override
             public void run() {
+                
+                
                 jbbevestig.setEnabled(false);
 
                 aantalBestellingen++;
@@ -182,7 +187,7 @@ public class PickFrame extends JFrame implements ActionListener {
                 jbStop.setText("Reset");
 
                 
-                t.stop();
+                t.interrupt();
                 
 
                 
@@ -264,6 +269,8 @@ public class PickFrame extends JFrame implements ActionListener {
                     p.paintImmediately(0, 0, 1920, 1080);
 
                     pickpak.beweegKraan(it, arduinoKraan);
+                    
+                    
 
                     System.out.println("KRAAN BEWOGEN\n...");
 
