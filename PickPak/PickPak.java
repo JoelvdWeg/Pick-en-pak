@@ -49,7 +49,6 @@ public class PickPak {
     private DefaultTableModel tableModel;
 
     //private TableModel tableModel1;
-
     private String dbUsername = "root";
     private String dbPassword = "";
 
@@ -100,9 +99,9 @@ public class PickPak {
 
         try {
             PreparedStatement itemsStatement = connection.prepareStatement(
-                    "SELECT stockitems.StockItemID, stockitems.StockItemName, stockitems.TypicalWeightPerUnit, stockitemholdings.QuantityOnHand FROM stockitems" +
-                    " JOIN stockitemholdings ON stockitems.StockItemID = stockitemholdings.StockItemID" +
-                    " WHERE stockitems.StockItemID < 26");
+                    "SELECT stockitems.StockItemID, stockitems.StockItemName, stockitems.TypicalWeightPerUnit, stockitemholdings.QuantityOnHand FROM stockitems"
+                    + " JOIN stockitemholdings ON stockitems.StockItemID = stockitemholdings.StockItemID"
+                    + " WHERE stockitems.StockItemID < 26");
             ResultSet itemsResultSet = itemsStatement.executeQuery();
             int i = 0, j = 0;
             while (itemsResultSet.next()) {
@@ -134,59 +133,64 @@ public class PickPak {
     }
 
     public ArrayList<Item> leesBestelling(String f) {
+        //try {
+        String naam = "";
+        String adres1 = "";
+        String adres2 = "";
+        String land = "";
+
+        System.out.println("--" + f);
+        ArrayList<Integer> besteldeItems = new ArrayList<>();
+
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        org.w3c.dom.Document document = null;
         try {
-            String naam = "";
-            String adres1 = "";
-            String adres2 = "";
-            String land = "";
-
-            System.out.println("--" + f);
-            ArrayList<Integer> besteldeItems = new ArrayList<>();
-
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            org.w3c.dom.Document document = documentBuilder.parse(new File(f));
+            document = documentBuilder.parse(new File(f));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        Element rootElement = (Element) document.getFirstChild();
 
-            Element rootElement = (Element) document.getFirstChild();
+        NodeList nlist = rootElement.getChildNodes();
 
-            NodeList nlist = rootElement.getChildNodes();
+        for (int i = 0; i < nlist.getLength(); i++) {
 
-            for (int i = 0; i < nlist.getLength(); i++) {
+            Node child = nlist.item(i);
 
-                Node child = nlist.item(i);
+            String nodeName = (String) child.getNodeName();
 
-                String nodeName = (String) child.getNodeName();
+            if (nodeName.equals("naam")) {
+                naam = child.getTextContent();
+            } else if (nodeName.equals("adres1")) {
+                adres1 = child.getTextContent();
+            } else if (nodeName.equals("adres2")) {
+                adres2 = child.getTextContent();
+            } else if (nodeName.equals("land")) {
+                land = child.getTextContent();
+            } else if (nodeName.equals("item")) {
 
-                if (nodeName.equals("naam")) {
-                    naam = child.getTextContent();
-                } else if (nodeName.equals("adres1")) {
-                    adres1 = child.getTextContent();
-                } else if (nodeName.equals("adres2")) {
-                    adres2 = child.getTextContent();
-                } else if (nodeName.equals("land")) {
-                    land = child.getTextContent();
-                } else if (nodeName.equals("item")) {
+                NodeList itemList = child.getChildNodes();
 
-                    NodeList itemList = child.getChildNodes();
+                Node idNode = itemList.item(0);
+                Node aantalNode = itemList.item(1);
 
-                    Node idNode = itemList.item(0);
-                    Node aantalNode = itemList.item(1);
+                int itemID = Integer.parseInt(idNode.getTextContent());
+                int aantal = Integer.parseInt(aantalNode.getTextContent());
 
-                    int itemID = Integer.parseInt(idNode.getTextContent());
-                    int aantal = Integer.parseInt(aantalNode.getTextContent());
-
-                    for (int k = 0; k < aantal; k++) {
-                        besteldeItems.add(itemID);
-                    }
+                for (int k = 0; k < aantal; k++) {
+                    besteldeItems.add(itemID);
                 }
             }
-
-            ArrayList<Item> bestelling = maakBestellingAan(naam, adres1, adres2, land, besteldeItems);
-
-            return bestelling;
-        } catch (Exception ex) {
-            return null;
         }
+
+        ArrayList<Item> bestelling = maakBestellingAan(naam, adres1, adres2, land, besteldeItems);
+
+        return bestelling;
+        //} catch (Exception ex) {
+        //System.out.println(ex);
+        //return null;
+        // }
     }
 
     public ArrayList<Item> maakBestellingAan(String naam, String adres1, String adres2, String land, ArrayList<Integer> besteldeItems) {
@@ -222,10 +226,10 @@ public class PickPak {
             }
 
             int k = 1;
-
             for (Doos d : dozen) {
+                System.out.println(d);
                 Pakbon p = new Pakbon(newPakbonID, naam, adres1, adres2, land);
-                //pakbonnen.add(p);
+                pakbonnen.add(p);
 
                 for (Item i : d.getItems()) {
                     p.voegItemToe(i);
@@ -265,6 +269,8 @@ public class PickPak {
 
             sluitDatabaseConnectie();
             return picks;
+        } else  {
+            
         }
         return null;
     }
@@ -321,9 +327,6 @@ public class PickPak {
 
         Object[][] array = new Object[numRow][numCol];
 
-
-
-
         tableModel = new DefaultTableModel(array, columnNames);
         table = new JTable(tableModel);
 
@@ -335,12 +338,11 @@ public class PickPak {
 
     }
 
-
     public DefaultTableModel maakTabelModel(int huidigePick) {
         int numRow = route.size() - 2;
         int numCol = 6;
 
-        String[] columnNames = {"   ","ID",
+        String[] columnNames = {"   ", "ID",
             "Product",
             "Grootte",
             "Coördinaten",
@@ -351,18 +353,17 @@ public class PickPak {
 
         int i;
         for (i = 0; i < numRow; i++) {
-            if(i + 1 == huidigePick){
+            if (i + 1 == huidigePick) {
                 array[i][0] = "X";
             } else {
                 array[i][0] = "";
             }
-            array[i][1] = items.get(route.get(i+1)).getID();
-            array[i][2] = items.get(route.get(i+1)).getNaam();
-            array[i][3] = items.get(route.get(i+1)).getGrootte();
-            array[i][4] = items.get(route.get(i+1)).getLocatie().getCoord();
-            array[i][5] = items.get(route.get(i+1)).getVoorraad();
+            array[i][1] = items.get(route.get(i + 1)).getID();
+            array[i][2] = items.get(route.get(i + 1)).getNaam();
+            array[i][3] = items.get(route.get(i + 1)).getGrootte();
+            array[i][4] = items.get(route.get(i + 1)).getLocatie().getCoord();
+            array[i][5] = items.get(route.get(i + 1)).getVoorraad();
         }
-
 
         tableModel = new DefaultTableModel(array, columnNames);
 
@@ -371,7 +372,7 @@ public class PickPak {
     }
 
 
-/*
+    /*
     public JTable maakTabel(boolean pick) {
         int numRow = route.size()-2;
         int numCol = 4;
@@ -401,7 +402,6 @@ public class PickPak {
         return table;
 
     }*/
-
 //    public JTable vulTabel() {
 //        for (int i = 1; i < route.size() - 1; i++) {
 //            table.setValueAt(items.get(route.get(i)).getID(), i, 0);
@@ -416,7 +416,6 @@ public class PickPak {
 //
 //        return table;
 //    }
-
     public void beweegKraan(int next, Arduino arduino) {
         kraanPositie = route.get(next);
 
@@ -556,28 +555,24 @@ public class PickPak {
         g.setColor(new Color(255, 100, 100));
         Graphics2D g2 = (Graphics2D) g;
 
-
         for (int i = 0; i < AANTAL_DOZEN; i++) {
             g.setColor(Color.BLUE);
             g.fillRect(20 + 100 * i, 510 - doosInhoud[i], 50, doosInhoud[i]);
 
             g.setColor(Color.BLACK);
             if (doosInhoud[i] == 0) {
-                g.drawString("leeg", 20+100*i, 550);
-            }
-            else {
+                g.drawString("leeg", 20 + 100 * i, 550);
+            } else {
 
-                if (doosInhoud[i]/33 == 12) {
-                    g.drawString("vol", 20+100*i, 550);
-                }
-                else {
-                    g.drawString(doosInhoud[i]/33+"/12", 20+100*i, 550);
+                if (doosInhoud[i] / 33 == 12) {
+                    g.drawString("vol", 20 + 100 * i, 550);
+                } else {
+                    g.drawString(doosInhoud[i] / 33 + "/12", 20 + 100 * i, 550);
                 }
 
             }
 
         }
-
 
     }
 }

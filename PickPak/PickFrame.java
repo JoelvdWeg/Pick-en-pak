@@ -151,7 +151,6 @@ public class PickFrame extends JFrame implements ActionListener {
 
                 tekenRoute(jtfFile.getText());
                 
-                
                 tabel.setModel(pickpak.maakTabelModel(0)); 
 
                 pickBestelling();
@@ -275,6 +274,7 @@ public class PickFrame extends JFrame implements ActionListener {
 
         } catch (Exception ex) {
             System.out.println("Er ging iets mis\n...");
+            System.out.println(ex);
         }
     }
 
