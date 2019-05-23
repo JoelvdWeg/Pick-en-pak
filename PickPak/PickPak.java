@@ -415,10 +415,10 @@ public class PickPak {
                     Graphics2D g2d = (Graphics2D) g;
                     Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
                     g2d.setStroke(dashed);
-                    g2d.drawLine(250 + startx * 100, 900 - 100 * starty, 250 + eindx * 100, 900 - eindy * 100);
+                    g2d.drawLine(250 + startx * 100, 500 - 100 * starty, 250 + eindx * 100, 900 - eindy * 100);
                     g2d.setStroke(new BasicStroke(4));
                 } else {
-                    g.drawLine(250 + startx * 100, 900 - 100 * starty, 250 + eindx * 100, 900 - eindy * 100);
+                    g.drawLine(250 + startx * 100, 500 - 100 * starty, 250 + eindx * 100, 900 - eindy * 100);
                 }
 
                 if (k == 0) {
@@ -426,7 +426,7 @@ public class PickPak {
                 } else if (k == route.size() - 2) {
                     g.setColor(Color.RED);
                 }
-                g.fillOval(startx * 100 + 243, 893 - starty * 100, 14, 14);
+                g.fillOval(startx * 100 + 243, 393 - starty * 100, 14, 14);
                 g.setColor(Color.BLUE);
                 k++;
             }
@@ -439,12 +439,12 @@ public class PickPak {
         } else {
             g.setColor(Color.GREEN);
         }
-        g.drawRect(203 + 100 * items.get(kraanPositie).getLocatie().getCoord().getX(), 853 - 100 * items.get(kraanPositie).getLocatie().getCoord().getY(), 95, 95);
+        g.drawRect(203 + 100 * items.get(kraanPositie).getLocatie().getCoord().getX(), 453 - 100 * items.get(kraanPositie).getLocatie().getCoord().getY(), 95, 95);
     }
 
     public void tekenDoosPositie(Graphics g) {
         g.setColor(Color.GREEN);
-        g.drawRect(1000 + 100 * doosPositie, 500, 50, 400);
+        g.drawRect(1000 + 100 * doosPositie, 100, 50, 400);
     }
 
     public void werkDoosInhoudBij(int next) {
@@ -460,7 +460,7 @@ public class PickPak {
         g.setColor(new Color(255, 100, 100));
 
         for (int i = 0; i < AANTAL_DOZEN; i++) {
-            g.fillRect(1100 + 100 * i, 900 - doosInhoud[i], 50, doosInhoud[i]);
+            g.fillRect(1100 + 100 * i, 400 - doosInhoud[i], 50, doosInhoud[i]);
         }
     }
 }
