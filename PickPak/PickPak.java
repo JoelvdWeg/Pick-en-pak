@@ -167,7 +167,7 @@ public class PickPak {
                     int itemID = Integer.parseInt(idNode.getTextContent());
                     int aantal = Integer.parseInt(aantalNode.getTextContent());
                     
-                    try{
+                    if(maakDatabaseConnectie()){
 
                     for (int k = 0; k < aantal; k++) {
                         PreparedStatement voorraadStatement = connection.prepareStatement("SELECT QuantityOnHand FROM stockitemholdings WHERE StockItemID = ?");
@@ -181,8 +181,6 @@ public class PickPak {
                         }
                     }
                         
-                    }catch(Exception e){
-                        System.out.println("FOUT: "+e);
                     }
                 }
             }
