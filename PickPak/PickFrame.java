@@ -354,8 +354,8 @@ public class PickFrame extends JFrame implements ActionListener {
             arduinoKraan.serialWrite("c00");
             arduinoSchijf.serialWrite("c1");
 
-            gridPanel.paintImmediately(0, 0, 1920, 1080);
-            dozenPanel.paintImmediately(0, 0, 1920, 1080);
+            p.paintImmediately(0, 0, 1920, 1080);
+            p.paintImmediately(0, 0, 1920, 1080);
 
             jbbevestig.setEnabled(true);
         }
