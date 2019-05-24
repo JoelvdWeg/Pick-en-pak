@@ -178,8 +178,9 @@ public class PickPak {
 
                             if (voorraadResult.getInt(1) >= aantal) {
                                 besteldeItems.add(items.get(itemID));
+                                
                             } else {
-                                new nieOpVoorraadDialoog(items.get(itemID).getNaam());
+                                new nieOpVoorraadDialoog(items.get(itemID).getNaam()).setVisible(true);
                             }
                         }
 

@@ -9,10 +9,11 @@ public class nieOpVoorraadDialoog extends JDialog {
 
     public nieOpVoorraadDialoog(String item) {
         setTitle("Geavanceerde instellingen");
-        setSize(new Dimension(1200, 240));
+        setSize(new Dimension(600, 240));
         setLayout(new FlowLayout());
         
         JLabel l = new JLabel(item+" is niet op voorraad");
+        add(l);
         
         
     }
