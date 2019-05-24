@@ -17,6 +17,10 @@ public class PickFrame extends JFrame implements ActionListener {
 
     private PickPak pickpak;
 
+    private int threadnr = 0;
+
+    private ArrayList<Thread> threads = new ArrayList<>();
+
     private JTable tabel;
 
     private Thread t;
@@ -163,7 +167,39 @@ public class PickFrame extends JFrame implements ActionListener {
                         if (t.isAlive()) {
                             t.stop();
                         }
+                        
+                        t = null;
+
+                        t = new Thread() {
+
+                            @Override
+                            public void run() {
+
+                                jbbevestig.setEnabled(false);
+
+                                aantalBestellingen++;
+                                if (aantalBestellingen > 1) {
+
+                                    pickpak.resetRobots();
+
+                                    p.paintImmediately(0, 0, 1920, 1080);
+
+                                }
+
+                                tekenRoute(jtfFile.getText());
+
+                                tabel.setModel(pickpak.maakTabelModel(0));
+
+                                pickBestelling();
+
+                                jbPakbonnen.setEnabled(true);
+
+                                return;
+                            }
+                        };
+
                         t.start();
+                        
                         jbStop.setEnabled(true);
                     }
                 } else {
@@ -199,8 +235,8 @@ public class PickFrame extends JFrame implements ActionListener {
                 jbStop.setText("Reset");
 
                 arduinoKraan.serialWrite('f');
-                
-                if(t.isAlive()){
+
+                if (t.isAlive()) {
                     t.stop();
                 }
 
