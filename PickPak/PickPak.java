@@ -166,21 +166,21 @@ public class PickPak {
 
                     int itemID = Integer.parseInt(idNode.getTextContent());
                     int aantal = Integer.parseInt(aantalNode.getTextContent());
-                    
-                    if(maakDatabaseConnectie()){
 
-                    for (int k = 0; k < aantal; k++) {
-                        PreparedStatement voorraadStatement = connection.prepareStatement("SELECT QuantityOnHand FROM stockitemholdings WHERE StockItemID = ?");
-                        voorraadStatement.setInt(1,itemID+1); 
-                        ResultSet voorraadResult = voorraadStatement.executeQuery();
-                        
-                        voorraadResult.next();
-                        
-                        if(voorraadResult.getInt(1) >= aantal){
-                            besteldeItems.add(items.get(itemID));
+                    if (maakDatabaseConnectie()) {
+
+                        for (int k = 0; k < aantal; k++) {
+                            PreparedStatement voorraadStatement = connection.prepareStatement("SELECT QuantityOnHand FROM stockitemholdings WHERE StockItemID = ?");
+                            voorraadStatement.setInt(1, itemID + 1);
+                            ResultSet voorraadResult = voorraadStatement.executeQuery();
+
+                            voorraadResult.next();
+
+                            if (voorraadResult.getInt(1) >= aantal) {
+                                besteldeItems.add(items.get(itemID));
+                            }
                         }
-                    }
-                        
+
                     }
                 }
             }

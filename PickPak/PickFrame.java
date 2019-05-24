@@ -308,7 +308,7 @@ public class PickFrame extends JFrame implements ActionListener {
 
                 tabel.setModel(pickpak.maakTabelModel(it));
 
-                gridPanel.paintImmediately(0, 0, 1920, 1080);
+                p.paintImmediately(0, 0, 1920, 1080);
 
                 pickpak.draaiSchijf(it, arduinoSchijf);
 
@@ -321,17 +321,17 @@ public class PickFrame extends JFrame implements ActionListener {
                     }
                 } while (s != 'd'); // schijf draaien
 
-                dozenPanel.paintImmediately(0, 0, 1920, 1080);
+                p.paintImmediately(0, 0, 1920, 1080);
 
                 pickpak.beweegKraan(it, arduinoKraan);
 
-                gridPanel.paintImmediately(0, 0, 1920, 1080);
+                p.paintImmediately(0, 0, 1920, 1080);
 
                 arduinoKraan.serialWrite('p'); //push
 
                 pickpak.setPush(true);
 
-                gridPanel.paintImmediately(0, 0, 1920, 1080);
+                p.paintImmediately(0, 0, 1920, 1080);
 
                 char t = '.';
                 do {
@@ -344,11 +344,11 @@ public class PickFrame extends JFrame implements ActionListener {
 
                 pickpak.setPush(false);
 
-                gridPanel.paintImmediately(0, 0, 1920, 1080);
+                p.paintImmediately(0, 0, 1920, 1080);
 
                 pickpak.werkDoosInhoudBij(it);
 
-                dozenPanel.paintImmediately(0, 0, 1920, 1080);
+                p.paintImmediately(0, 0, 1920, 1080);
 
             }
             arduinoKraan.serialWrite("c00");
