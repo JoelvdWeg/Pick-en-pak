@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package PickPak;
 
 import java.awt.BasicStroke;
@@ -14,10 +9,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
-/**
- *
- * @author hylke
- */
+
 public class DozenPanel extends JPanel{
     PickPak pickpak;
 
@@ -27,22 +19,7 @@ public class DozenPanel extends JPanel{
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        //setBackground(Color.BLUE);
-
-
-
-        g.setColor(Color.BLACK);
-        Graphics2D g2 = (Graphics2D) g;
-
-        //            DOZEN
-        //g2.setStroke(new BasicStroke(2));
-        //g.drawRect(20, 110, 50, 400);
-        //g.drawRect(120, 110, 50, 400);
-        //g.drawRect(220, 110, 50, 400);
-        //g.drawRect(320, 110, 50, 400);
-        //g.drawRect(420, 110, 50, 400);
-        //g.drawRect(520, 110, 50, 400);
-
+        
         g.setColor(Color.GRAY);
         g.fillRect(20, 110, 50, 400);
         g.fillRect(120, 110, 50, 400);
@@ -61,29 +38,6 @@ public class DozenPanel extends JPanel{
         g.drawString("4", 335, 90);
         g.drawString("5", 435, 90);
         g.drawString("6", 535, 90);
-
-
-
-//        g.setColor(Color.BLACK);
-//        g2.setStroke(new BasicStroke(4));
-//        g.drawRect(1100, 75, 700, 300);
-//
-//        int x1 = 1250;
-//        for (int i = 0; i < 4; i++) {
-//
-//            g.drawLine(x1, 75, x1, 375);
-//            x1 = x1 + 140;
-//        }
-//
-//        int y1 = 140;
-//        for (int i = 0; i < 4; i++) {
-//
-//            g.drawLine(1100, y1, 1800, y1);
-//            y1 = y1 + 60;
-//
-//        }
-
-
 
 
         pickpak.tekenDoosInhoud(g);

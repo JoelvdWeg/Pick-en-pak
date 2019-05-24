@@ -11,27 +11,14 @@ public class BPP {
     private static final int FIRST_FIT = 1;
 
     public BPP(ArrayList<Item> items, int BPPalgoritme) {
-        //for(int i = 0; i < aantalDozen; i++){
-            
-        //}
-        
         Doos.resetDozen();
-        
-        //System.out.println(Doos.getAantalDozen());
-        
-        
-        
+
         dozen = new ArrayList<>();
         dozen.add(new Doos(0.5));
-        
-        //for(Doos d: dozen){
-        //    System.out.println(d.getInhoud());
-        //}
         
         volgorde = new ArrayList<>();
         this.items = items;
         
-
         try {
             // Algortiem kiezen
             switch (BPPalgoritme) {
@@ -52,8 +39,6 @@ public class BPP {
     }
 
     private void bepaalVolgordeBestfit() {
-        //System.out.println("BESTFIT --------------------\n");
-
         for (int i = 0; i < items.size(); i++) {
             System.out.println("aantal dozen: "+dozen.size());
             Doos geselecteerd;
@@ -88,15 +73,13 @@ public class BPP {
             volgorde.add(geselecteerd);
 
             // Huidige ronde printen
-            //printRonde(i, geselecteerd);
+            printRonde(i, geselecteerd);
         }
 
-        //printVolgorde();
+        printVolgorde();
     }
 
     public void bepaalVolgordeFirstfit() {
-        //System.out.println("FIRSTFIT --------------------\n");
-
         for (int i = 0; i < items.size(); i++) {
             Doos geselecteerd = null;
 
@@ -119,10 +102,10 @@ public class BPP {
             volgorde.add(geselecteerd);
 
             // Alle dozen printen
-            //printRonde(i, geselecteerd);
+            printRonde(i, geselecteerd);
         }
 
-        //printVolgorde();
+        printVolgorde();
     }
 
     public void printRonde(int i, Doos geselecteerd) {

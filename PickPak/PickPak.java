@@ -16,19 +16,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import static javax.swing.JOptionPane.YES_NO_OPTION;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
 
 public class PickPak {
 
-    private JFrame f;
-
     private ArrayList<Doos> dozen;
-
-    private Pakbon pakbon;
 
     private static final int AANTAL_DOZEN = 6;
 
@@ -48,8 +40,8 @@ public class PickPak {
 
     private DefaultTableModel tableModel;
 
-    //private TableModel tableModel1;
     private String dbUsername = "root";
+    
     private String dbPassword = "";
 
     public PickPak() {
@@ -117,7 +109,6 @@ public class PickPak {
             System.out.println("Items succesvol opgehaald uit database\n..");
         } catch (Exception e) {
             System.out.println("Kon items niet ophalen uit de database\n...");
-            System.out.println(e);
         }
     }
 
@@ -139,7 +130,6 @@ public class PickPak {
             String adres2 = "";
             String land = "";
 
-            System.out.println("--" + f);
             ArrayList<Item> besteldeItems = new ArrayList<>();
 
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -148,16 +138,13 @@ public class PickPak {
                 DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
                 document = documentBuilder.parse(new File(f));
             } catch (Exception e) {
-                System.out.println("ASDF");
-                System.out.println(e);
+                System.out.println("Er ging iets mis\n...");
             }
             Element rootElement = (Element) document.getFirstChild();
 
             NodeList nlist = rootElement.getChildNodes();
 
             for (int i = 0; i < nlist.getLength(); i++) {
-                System.out.println("NODENAME: " + nlist.item(i).getNodeName());
-
                 Node child = nlist.item(i);
 
                 String nodeName = (String) child.getNodeName();
@@ -188,38 +175,13 @@ public class PickPak {
 
             return new Bestelling(naam, adres1, adres2, land, besteldeItems);
         } catch (Exception ex) {
-            System.out.println("ERROR: ");
-            System.out.println(ex);
+            System.out.println("Er ging iets mis\n...");
             return null;
         }
     }
 
-//    public ArrayList<Item> maakBestellingAan(ArrayList<Integer> besteldeItems) {
-//        
-//        if (maakDatabaseConnectie()) {
-//            System.out.println("CHECK");
-//            
-//
-//            ArrayList<Item> picks = new ArrayList<>();
-//            
-//            int k = 1;
-//            for(Integer i: besteldeItems){
-//            picks = voegToeAanPicks(i, picks);
-//             k++;
-//            }
-//            System.out.println("Totaal: " + k + " items\n...");
-// 
-//
-//            sluitDatabaseConnectie();
-//            return picks;
-//        } else {
-//
-//        }
-//        return null;
-//    }
     public void maakPakbonnen(Bestelling bestelling) {
         if (maakDatabaseConnectie()) {
-            ArrayList<Pakbon> pakbonnen = new ArrayList<>();
 
             int newPakbonID = 0;
 
@@ -236,21 +198,17 @@ public class PickPak {
                 newBestelling.setString(3, bestelling.getAdres1());
                 newBestelling.setString(4, bestelling.getAdres2());
                 newBestelling.setString(5, bestelling.getLand());
-                //newBestelling.setInt(6, newPakbonID);
                 newBestelling.executeUpdate();
 
                 System.out.println("Bestelling toegevoegd aan database\n...");
             } catch (Exception e) {
                 System.out.println("Kon geen bestelling toevoegen aan de database\n...");
-                System.out.println(e);
             }
 
             int doosnr = 1;
             for (Doos d : dozen) {
-                System.out.println(d);
                 Pakbon p = new Pakbon(newPakbonID, bestelling.getNaam(), bestelling.getAdres1(), bestelling.getAdres2(), bestelling.getLand(), doosnr);
                 
-
                 int[] aantallen = new int[25];
                 for (int i = 0; i < 25; i++) {
                     aantallen[i] = 0;
@@ -261,7 +219,6 @@ public class PickPak {
                     aantallen[i.getID()]++;
                 }
 
-                
                 for (int i = 1; i < 26; i++) {
                     if (aantallen[i-1] != 0) {
                         int newBestelregelID = -1;
@@ -282,7 +239,7 @@ public class PickPak {
                             newBestelregel.setInt(1, newBestelregelID);
                             newBestelregel.setInt(2, newPakbonID);
                             newBestelregel.setInt(3, i);
-                            newBestelregel.setInt(4, aantallen[i-1]); //<<<<<<<<<<<<<<<<<<<< Deze nog veranderen zodat twee dezelfde items in dezelfde regel komen met aantal 2
+                            newBestelregel.setInt(4, aantallen[i-1]);
                             newBestelregel.setInt(5, newPakbonID);
                             newBestelregel.executeUpdate();
                         } catch (Exception e) {
@@ -301,17 +258,6 @@ public class PickPak {
                 doosnr++;
             }
         }
-    }
-
-    private ArrayList<Item> voegToeAanPicks(int besteldItem, ArrayList<Item> picks) {
-        for (Item item : items) {
-            if (item.getLocatie().getID() == besteldItem) {
-                picks.add(item);
-                System.out.println("Item met locatie-id " + item.getLocatie().getID() + " toegevoegd aan picklijst");
-                break;
-            }
-        }
-        return picks;
     }
 
     public ArrayList<Integer> voerTSPuit(ArrayList<Item> picks) {
@@ -342,29 +288,7 @@ public class PickPak {
         System.out.println(volgorde + "\n...");
     }
 
-//    public JTable maakTabel() {
-//        int numRow = route.size() - 2;
-//        int numCol = 6;
-//
-//        String[] columnNames = {"ID",
-//            "Product",
-//            "Grootte",
-//            "Coördinaten",
-//            "voorraad"
-//        };
-//
-//        Object[][] array = new Object[numRow][numCol];
-//
-//        tableModel = new DefaultTableModel(array, columnNames);
-//        table = new JTable(tableModel);
-//
-//        for (int t = 0; t < 4; t++) {
-//            TableColumn column = table.getColumnModel().getColumn(t);
-//            column.setWidth(250);
-//        }
-//        return table;
-//
-//    }
+
     public DefaultTableModel maakTabelModel(int huidigePick) {
         int numRow = route.size() - 2;
         int numCol = 7;
@@ -388,6 +312,7 @@ public class PickPak {
             }
             array[i][1] = items.get(route.get(i + 1)).getID();
             array[i][2] = items.get(route.get(i + 1)).getNaam();
+           
             array[i][3] = Math.round((items.get(route.get(i+1)).getGrootte()*24)*100)/100.0d;
             array[i][4] = items.get(route.get(i + 1)).getLocatie().getCoord();
             array[i][6] = items.get(route.get(i + 1)).getVoorraad();
@@ -401,50 +326,6 @@ public class PickPak {
     }
 
 
-    /*
-    public JTable maakTabel(boolean pick) {
-        int numRow = route.size()-2;
-        int numCol = 4;
-
-        String[] columnNames = {"Id",
-            "Product",
-            "Grotte",
-            "Coördinaten"};
-
-        Object[][] array = new Object[numRow][numCol];
-
-        int i;
-        for (i = 1; i < numRow; i++) {
-            array[i][0] = items.get(route.get(i)).getID();
-            array[i][1] = items.get(route.get(i)).getNaam();
-            array[i][2] = items.get(route.get(i)).getGrootte();
-            array[i][3] = items.get(route.get(i)).getLocatie().getCoord();
-        }
-
-        TableModel tableModel = new DefaultTableModel(array, columnNames);
-        table = new JTable(tableModel);
-
-        for (int t = 0; t < 4; t++) {
-            TableColumn column = table.getColumnModel().getColumn(t);
-            column.setPreferredWidth(250);
-        }
-        return table;
-
-    }*/
-//    public JTable vulTabel() {
-//        for (int i = 1; i < route.size() - 1; i++) {
-//            table.setValueAt(items.get(route.get(i)).getID(), i, 0);
-//            table.setValueAt(items.get(route.get(i)).getNaam(), i, 1);
-//            table.setValueAt(items.get(route.get(i)).getGrootte(), i, 2);
-//            table.setValueAt(items.get(route.get(i)).getLocatie().getCoord(), i, 3);
-//        }
-//
-//        for (int r = route.size() - 1; r < items.size(); r++) {
-//            tableModel.removeRow(r);
-//        }
-//
-//        return table;
-//    }
     public void beweegKraan(int next, Arduino arduino) {
         kraanPositie = route.get(next);
 
@@ -456,28 +337,20 @@ public class PickPak {
 
         arduino.serialWrite(message);
 
-        System.out.println(message);
-
         char s = '.';
         do {
             try {
-
                 s = arduino.serialRead().charAt(0);
-
-                //System.out.println(s);
             } catch (Exception ex) {
-                //System.out.println("Geen bericht ontvangen\n...");
             }
         } while (s != 'q');
 
-        //System.out.println(s);
     }
 
     public void draaiSchijf(int next, Arduino arduino) {
         String message = "c";
         message += volgorde.get(next - 1);
 
-        //char c = (char) (volgorde.get(next - 1) + 48);
         doosPositie = volgorde.get(next - 1);
 
         arduino.serialWrite(message);
@@ -493,7 +366,6 @@ public class PickPak {
                 System.out.println("Schijf gekalibreerd\n...");
 
             } catch (Exception e) {
-                System.out.println(e);
             }
         } else {
             System.out.println("Schijf kalibreren\n...");

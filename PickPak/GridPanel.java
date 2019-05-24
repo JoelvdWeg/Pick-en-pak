@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package PickPak;
 
 import java.awt.BasicStroke;
@@ -14,10 +9,6 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
-/**
- *
- * @author hylke
- */
 public class GridPanel extends JPanel{
     PickPak pickpak;
     
@@ -63,11 +54,7 @@ public class GridPanel extends JPanel{
         g.drawString("2", 430, 600);
         g.drawString("3", 530, 600);
         g.drawString("4", 630, 600);
-        
-
-        
-        
-        
+         
         pickpak.tekenTSP(g);
         pickpak.tekenKraanPositie(g);
 

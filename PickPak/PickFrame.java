@@ -4,11 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-
 import arduino.*;
-
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -16,18 +12,12 @@ import javax.swing.table.TableModel;
 public class PickFrame extends JFrame implements ActionListener {
 
     private int aantalBestellingen = 0;
-    private boolean aanHetKalibreren = false;
-    private boolean stop = false;
-    private int picknr = 0;
+    
     private Bestelling bestelling;
 
     private PickPak pickpak;
 
     private JTable tabel;
-
-    private static final class Lock {
-    }
-    private final Object lock = new Lock();
 
     private Thread t;
 
@@ -39,7 +29,7 @@ public class PickFrame extends JFrame implements ActionListener {
 
     private JTextField jtfFile;
     private JLabel jlFile;
-    private JButton jbbevestig, jbStop, geavanceerd;
+    private JButton jbbevestig, jbStop, geavanceerd, jbPakbonnen;
 
     private GridPanel gridPanel;
     private DozenPanel dozenPanel;
@@ -76,14 +66,12 @@ public class PickFrame extends JFrame implements ActionListener {
         jbStop = new JButton("Afbreken");
         jbStop.setEnabled(false);
         jbStop.addActionListener(this);
-
-//        jbStop.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                stop = true;
-//            }
-//        });
         add(jbStop);
+        
+        jbPakbonnen = new JButton("Pakbonnen");
+        jbPakbonnen.addActionListener(this);
+        jbPakbonnen.setEnabled(false);
+        add(jbPakbonnen);
 
         geavanceerd = new JButton("Geavanceerd");
         geavanceerd.addActionListener(this);
@@ -107,7 +95,7 @@ public class PickFrame extends JFrame implements ActionListener {
         tabel.setPreferredScrollableViewportSize(tabel.getPreferredSize());
         tabel.setFillsViewportHeight(true);
 
-        //tabel.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
+
         tabel.getColumnModel().getColumn(0).setMinWidth(40);
         tabel.getColumnModel().getColumn(1).setMinWidth(40);
         tabel.getColumnModel().getColumn(2).setMinWidth(100);
@@ -116,8 +104,6 @@ public class PickFrame extends JFrame implements ActionListener {
         tabel.getColumnModel().getColumn(5).setMinWidth(50);
         tabel.getColumnModel().getColumn(6).setMinWidth(40);
         
-        
-        //tabel.setColumnModel(colModel);
 
         gridPanel = new GridPanel(pickpak);
 
@@ -145,7 +131,7 @@ public class PickFrame extends JFrame implements ActionListener {
                 jbbevestig.setEnabled(false);
 
                 aantalBestellingen++;
-                if (aantalBestellingen > 1) { // aanpassen!
+                if (aantalBestellingen > 1) {
 
                     pickpak.resetRobots();
 
@@ -159,7 +145,7 @@ public class PickFrame extends JFrame implements ActionListener {
 
                 pickBestelling();
                 
-                pickpak.maakPakbonnen(bestelling);
+                jbPakbonnen.setEnabled(true);
 
                 return;
             }
@@ -222,6 +208,9 @@ public class PickFrame extends JFrame implements ActionListener {
 
             }
 
+        } else if (e.getSource() == jbPakbonnen){
+            pickpak.maakPakbonnen(bestelling);
+            jbPakbonnen.setEnabled(false);
         }
 
         repaint();
@@ -242,7 +231,6 @@ public class PickFrame extends JFrame implements ActionListener {
 
         } catch (Exception ex) {
             System.out.println("Er ging iets mis\n...");
-            System.out.println(ex);
         }
     }
 
@@ -288,21 +276,13 @@ public class PickFrame extends JFrame implements ActionListener {
                     }
                 } while (s != 'd'); // schijf draaien
 
-                //System.out.println(s);
-                //while(){
-                // wacht op signaal
-                // }
                 dozenPanel.paintImmediately(0, 0, 1920, 1080);
 
                 pickpak.beweegKraan(it, arduinoKraan);
-
-                System.out.println("KRAAN BEWOGEN\n...");
-
+                
                 gridPanel.paintImmediately(0, 0, 1920, 1080);
 
                 arduinoKraan.serialWrite('p'); //push
-
-                System.out.println("GEPUSHT\n...");
 
                 pickpak.setPush(true);
 
@@ -316,12 +296,6 @@ public class PickFrame extends JFrame implements ActionListener {
 
                     }
                 } while (t != 'p'); //sensor
-
-                //try {
-                //    Thread.sleep(1000);
-                //} catch (Exception ex) {
-                //}
-                System.out.println(t);
 
                 pickpak.setPush(false);
 

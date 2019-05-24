@@ -1,8 +1,6 @@
 package PickPak;
 
 import arduino.*;
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -88,7 +86,6 @@ public class GeavanceerdDialoog extends JDialog implements ActionListener {
         add(jpSchijf);
 
         // kraan bewegen
-        //jbUp, jbDown, jbLeft, jbRight, jbStop, jbReset, jbPush, jbPull, jbCoordinaat;
         TitledBorder tbKraan = new TitledBorder("Pick robot");
 
         jpKraan = new JPanel(new FlowLayout());
@@ -165,7 +162,6 @@ public class GeavanceerdDialoog extends JDialog implements ActionListener {
         jbApply.addActionListener(this);
         add(jbApply);
 
-        //pack();
         setVisible(true);
     }
 

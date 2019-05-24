@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Doos {
     private static int aantalDozen = 0;
     private int doosID;
-    //private static final int CAPACITEIT = 12;
     private double capaciteit;
     private ArrayList<Item> inhoud;
 
@@ -20,11 +19,7 @@ public class Doos {
     public Doos(double capaciteit){
         this();
         
-        //doosID = aantalDozen;
-        //aantalDozen++;
-        
-        this.capaciteit = capaciteit;
-        
+        this.capaciteit = capaciteit;      
     }
     
     public Doos(Item item, double capaciteit) {
@@ -38,8 +33,6 @@ public class Doos {
     public static int getAantalDozen() {
         return aantalDozen;
     }
-    
-    
     
     public static void resetDozen(){
         

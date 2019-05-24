@@ -74,8 +74,8 @@ public class TSP {
                 if(isBestRoute(swappedRoute)){
                     bestRoute = swappedRoute;
                     bestRouteDist = distance(swappedRoute);
-                    //System.out.println("Nieuwe 2-opt verbetering: "+bestRoute);
-                    //System.out.println("Afstand: "+bestRouteDist);
+                    System.out.println("Nieuwe 2-opt verbetering: "+bestRoute);
+                    System.out.println("Afstand: "+bestRouteDist);
                 }
             }
         }
