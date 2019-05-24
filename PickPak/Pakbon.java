@@ -53,7 +53,7 @@ public class Pakbon {
 
         String s = "";
         s += "PAKBON" + newline;
-        s += "DOOS " + doosnr;
+        s += "DOOS " + doosnr + newline;
         s += "----------------------------" + newline;
         s += naam + newline;
         s += adres1 + newline;

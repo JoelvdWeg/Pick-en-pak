@@ -41,7 +41,7 @@ public class PickPak {
     private DefaultTableModel tableModel;
 
     private String dbUsername = "root";
-    
+
     private String dbPassword = "";
 
     public PickPak() {
@@ -168,7 +168,17 @@ public class PickPak {
                     int aantal = Integer.parseInt(aantalNode.getTextContent());
 
                     for (int k = 0; k < aantal; k++) {
-                        besteldeItems.add(items.get(itemID));
+                        PreparedStatement voorraadStatement = connection.prepareStatement("SELECT QuantityOnHand FROM stockitemholdings WHERE StockItemID = ?");
+                        voorraadStatement.setInt(1,itemID+1); 
+                        ResultSet voorraadResult = voorraadStatement.executeQuery();
+                        
+                        voorraadResult.next();
+                        
+                        if(voorraadResult.getInt(1) >= aantal){
+                            besteldeItems.add(items.get(itemID));
+                        }
+                        
+                        
                     }
                 }
             }
@@ -208,7 +218,7 @@ public class PickPak {
             int doosnr = 1;
             for (Doos d : dozen) {
                 Pakbon p = new Pakbon(newPakbonID, bestelling.getNaam(), bestelling.getAdres1(), bestelling.getAdres2(), bestelling.getLand(), doosnr);
-                
+
                 int[] aantallen = new int[25];
                 for (int i = 0; i < 25; i++) {
                     aantallen[i] = 0;
@@ -220,7 +230,7 @@ public class PickPak {
                 }
 
                 for (int i = 1; i < 26; i++) {
-                    if (aantallen[i-1] != 0) {
+                    if (aantallen[i - 1] != 0) {
                         int newBestelregelID = -1;
                         try {
                             Statement bestelRegelIDstatement = connection.createStatement();
@@ -239,7 +249,7 @@ public class PickPak {
                             newBestelregel.setInt(1, newBestelregelID);
                             newBestelregel.setInt(2, newPakbonID);
                             newBestelregel.setInt(3, i);
-                            newBestelregel.setInt(4, aantallen[i-1]);
+                            newBestelregel.setInt(4, aantallen[i - 1]);
                             newBestelregel.setInt(5, newPakbonID);
                             newBestelregel.executeUpdate();
                         } catch (Exception e) {
@@ -248,13 +258,13 @@ public class PickPak {
                         newBestelregelID++;
                     }
                 }
-                
+
                 bestelling.voegPakbonToe(p);
 
                 p.maakPakbonBestand();
 
                 newPakbonID++;
-                
+
                 doosnr++;
             }
         }
@@ -288,7 +298,6 @@ public class PickPak {
         System.out.println(volgorde + "\n...");
     }
 
-
     public DefaultTableModel maakTabelModel(int huidigePick) {
         int numRow = route.size() - 2;
         int numCol = 7;
@@ -312,8 +321,8 @@ public class PickPak {
             }
             array[i][1] = items.get(route.get(i + 1)).getID();
             array[i][2] = items.get(route.get(i + 1)).getNaam();
-           
-            array[i][3] = Math.round((items.get(route.get(i+1)).getGrootte()*24)*100)/100.0d;
+
+            array[i][3] = Math.round((items.get(route.get(i + 1)).getGrootte() * 24) * 100) / 100.0d;
             array[i][4] = items.get(route.get(i + 1)).getLocatie().getCoord();
             array[i][6] = items.get(route.get(i + 1)).getVoorraad();
             array[i][5] = volgorde.get(i);
@@ -324,7 +333,6 @@ public class PickPak {
         return tableModel;
 
     }
-
 
     public void beweegKraan(int next, Arduino arduino) {
         kraanPositie = route.get(next);
