@@ -161,6 +161,7 @@ public class PickFrame extends JFrame implements ActionListener {
                     if (!pickpak.checkBestrelling(jtfFile.getText())) {
                         JOptionPane.showMessageDialog(null, "Kan bestand niet lezen");
                     } else {
+                        t.stop();
                         t.start();
                         jbStop.setEnabled(true);
                     }
