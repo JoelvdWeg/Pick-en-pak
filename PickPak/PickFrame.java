@@ -125,33 +125,33 @@ public class PickFrame extends JFrame implements ActionListener {
 
         setVisible(true);
 
-        t = new Thread() {
-
-            @Override
-            public void run() {
-
-                jbbevestig.setEnabled(false);
-
-                aantalBestellingen++;
-                if (aantalBestellingen > 1) {
-
-                    pickpak.resetRobots();
-
-                    p.paintImmediately(0, 0, 1920, 1080);
-
-                }
-
-                tekenRoute(jtfFile.getText());
-
-                tabel.setModel(pickpak.maakTabelModel(0));
-
-                pickBestelling();
-
-                jbPakbonnen.setEnabled(true);
-
-                return;
-            }
-        };
+//        t = new Thread() {
+//
+//            @Override
+//            public void run() {
+//
+//                jbbevestig.setEnabled(false);
+//
+//                aantalBestellingen++;
+//                if (aantalBestellingen > 1) {
+//
+//                    pickpak.resetRobots();
+//
+//                    p.paintImmediately(0, 0, 1920, 1080);
+//
+//                }
+//
+//                tekenRoute(jtfFile.getText());
+//
+//                tabel.setModel(pickpak.maakTabelModel(0));
+//
+//                pickBestelling();
+//
+//                jbPakbonnen.setEnabled(true);
+//
+//                return;
+//            }
+//        };
 
     }
 
