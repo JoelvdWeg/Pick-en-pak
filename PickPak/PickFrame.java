@@ -245,6 +245,8 @@ public class PickFrame extends JFrame implements ActionListener {
                 jbStop.setEnabled(false);
 
                 pickpak.resetRobots();
+                
+                reconnect();
 
             }
 
@@ -286,6 +288,9 @@ public class PickFrame extends JFrame implements ActionListener {
 
     private void reconnect() {
         try {
+            arduinoKraan.closeConnection();
+            arduinoSchijf.closeConnection();
+            Thread.sleep(2000);
             arduinoKraan.openConnection();
             arduinoSchijf.openConnection();
         } catch (Exception ex) {
